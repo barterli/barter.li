@@ -2,6 +2,7 @@ Feature: Sign up
   As a user
   I can review items, others
   And also upvote and downvote other users review
+  I can also report abuse reviews and users
 
 
     Background:
@@ -17,6 +18,11 @@ Feature: Sign up
       When I click on up button in displayed reviews
       Then I should see an increase in count in upvote
       And should not be able to upvote again
+
+    Scenario: Down vote
+      When I click on down button in displayed reviews
+      Then I should see a decrease in count in downvote
+      And should not be able to down vote again
 
     Scenario: Down vote
       When I click on down button in displayed reviews

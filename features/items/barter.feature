@@ -3,7 +3,7 @@ Feature: Barter Items
   I can barter my items with others
 
     Background:
-      Given I am  logged in 
+      Given I am logged in 
       
 
     Scenario: User barter items
