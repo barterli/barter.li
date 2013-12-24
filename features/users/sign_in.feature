@@ -13,7 +13,18 @@ Feature: Sign in
       Given I exist as a user
       And I am not logged in
       When I sign in with valid credentials
-      Then I should be redirected to serach items page
+      And I should be signed in
+
+    Scenario: User signs in with facebook
+      Given I exist as a user
+      And I am not logged in
+      When I sign in with facebook
+      And I should be signed in
+
+    Scenario: User signs in with twitter
+      Given I exist as a user
+      And I am not logged in
+      When I sign in with twitter
       And I should be signed in
       
 

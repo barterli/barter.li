@@ -16,4 +16,16 @@ Feature: Sign up
       When I sign up with an invalid data
       Then I should see an invalid  message
 
+    Scenario: User signs up with facebook
+      Given I sign up with facebook
+      When I get uid from facebook
+      Then I should get the current location of users 
+      And I should see a successful sign up message
+
+    Scenario: User signs up with twitter
+      Given I sign up with twitter
+      When I get uid from twitter
+      Then I should get the current location of users 
+      And I should see a successful sign up message
+
    
