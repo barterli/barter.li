@@ -21,6 +21,22 @@ BarterLi::Application.configure do
 
   # Raise an error on page load if there are pending migrations
   config.active_record.migration_error = :page_load
+  
+  #added for devise and sending mail
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  #change false for production
+  config.action_mailer.perform_deliveries = true 
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+   :address              => "smtp.live.com",
+   :port                 => 587,
+   :enable_starttls_auto => true,
+   :user_name            => ENV["OUTLOOK_USERNAME_DEV"],
+   :password             => ENV["OUTLOOK_PASSWORD_DEV"],
+   :domain               => 'barter.li',
+   :authentication       => 'plain'
+ }
 
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large

@@ -1,4 +1,12 @@
 BarterLi::Application.routes.draw do
+  
+  root 'public#index'
+
+  get '/profile', to: 'users#edit_profile', as: 'edit_profile'
+  patch '/profile', to: 'users#update_profile', as: 'update_profile'
+
+  devise_for :users
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

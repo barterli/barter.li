@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
 
-# Use sqlite3 as the database for Active Record
+# Use mysql as the database for Active Record
 gem 'mysql2'
 
 # Use SCSS for stylesheets
@@ -55,6 +55,8 @@ gem 'carrierwave'
 
 gem "figaro"
 
+gem 'simple_form'
+
 group :test, :development do
   gem 'rspec-rails'
   gem 'selenium-webdriver'
@@ -65,6 +67,13 @@ group :test, :development do
   gem 'database_cleaner'
 end
 
+gem 'omniauth-twitter'
+
+gem 'omniauth-facebook'
+
+gem 'twitter'
+
+gem 'fb_graph'
 
 gem "email_spec", :group => :test
 
