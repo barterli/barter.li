@@ -13,7 +13,6 @@ Feature: Add Items
       And clicked submit button
       Then I should see item successfully added message
 
-    
     Scenario: User adds item with valid data
       Given I selected a category 
       And clicked on add item

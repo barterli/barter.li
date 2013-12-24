@@ -4,7 +4,6 @@ Feature: Sign up
   And also upvote and downvote other users review
   I can also report abuse reviews and users
 
-
     Background:
       Given I am logged in 
       And I am in item display page
@@ -24,7 +23,4 @@ Feature: Sign up
       Then I should see a decrease in count in downvote
       And should not be able to down vote again
 
-    Scenario: Down vote
-      When I click on down button in displayed reviews
-      Then I should see a decrease in count in downvote
-      And should not be able to down vote again
+    

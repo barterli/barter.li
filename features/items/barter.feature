@@ -5,7 +5,6 @@ Feature: Barter Items
     Background:
       Given I am logged in 
       
-
     Scenario: User barter items
       Given I am in items page
       When I click barter button

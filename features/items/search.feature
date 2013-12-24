@@ -2,8 +2,6 @@ Feature: Searching Items
   As a user
   I can serach for items by name, category, location
   
-
-
     Background:
       Given I am logged in 
       
@@ -12,8 +10,6 @@ Feature: Searching Items
       Then I Entered category with <Category>
       And I Entered location with <Location>
       Then I shold get related results
-
-
 
     Examples:
       | Title | Category | Location  |
