@@ -17,26 +17,4 @@ Feature: Admin Report Abuse Notices
       And I can reject the abuse report
       Then the report gets deleted
   
-    Scenario: Item review abuses
-      Given I am item review abuses page
-      Then I see item reviews reported as abuses
-      And I can disable the review
-      Then review cant be seen 
-
-    Scenario: User report abuses
-      Given I am item review abuses page
-      Then I see item reviews reported as abuses
-      And I can reject the abuse report
-      Then the report gets deleted
-
-    Scenario: User review abuses
-      Given I am user review abuses page
-      Then I see user reviews reported as abuses
-      And I can disable the review
-      Then review cant be seen 
-
-    Scenario: User review abuses
-      Given I am user review abuses page
-      Then I see user reviews reported as abuses
-      And I can reject the abuse report
-      Then the report gets deleted
+    

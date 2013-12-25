@@ -57,6 +57,8 @@ gem "figaro"
 
 gem 'simple_form'
 
+gem "font-awesome-rails"
+
 group :test, :development do
   gem 'rspec-rails'
   gem 'selenium-webdriver'

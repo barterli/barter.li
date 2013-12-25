@@ -10,13 +10,13 @@ Feature: Admin Setting Status And Moderating
     Background:
       Given I am logged in as admin
 
-    Scenario: User statics
+    Scenario: User statistics
       Given I see list of all registered users
       And when I click on a user
       Then i see his barted items, browsed items, location history
       And also user searched terms
 
-    Scenario: Item statics
+    Scenario: Item statistics
       Given I see list of all items
       And when I click on a item
       Then i see no of views of items
@@ -39,7 +39,7 @@ Feature: Admin Setting Status And Moderating
       And users who browsed it
       Then also see no of reviews it has
 
-    Scenario: Top serached text
+    Scenario: Top searched text
       Given I can search for top serached text with specified numbers 
       Then I see list of searched text
 

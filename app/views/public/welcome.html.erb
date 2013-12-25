@@ -1,0 +1,19 @@
+ <% content_for :view_specific_css do %>
+    <%= stylesheet_link_tag "public/welcome" %>
+<% end %>
+ 
+
+ <div class="email-container">
+
+ <% flash.each do |k, v| %>
+    <div id="<%= k %>"><%= v %></div>
+ <% end %> 
+ <%= form_for @register, url: :register_email do |f| %>
+<div class="input-group margin-bottom-sm">
+  <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+  <input class="form-control" name="register[email]" type="text" placeholder="Email address">
+</div>
+<div class="welcome-submit"><%= f.submit :submit, class: "btn btn-info" %></div>
+<% end %>
+
+</div>

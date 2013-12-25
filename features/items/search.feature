@@ -7,15 +7,15 @@ Feature: Searching Items
       
     Scenario Outline: Searching Items
       When I Entered title with <Title>
-      Then I Entered category with <Category>
+      Then I Entered author with <Author>
       And I Entered location with <Location>
       Then I shold get related results
 
     Examples:
-      | Title | Category | Location  |
-      | rails | book     | bangalore |
-      |       | book     | bangalore |
+      | Title | Author   | Location  |
+      | rails | dave     | bangalore |
+      |       | dave     | bangalore |
       | rails |          | bangalore |
-      | rails | book     |           |
+      | rails | dave     |           |
     
     

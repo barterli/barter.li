@@ -1,7 +1,7 @@
 Feature: Sign up
   In order to get access to all features of site
   As a user
-  I want to be able to sign up with either facebook, twitter or normal sign up form
+  I want to be able to sign up with either facebook or normal sign up form
 
     Background:
       Given I am not logged in 
@@ -22,10 +22,6 @@ Feature: Sign up
       Then I should get the current location of users 
       And I should see a successful sign up message
 
-    Scenario: User signs up with twitter
-      Given I sign up with twitter
-      When I get uid from twitter
-      Then I should get the current location of users 
-      And I should see a successful sign up message
+    
 
    
