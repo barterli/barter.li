@@ -7,8 +7,7 @@ Feature: Barter Items
       Given I am in items page
       When I click barter button
       Then I am asked to login
-      And I can select a list of my items
-      Then I type some message
+      And I type some message
       And click submit
       Then the item owner should get a notification about it
       
@@ -17,8 +16,7 @@ Feature: Barter Items
       Given I am in items page
       When I click barter button
       Then I am redirected to barter page
-      And I can select a list of my items
-      Then I type some message
+      And I type some message
       And click submit
       Then the item owner should get a notification about it
     

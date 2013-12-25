@@ -79,6 +79,14 @@ gem 'fb_graph'
 
 gem "email_spec", :group => :test
 
+gem 'capistrano', '~> 3.0.0'
+
+gem 'capistrano-bundler', '~> 1.0.0'
+
+gem 'capistrano-rails', '~> 1.0.0'
+
+gem 'capistrano-rvm', github: 'capistrano/rvm'
+
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
