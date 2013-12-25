@@ -85,7 +85,7 @@ gem 'capistrano-bundler', '~> 1.0.0'
 
 gem 'capistrano-rails', '~> 1.0.0'
 
-gem 'capistrano-rvm', github: 'capistrano/rvm'
+gem 'capistrano-rvm'
 
 
 # Use ActiveModel has_secure_password
