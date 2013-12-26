@@ -5,15 +5,22 @@
 
  <div class="email-container">
 
- <% flash.each do |k, v| %>
-    <div id="<%= k %>"><%= v %></div>
- <% end %> 
- <%= form_for @register, url: :register_email do |f| %>
-<div class="input-group margin-bottom-sm">
-  <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-  <input class="form-control" name="register[email]" type="text" placeholder="Email address">
-</div>
-<div class="welcome-submit"><%= f.submit :submit, class: "btn btn-info" %></div>
+ 
+ <%= form_for @register, url: :register_email,  html: {class: "form-wrapper cf"} do |f| %>
+  <% flash.each do |k, v| %>
+    <div class="msg" id="<%= k %>"><%= v %></div>
+ <% end %>
+        <input type="text" placeholder="Email" required name="register[email]">
+        <button type="submit">Submit</button>
 <% end %>
 
 </div>
+
+
+<p class="footer">
+
+<span class="credit">
+<a href="http://www.flickr.com/photos/simthom/3247109081/sizes/o/in/photostream/">Photo credit flicker </a>
+</span>
+
+</p>
