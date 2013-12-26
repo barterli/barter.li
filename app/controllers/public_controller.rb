@@ -27,4 +27,9 @@ class PublicController < ApplicationController
     end
 
 
+   def careers
+
+
+   end
+
 end
