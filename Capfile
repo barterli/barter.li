@@ -24,8 +24,9 @@ set :rvm_ruby_version, '2.0.0-p353'
 # require 'capistrano/rbenv'
 # require 'capistrano/chruby'
 # require 'capistrano/bundler'
-# require 'capistrano/rails/assets'
+#  require 'capistrano/rails/assets'
 # require 'capistrano/rails/migrations'
+require 'capistrano/rails'
 
 # Loads custom tasks from `lib/capistrano/tasks' if you have any defined.
 Dir.glob('lib/capistrano/tasks/*.cap').each { |r| import r }
