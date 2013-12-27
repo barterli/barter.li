@@ -27,9 +27,9 @@ class PublicController < ApplicationController
     end
 
 
-   def careers
+   def collaborate
 
-
+    render layout: "welcome"
    end
 
 end

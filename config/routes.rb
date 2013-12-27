@@ -6,7 +6,7 @@ BarterLi::Application.routes.draw do
   get '/profile', to: 'users#edit_profile', as: 'edit_profile'
   patch '/profile', to: 'users#update_profile', as: 'update_profile'
   post '/register', to: 'public#register_email', as: 'register_email'
-  get '/careers', to: 'public#careers', as: 'careers_path'
+  get '/collaborate', to: 'public#collaborate', as: 'collaborate_path'
 
   devise_for :users
 
