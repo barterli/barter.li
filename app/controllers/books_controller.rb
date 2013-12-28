@@ -1,16 +1,20 @@
 class BooksController < ApplicationController
-  before_action :authenticate_user!, only: [:edit, :update, :destroy, :new]
+  before_action :authenticate_user!, only: [:index, :edit, :update, :destroy, :new, :my_books]
 
   # GET /books
   # GET /books.json
   def index
-    @books = Book.all
+    @books = current_user.books
   end
 
   # GET /books/1
   # GET /books/1.json
   def show
     @book = Book.find(params[:id])
+    @book.book_visit_count
+    if(session["warden.user.user.key"].present?)
+      @book.book_visit_user(session["warden.user.user.key"][0][0])
+    end
   end
 
   # GET /books/new
@@ -64,6 +68,13 @@ class BooksController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # Get list of users book
+  def my_books
+    @books = current_user.books
+  end
+
+
 
   private
 

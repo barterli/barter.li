@@ -13,7 +13,12 @@ BarterLi::Application.routes.draw do
   get '/collaborate', to: 'public#collaborate', as: 'collaborate_path'
 
   devise_for :users
-  resources :books
+  
+  #books controller
+  get '/my_books', to: 'books#my_books', as: 'my_books'
+  resources :books do
+
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
