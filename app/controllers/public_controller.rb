@@ -1,17 +1,17 @@
 class PublicController < ApplicationController
 
-	def index
+	 def index
 
 
-    end
+   end
 
 
-    def welcome
+   def welcome
      
      @register = Register.new
      render layout: "welcome"
     
-    end
+   end
 
     def register_email
       @register = Register.new
@@ -28,8 +28,7 @@ class PublicController < ApplicationController
 
 
    def collaborate
-
-    render layout: "welcome"
+     render layout: "welcome"
    end
 
 end

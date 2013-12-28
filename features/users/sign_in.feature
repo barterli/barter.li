@@ -17,10 +17,10 @@ Feature: Sign in
       And I should be signed in
 
     Scenario: User signs in with facebook
-      Given I exist as a user
-      And I am not logged in
+      Given I exist as a facebook user
+      And I am not logged in with facebook
       When I sign in with facebook
-      And I should be signed in
+      And I should be signed in with facebook
 
     Scenario: Disabled user signs in with facebook
       Given I exist as a user

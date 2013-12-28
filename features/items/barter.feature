@@ -9,7 +9,6 @@ Feature: Barter Items
       When I click barter button
       Then I am asked to login
       And I type some message
-      Then I can select locations with foresquare with time
       And click submit
       Then the item owner should get a notification about it
       
@@ -19,7 +18,6 @@ Feature: Barter Items
       When I click barter button
       Then I am redirected to barter page
       And I type some message
-      Then I can select locations with foresquare with time
       And click submit
       Then the item owner should get a notification about it
     
@@ -32,8 +30,31 @@ Feature: Barter Items
       And I can select locations with foresquare with time
       Then interested user should get a Notification of it
 
-   Scenario: User can give books for free
+    Scenario: User can give books for free
        When I list books for free
        Then other users can ask for it 
        And I can decide on them
+
+
+    Scenario: Barter History
+       Given I am on items page
+       Then I can see the history of barter items
+
+
+    Scenario: After Accepting Request for Bartering
+       Given I bartered the item
+       When I checked this with application
+       Then the bartered item disapears from my list
+       And the received item appears on my list with status reading
+       Then I can change the status for bartering
+       And It appears on my barter page
+
+
+
+
+
+
+
+
+            
       
