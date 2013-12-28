@@ -11,7 +11,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131226085549) do
+ActiveRecord::Schema.define(version: 20131228133523) do
+
+  create_table "books", force: true do |t|
+    t.string   "title"
+    t.string   "author"
+    t.string   "isbn_10"
+    t.string   "isbn_13"
+    t.integer  "edition"
+    t.integer  "print"
+    t.integer  "publication_year"
+    t.string   "publication_month"
+    t.string   "condition"
+    t.integer  "value"
+    t.boolean  "status"
+    t.integer  "stage"
+    t.text     "description"
+    t.integer  "visits"
+    t.integer  "user_id"
+    t.string   "prefered_place"
+    t.string   "prefered_time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "books_tags", force: true do |t|
+    t.integer "book_id"
+    t.integer "tag_id"
+  end
 
   create_table "registers", force: true do |t|
     t.string   "email"
@@ -24,6 +51,12 @@ ActiveRecord::Schema.define(version: 20131226085549) do
     t.text     "body"
     t.boolean  "status"
     t.string   "page_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tags", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

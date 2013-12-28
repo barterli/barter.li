@@ -1,0 +1,28 @@
+<%= simple_form_for(@book) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :title %>
+    <%= f.input :author %>
+    <%= f.input :isbn_10 %>
+    <%= f.input :isbn_13 %>
+    <%= f.input :edition %>
+    <%= f.association :tags %>
+    <%= f.input :print %>
+    <%= f.input :publication_year %>
+    <%= f.input :publication_month %>
+    <%= f.input :condition %>
+    <%= f.input :value %>
+    <%= f.input :status %>
+    <%= f.input :stage %>
+    <%= f.input :description %>
+    <%= f.input :visits %>
+    <%= f.input :user_id %>
+    <%= f.input :prefered_place %>
+    <%= f.input :prefered_time %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

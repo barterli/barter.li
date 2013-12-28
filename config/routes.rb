@@ -1,5 +1,9 @@
 BarterLi::Application.routes.draw do
   
+ 
+
+  resources :tags
+
   root 'public#welcome'
   
   get '/index', to: 'public#index'
@@ -9,6 +13,7 @@ BarterLi::Application.routes.draw do
   get '/collaborate', to: 'public#collaborate', as: 'collaborate_path'
 
   devise_for :users
+  resources :books
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
