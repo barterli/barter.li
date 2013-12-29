@@ -1,13 +1,32 @@
 class NotificationsController < ApplicationController
-  before_action :set_barter
+  before_action :set_barter, except: [:user_notifications]
+  before_action :authenticate_user!
+
+  def index
+    
+
+  end
+
+  def user_notifications
+    @user_notifications = Notification.where(:target_id => current_user.id, :is_seen => false)
+    @barter_notifications = Barter.where("user_id = :user_id OR notifier_id = :user_id", {user_id: current_user.id})
+  end
+
 
   def new
+  	@notifications = @barter.notifications
+    set_notification_seen
     @notification = @barter.notifications.new
+    @is_notifier = (@barter.notifier_id == current_user.id)
+
   end
 
   def create
     @notification = @barter.notifications.new(notification_params)
-    target_id = params[:notification][:notifier_id] == current_user.id ? params[:notification][:user_id] : params[:notification][:notifier_id] 
+    @notification.notifier_id = @barter.notifier_id
+    @notification.user_id = @barter.user_id
+    @notification.parent_id = @barter.notifications.last.id
+    target_id = (params[:notification][:notifier_id] == current_user.id) ? @barter.user_id : @barter.notifier_id 
     @notification.target_id = target_id
     respond_to do |format|
       if @notification.save
@@ -22,11 +41,19 @@ class NotificationsController < ApplicationController
   private
   
   def set_barter
-   @barter = Barter.find(params[:id])
+   @barter = Barter.find(params[:barter_id])
+  end
+  
+  def set_notification_seen
+    unseen_notifications = @notifications.where(:target_id => current_user.id, :is_seen => false)
+  	  unseen_notifications.each do |unseen_notification|
+  	  unseen_notification.is_seen = true
+  	  unseen_notification.save
+    end
   end
 
   def notification_params
-    params.require(:notifications).permit(:notifier_id, :target_id, :user_id, :message, :parent_id)
+    params.require(:notification).permit(:notifier_id, :target_id, :user_id, :message, :parent_id)
   end
 
 end

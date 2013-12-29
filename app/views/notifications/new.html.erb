@@ -1,0 +1,18 @@
+<h2>Notification </h2>
+<% @notifications.each do |notification| %> 
+   <h4><%= notification.message %></h4>
+<% end %>
+
+<%= render partial: "message_form", locals: {notification: @notification, barter: @barter}%>
+
+
+
+<% if @is_notifier %>
+
+
+<% else %>
+
+
+<% end %>
+
+
