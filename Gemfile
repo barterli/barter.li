@@ -59,6 +59,8 @@ gem 'simple_form'
 
 gem "font-awesome-rails"
 
+gem 'kaminari'
+
 group :test, :development do
   gem 'rspec-rails'
   gem 'selenium-webdriver'
@@ -69,11 +71,11 @@ group :test, :development do
   gem 'database_cleaner'
 end
 
-gem 'omniauth-twitter'
+# gem 'omniauth-twitter'
 
 gem 'omniauth-facebook'
 
-gem 'twitter'
+# gem 'twitter'
 
 gem 'fb_graph'
 

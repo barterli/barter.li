@@ -1,11 +1,5 @@
 BarterLi::Application.routes.draw do
-  
- 
-
-  resources :tags
-
   root 'public#welcome'
-  
   get '/index', to: 'public#index'
   get '/profile', to: 'users#edit_profile', as: 'edit_profile'
   patch '/profile', to: 'users#update_profile', as: 'update_profile'
@@ -16,8 +10,10 @@ BarterLi::Application.routes.draw do
   
   #books controller
   get '/my_books', to: 'books#my_books', as: 'my_books'
-  resources :books do
-
+  resources :books 
+  resources :tags
+  resources :barters do
+    resources :notifications
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

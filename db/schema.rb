@@ -11,7 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131228154824) do
+ActiveRecord::Schema.define(version: 20131229054214) do
+
+  create_table "barters", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "notifier_id"
+    t.integer  "book_id"
+    t.integer  "exchange_book_id"
+    t.string   "exchange_items"
+    t.string   "country"
+    t.string   "state"
+    t.string   "city"
+    t.string   "street"
+    t.string   "address"
+    t.string   "place"
+    t.time     "time"
+    t.date     "date"
+    t.integer  "stage",            default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "books", force: true do |t|
     t.string   "title"
@@ -43,6 +62,18 @@ ActiveRecord::Schema.define(version: 20131228154824) do
   create_table "books_tags_associations", force: true do |t|
     t.integer "book_id"
     t.integer "tag_id"
+  end
+
+  create_table "notifications", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "notifier_id"
+    t.text     "message"
+    t.integer  "barter_id"
+    t.integer  "parent_id",   default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "is_seen",     default: false
+    t.integer  "target_id"
   end
 
   create_table "registers", force: true do |t|
