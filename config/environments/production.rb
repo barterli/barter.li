@@ -83,7 +83,7 @@ BarterLi::Application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
     #added for devise and sending mail
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options = { :host => 'http://162.243.220.180' }
   #change false for production
   config.action_mailer.perform_deliveries = true 
   config.action_mailer.raise_delivery_errors = true
