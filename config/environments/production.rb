@@ -27,7 +27,9 @@ BarterLi::Application.configure do
   # config.assets.css_compressor = :sass
   
   # assets other than application.css
-  config.assets.precompile += %w( public/welcome.css framework_and_overrides )
+  #config.assets.precompile = ['*.js', '*.css', '*.css.erb']
+  config.assets.precompile += %w( public/welcome.css framework_and_overrides.css )
+  #config.assets.precompile += %w( *.css *.css.erb' )
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
 
