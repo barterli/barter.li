@@ -6,8 +6,8 @@ BarterLi::Application.routes.draw do
   post '/register', to: 'public#register_email', as: 'register_email'
   get '/collaborate', to: 'public#collaborate', as: 'collaborate'
   get '/notifications', to: 'notifications#user_notifications', as: 'user_notifications'
-
-  devise_for :users
+  get '/search', to: 'search#search_books', as: 'search'
+  devise_for :users 
   
   #books controller
   get '/my_books', to: 'books#my_books', as: 'my_books'

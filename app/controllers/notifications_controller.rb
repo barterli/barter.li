@@ -26,7 +26,8 @@ class NotificationsController < ApplicationController
     @notification.notifier_id = @barter.notifier_id
     @notification.user_id = @barter.user_id
     @notification.parent_id = @barter.notifications.last.id
-    target_id = (params[:notification][:notifier_id] == current_user.id) ? @barter.user_id : @barter.notifier_id 
+    target_id = (@barter.notifier_id == current_user.id) ? @barter.user_id : @barter.notifier_id 
+    @notification.sent_by = current_user.id
     @notification.target_id = target_id
     respond_to do |format|
       if @notification.save

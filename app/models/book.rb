@@ -8,8 +8,11 @@ class Book < ActiveRecord::Base
   validates :value, numericality: { only_integer: true }, allow_blank: true
   has_and_belongs_to_many :tags
 
+  #kaminari pagination per page display
+  paginates_per 2
 
-    # record the book visits by user
+
+  # record the book visits by user
   def book_visit_user(user_id)
     if(user_id.present?)
       user_book_visit = UserBookVisit.new  
@@ -30,4 +33,20 @@ class Book < ActiveRecord::Base
     self.title.downcase!
     self.author.downcase!
   end
+
+  #normal sql search
+  def self.search(params)
+    if params.present?
+      books = Book.scoped
+      books = books.where.not(user_id: params[:user_id]) if params[:user_id].present?
+      books = books.where("title like ?", "%#{params[:title]}%") if params[:title].present? 
+      books = books.where("author like ?", "%#{params[:author]}%") if params[:author].present?
+      books = books.joins(:user).where(users: {country: params[:country]}) if params[:country].present?
+      books = books.joins(:user).where(users: {city: params[:city]}) if params[:city].present?
+    else
+      books = Book.all
+    end
+    return books
+   end
+
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131229054214) do
+ActiveRecord::Schema.define(version: 20131230102043) do
 
   create_table "barters", force: true do |t|
     t.integer  "user_id"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 20131229054214) do
     t.datetime "updated_at"
     t.boolean  "is_seen",     default: false
     t.integer  "target_id"
+    t.integer  "sent_by"
   end
 
   create_table "registers", force: true do |t|

@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   before_action :authenticate_user!, only: [:index, :edit, :update, :destroy, :new, :my_books]
-
+ 
   # GET /books
   # GET /books.json
   def index
