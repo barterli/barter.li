@@ -9,7 +9,7 @@ class Book < ActiveRecord::Base
   has_and_belongs_to_many :tags
 
   #kaminari pagination per page display
-  paginates_per 2
+  paginates_per 10
 
 
   # record the book visits by user
@@ -44,7 +44,7 @@ class Book < ActiveRecord::Base
       books = books.joins(:user).where(users: {country: params[:country]}) if params[:country].present?
       books = books.joins(:user).where(users: {city: params[:city]}) if params[:city].present?
     else
-      books = Book.all
+      books = Book.all.order("RAND()")
     end
     return books
    end

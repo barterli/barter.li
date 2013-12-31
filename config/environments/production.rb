@@ -81,6 +81,9 @@ BarterLi::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+  
+  # for angular.js
+  config.assets.js_compressor = Uglifier.new(mangle: false)
 
     #added for devise and sending mail
   config.action_mailer.default_url_options = { :host => 'http://162.243.220.180' }
