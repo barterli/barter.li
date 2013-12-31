@@ -1,6 +1,6 @@
 <h2>Sign up</h2>
 
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { "ng-controller" => "geoCtrl" }) do |f| %>
   <%= devise_error_messages! %>
 
   <div><%= f.label :first_name %><br />
@@ -11,6 +11,14 @@
 
   <div><%= f.label :email %>*<br />
   <%= f.email_field :email, :autofocus => true %></div>
+  
+  <input type="hidden" ng-model="country" name="user[country]", value="{{country}}" />
+   <input type="hidden" ng-model="state" name="user[state]", value="{{state}}"/>
+   <input type="hidden" ng-model="city" name="user[city]", value="{{city}}" />
+   <input type="hidden" ng-model="street" name="user[street]", value="{{street}}" />
+   <input type="hidden" ng-model="locality" name="user[locality]", value="{{locality}}" >
+    <input type="hidden" ng-model="latitude" name="user[latitude]", value="{{latitude}}" >
+     <input type="hidden" ng-model="longitude" name="user[longitude]", value="{{longitude}}" >
 
   <div><%= f.label :password %>*<br />
   <%= f.password_field :password %></div>
