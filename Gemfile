@@ -75,6 +75,8 @@ end
 
 gem 'omniauth-facebook'
 
+gem 'foursquare2'
+
 # gem 'twitter'
 
 gem 'openlibrary'

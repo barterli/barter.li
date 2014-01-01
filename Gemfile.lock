@@ -102,6 +102,8 @@ GEM
       railties (>= 3.0.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
+    faraday_middleware (0.9.0)
+      faraday (>= 0.7.4, < 0.9)
     fb_graph (2.7.8)
       httpclient (>= 2.2.0.2)
       multi_json (>= 1.3)
@@ -113,6 +115,10 @@ GEM
       rails (>= 3, < 5)
     font-awesome-rails (4.0.3.0)
       railties (>= 3.2, < 5.0)
+    foursquare2 (1.9.8)
+      faraday (~> 0.8)
+      faraday_middleware (>= 0.8)
+      hashie (>= 1.0, < 3.0.0)
     gherkin (2.12.2)
       multi_json (~> 1.3)
     hashie (2.0.5)
@@ -297,6 +303,7 @@ DEPENDENCIES
   fb_graph
   figaro
   font-awesome-rails
+  foursquare2
   jbuilder (~> 1.2)
   jquery-rails
   kaminari

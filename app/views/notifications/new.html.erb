@@ -16,11 +16,7 @@
   <div class="form-inputs">
   <h4>Choose Location For Barter</h4>
       <%= f.input :country, as: :string %>
-      <%= f.input :state %>
-      <%= f.input :city %>
-      <%= f.input :street %>
-      <%= f.input :address %>
-      <%= f.input :place %>
+      <%= f.input :place, collection: user_hangouts %>
       <h4>Which Book You Like To Exchange</h4>
       <%= f.input :exchange_book_id %>
       <h4>Choose Date And Time</h4>
@@ -45,5 +41,7 @@
    <p><%=@barter.date%>:<%@barter.time%></p>
 
 <% end %>
+
+
 
 
