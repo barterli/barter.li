@@ -25,7 +25,7 @@ class UsersController < ApplicationController
       params.require(:user).permit(:first_name, :last_name, 
       :middle_name, :gender, :age, :birthday, :anniversary, :occupancy, 
       :marital_status, :mobile, :region, :country, :state, :city, :street,
-      :address, :pincode, :latitude, :longitude, :accuracy, :altitude)
+      :address, :pincode, :latitude, :locality, :longitude, :accuracy, :altitude)
     end
 
 end

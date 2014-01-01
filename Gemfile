@@ -61,6 +61,8 @@ gem "font-awesome-rails"
 
 gem 'kaminari'
 
+gem "geocoder"
+
 group :test, :development do
   gem 'rspec-rails'
   gem 'selenium-webdriver'
