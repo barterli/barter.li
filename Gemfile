@@ -63,6 +63,8 @@ gem 'kaminari'
 
 gem "geocoder"
 
+gem 'sidekiq'
+
 group :test, :development do
   gem 'rspec-rails'
   gem 'selenium-webdriver'
