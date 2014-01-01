@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131231140308) do
+ActiveRecord::Schema.define(version: 20140101071009) do
 
   create_table "barters", force: true do |t|
     t.integer  "user_id"
@@ -52,6 +52,10 @@ ActiveRecord::Schema.define(version: 20131231140308) do
     t.string   "prefered_time"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "rating"
+    t.string   "image"
+    t.string   "publisher"
+    t.string   "goodreads_id"
   end
 
   create_table "books_tags", force: true do |t|

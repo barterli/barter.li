@@ -7,6 +7,7 @@ BarterLi::Application.routes.draw do
   get '/collaborate', to: 'public#collaborate', as: 'collaborate'
   get '/notifications', to: 'notifications#user_notifications', as: 'user_notifications'
   get '/search', to: 'search#search_books', as: 'search'
+  get '/book_info', to: 'books#book_info_open_library'
   devise_for :users 
   
   #books controller

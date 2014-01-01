@@ -1,12 +1,13 @@
 class Book < ActiveRecord::Base
   belongs_to :user
   before_save :change_lowercase
+  has_and_belongs_to_many :tags
   validates :title, :presence => true
   validates :print, numericality: { only_integer: true }, allow_blank: true
   validates :publication_year, numericality: { only_integer: true }, allow_blank: true
   validates :edition, numericality: { only_integer: true }, allow_blank: true
   validates :value, numericality: { only_integer: true }, allow_blank: true
-  has_and_belongs_to_many :tags
+  mount_uploader :image, ImageUploader
 
   #kaminari pagination per page display
   paginates_per 10
@@ -30,8 +31,8 @@ class Book < ActiveRecord::Base
 
   #convert title, author to lowercase
   def change_lowercase
-    self.title.downcase!
-    self.author.downcase!
+    self.title.downcase! if self.title
+    self.author.downcase! if self.author
   end
 
   #normal sql search

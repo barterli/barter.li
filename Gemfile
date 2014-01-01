@@ -77,6 +77,8 @@ gem 'omniauth-facebook'
 
 # gem 'twitter'
 
+gem 'openlibrary'
+
 gem 'fb_graph'
 
 gem "email_spec", :group => :test

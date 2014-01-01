@@ -1,7 +1,7 @@
 
 var barterApp;
 
-barterApp = angular.module('barterApp', ['ngResource']);
+barterApp = angular.module('barterApp', []);
 
 //rails csrf token in ajax requests
 barterApp.config(function($httpProvider) {

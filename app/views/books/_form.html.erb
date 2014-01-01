@@ -1,25 +1,26 @@
-<%= simple_form_for(@book) do |f| %>
+<%= simple_form_for @book, :html => {"ng-controller" =>"openLibraryCtrl"} do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :title %>
-    <%= f.input :author %>
-    <%= f.input :isbn_10 %>
-    <%= f.input :isbn_13 %>
-    <%= f.input :edition %>
+   <p>title
+   <input type="text" ng-model="title" name="book[title]" ng-blur="getBookInfo()" /></p>
+   <p>author
+    <input type="text" ng-model="author" name="book[author]", value="{{author}}" /></p>
+    <p>isbn10
+    <input type="text" ng-model="isbn_10" name="book[isbn_10]", value="{{isbn_10}}" /></p>
+    <p>isbn13
+    <input type="text" ng-model="isbn_13" name="book[isbn_13]", value="{{isbn_13}}" /></p>
+    <p>edition
+    <input type="text" ng-model="edition" name="book[edition]", value="{{edition}}" /></p>
     <%= f.association :tags %>
     <%= f.input :print %>
-    <%= f.input :publication_year %>
-    <%= f.input :publication_month %>
+    <p>Publish Year
+    <input type="text" ng-model="publication_year" name="book[publication_year]", value="{{publication_year}}" /></p>
+    <p>Publish Month
+    <input type="text" ng-model="publication_month" name="book[publication_month]", value="{{publication_month}}" /></p>
     <%= f.input :condition %>
     <%= f.input :value %>
-    <%= f.input :status %>
-    <%= f.input :stage %>
     <%= f.input :description %>
-    <%= f.input :visits %>
-    <%= f.input :user_id %>
-    <%= f.input :prefered_place %>
-    <%= f.input :prefered_time %>
   </div>
 
   <div class="form-actions">

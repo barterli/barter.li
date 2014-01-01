@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   before_action :authenticate_user!, only: [:index, :edit, :update, :destroy, :new, :my_books]
- 
+  respond_to :json, :html
   # GET /books
   # GET /books.json
   def index
@@ -74,12 +74,18 @@ class BooksController < ApplicationController
     @books = current_user.books
   end
 
-
+  #call to open library to get book info
+  def book_info_open_library
+    client = Openlibrary::Client.new
+    results = client.search(params[:q])
+    respond_with results
+  end
 
   private
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
-      params.require(:book).permit(:title, :author, :isbn_10, :isbn_13, :edition, :print, :publication_year, :publication_month, :condition, :value, :status, :stage, :description, :visits, :user_id, :prefered_place, :prefered_time)
+      params.require(:book).permit(:title, :author, :isbn_10, :isbn_13, :edition, :print, :publication_year, :publication_month, :condition, :value, :status, :stage, :description, :visits, 
+        :user_id, :prefered_place, :tag_ids, :prefered_time, :image, :image_cache, :goodreads_id, :publisher)
     end
 end
