@@ -1,6 +1,8 @@
 class Book < ActiveRecord::Base
-  belongs_to :user
   before_save :change_lowercase
+  after_create :save_book_cover_image
+  attr_accessor :image_cache
+  belongs_to :user
   has_and_belongs_to_many :tags
   validates :title, :presence => true
   validates :print, numericality: { only_integer: true }, allow_blank: true
@@ -9,7 +11,7 @@ class Book < ActiveRecord::Base
   validates :value, numericality: { only_integer: true }, allow_blank: true
   mount_uploader :image, ImageUploader
 
-  #kaminari pagination per page display
+  # kaminari pagination per page display
   paginates_per 10
 
 
@@ -23,19 +25,20 @@ class Book < ActiveRecord::Base
     end
   end
 
-  #increase book visit count
+  # increase book visit count
   def book_visit_count()
     self.visits = self.visits.to_i + 1
     self.save
   end
 
-  #convert title, author to lowercase
+  # convert title, author to lowercase
   def change_lowercase
     self.title.downcase! if self.title
     self.author.downcase! if self.author
   end
 
-  #normal sql search
+
+  # normal sql search
   def self.search(params)
     if params.present?
       books = Book.scoped
@@ -49,5 +52,20 @@ class Book < ActiveRecord::Base
     end
     return books
    end
+
+   private
+   # get cover image of book if book image is not uploaded 
+   # using open library
+    def save_book_cover_image
+      view = Openlibrary::View
+      return unless self.isbn_10.present?
+      book = view.find_by_isbn(self.isbn_10)
+      if(!self.image.present?)
+        if book.thumbnail_url.present?
+          self.remote_image_url = book.thumbnail_url 
+          self.save
+        end
+      end
+    end
 
 end

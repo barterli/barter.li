@@ -20,6 +20,8 @@
     <input type="text" ng-model="publication_month" name="book[publication_month]", value="{{publication_month}}" /></p>
     <%= f.input :condition %>
     <%= f.input :value %>
+    <%= f.input :image %>
+    <%= f.input :image_cache, :as => :hidden %>
     <%= f.input :description %>
   </div>
 
