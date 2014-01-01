@@ -7,7 +7,7 @@ angular.module('barterApp',[])
       	return;
       }
       $http.get('/book_info.json?q='+$scope.title).then(function(res){
-        if($.isArray(res.data) ||  res.length)
+        if($.isArray(res.data) ||  res.data.length)
         {
           var data = res.data[0];
           console.log(data);
