@@ -31,9 +31,9 @@ class BooksController < ApplicationController
   # POST /books.json
   def create
     @book = current_user.books.new(book_params)
-
     respond_to do |format|
       if @book.save
+        WishListWorker.perform_async(@book.id)  # for background wishlist processing
         format.html { redirect_to @book, notice: 'Book was successfully created.' }
         format.json { render action: 'show', status: :created, location: @book }
       else

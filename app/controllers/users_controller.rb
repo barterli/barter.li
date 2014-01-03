@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-    
+  respond_to :json, :html 
   
   #edit profile of the user
   def edit_profile
@@ -19,6 +19,16 @@ class UsersController < ApplicationController
     end
   end
 
+  # wish list for book title and author
+  def add_wishlist
+    @wishlist = current_user.wish_lists.new(wish_list_params)
+    if(@wishlist.save)
+      respond_with(:status => "success")
+    else
+      respond_with(:status => "error")
+    end
+  end
+
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
@@ -27,6 +37,10 @@ class UsersController < ApplicationController
       :marital_status, :mobile, :region, :country, :state, :city, :street,
       :address, :pincode, :latitude, :locality, :longitude, :accuracy, :altitude)
     end
+
+    def wish_list_params
+      params.require(:wish_list).permit(:tilte, :author)
+    end 
 
 end
 

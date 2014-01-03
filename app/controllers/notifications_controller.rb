@@ -9,7 +9,7 @@ class NotificationsController < ApplicationController
 
   def user_notifications
     @user_notifications = Notification.where(:target_id => current_user.id, :is_seen => false)
-    @barter_notifications = Barter.where("user_id = :user_id OR notifier_id = :user_id", {user_id: current_user.id})
+    @barter_notifications = Barter.where('user_id = :user_id OR notifier_id = :user_id', {user_id: current_user.id})
   end
 
 
