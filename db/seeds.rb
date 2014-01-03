@@ -5,3 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+   DefaultSetting.create_setting("email_per_month", "7")
+   DefaultSetting.create_setting("email_duration", "4")

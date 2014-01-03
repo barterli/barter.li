@@ -52,12 +52,14 @@ class User < ActiveRecord::Base
 
   def setting_email_duration
     #pending
-
+    duration = self.settings.find_by(:name => "email_duration")
+    duration = duration.present? ? duration.value.to_i : DefaultSetting.email_duration.to_i
   end
 
   def setting_email_count_month
     #pending
-
+    email_per_month = self.settings.find_by(:name => "email_per_month")
+    email_per_month = email_per_month.present? ? duration.value.to_i : DefaultSetting.email_per_month.to_i
   end
   
   # attributes
