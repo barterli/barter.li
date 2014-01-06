@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
-  before_action :authenticate_user!, only: [:index, :edit, :update, :destroy, :new, :my_books]
+  before_action :authenticate_user!, only: [:index, :edit, :update, :destroy, :new, :my_books, :add_wish_list]
   respond_to :json, :html
   # GET /books
   # GET /books.json
@@ -81,6 +81,16 @@ class BooksController < ApplicationController
     respond_with results
   end
 
+  # wish list for book title and author
+  def add_wish_list
+    @wish_list = current_user.wish_lists.new(wish_list_params)
+    if(@wish_list.save)
+      respond_with(@wish_list)
+    else
+      respond_with(@wish_list.errors)
+    end
+  end
+
   private
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -88,4 +98,8 @@ class BooksController < ApplicationController
       params.require(:book).permit(:title, :author, :isbn_10, :isbn_13, :edition, :print, :publication_year, :publication_month, :condition, :value, :status, :stage, :description, :visits, 
         :user_id, :prefered_place, {:tag_ids => []}, :prefered_time, :image, :image_cache, :goodreads_id, :publisher)
     end
+
+    def wish_list_params
+      params.require(:wish_list).permit(:tilte, :author)
+    end 
 end

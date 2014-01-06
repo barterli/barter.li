@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_many :books
   has_many :settings
   has_many :email_tracks
+  has_many :wish_lists
   
 
   def change_lowercase

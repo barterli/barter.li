@@ -1,7 +1,7 @@
 
 var barterApp;
 
-barterApp = angular.module('barterApp', []);
+barterApp = angular.module('barterApp', ['barter_server', 'geolocation', 'geocoder']);
 
 //rails csrf token in ajax requests
 barterApp.config(function($httpProvider) {

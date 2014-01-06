@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140103081405) do
+ActiveRecord::Schema.define(version: 20140104080342) do
 
   create_table "alerts", force: true do |t|
     t.integer  "user_id"
@@ -142,6 +142,15 @@ ActiveRecord::Schema.define(version: 20140103081405) do
     t.integer  "book_id"
     t.integer  "time_spent"
     t.integer  "count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "user_reviews", force: true do |t|
+    t.integer  "user_id"
+    t.text     "body"
+    t.string   "moderate"
+    t.integer  "stars"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

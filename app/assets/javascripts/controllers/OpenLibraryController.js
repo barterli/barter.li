@@ -1,5 +1,4 @@
-angular.module('barterApp',[])
-  .controller('openLibraryCtrl', function ($scope,$http) {
+barterApp.controller('openLibraryCtrl', ['$scope','$http',function ($scope,$http) {
     $scope.title = "";
     $scope.getBookInfo = function(){
       if($scope.title == "" || $scope.title == " ")
@@ -24,4 +23,4 @@ angular.module('barterApp',[])
       });
     }
   
-});
+}]);

@@ -19,13 +19,14 @@ class UsersController < ApplicationController
     end
   end
 
-  # wish list for book title and author
-  def add_wishlist
-    @wishlist = current_user.wish_lists.new(wish_list_params)
-    if(@wishlist.save)
-      respond_with(:status => "success")
-    else
-      respond_with(:status => "error")
+  def create_user_review
+    @user_review = UserReview.new(user_review_params)
+    respond_to do |format|
+      if @user_review.save
+        respond_with(@user_review) 
+      else
+        respond_with(@user_review.errors)
+      end
     end
   end
 
@@ -38,9 +39,9 @@ class UsersController < ApplicationController
       :address, :pincode, :latitude, :locality, :longitude, :accuracy, :altitude)
     end
 
-    def wish_list_params
-      params.require(:wish_list).permit(:tilte, :author)
-    end 
+    def user_review_params
+      params.require(:user_review).permit(:body, :user_id)
+    end
 
 end
 
