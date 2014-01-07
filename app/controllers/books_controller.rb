@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   before_action :authenticate_user!, only: [:index, :edit, :update, :destroy, :new, :my_books, :add_wish_list]
-  respond_to :json, :html
+  respond_to :json, :html, only: [:book_info_open_library, :add_wish_list]
   # GET /books
   # GET /books.json
   def index

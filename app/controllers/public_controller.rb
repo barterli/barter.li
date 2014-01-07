@@ -7,10 +7,8 @@ class PublicController < ApplicationController
 
 
    def welcome
-     
      @register = Register.new
      render layout: "welcome"
-    
    end
 
     def register_email

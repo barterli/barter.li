@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  respond_to :json, :html 
+  respond_to :json, :html, only: [ :create_user_review ]
   
   #edit profile of the user
   def edit_profile

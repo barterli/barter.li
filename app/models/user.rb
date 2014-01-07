@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :settings
   has_many :email_tracks
   has_many :wish_lists
+  has_many :alerts
   
 
   def change_lowercase
@@ -44,8 +45,9 @@ class User < ActiveRecord::Base
   def can_send_mail
     month_emails = self.mails_by_month(Time.now.month)
     if(month_emails.count <= self.setting_email_count_month )
+      return true if month_emails.count == 0
       last_email_sent = month_emails.first.created_at
-      (mail_duration(last_mail_sent) >= self.setting_email_duration) ? true : false
+      (mail_duration(last_email_sent) >= self.setting_email_duration) ? true : false
     else
       false
     end
@@ -86,7 +88,7 @@ class User < ActiveRecord::Base
   # attributes
   # obj :object to create alert for, alert_type :type of alert
   def create_alert(obj, alert_type)
-    alert = user.alerts.new
+    alert = self.alerts.new
     alert.thing = obj
     alert.reason_type = alert_type
     alert.save

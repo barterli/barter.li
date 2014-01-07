@@ -28,7 +28,7 @@ module NotificationsHelper
   def user_hangouts
     places = Array.new
     hangouts = current_user.near_by_hangouts
-    if(hangouts[:groups].present?)
+    if(hangouts.present? && hangouts[:groups].present?)
       hangouts[:groups][0][:items].each do |hangout|
         address = hangout.location.address
         name = hangout.name
