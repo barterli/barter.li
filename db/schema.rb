@@ -74,11 +74,6 @@ ActiveRecord::Schema.define(version: 20140104080342) do
     t.integer "tag_id"
   end
 
-  create_table "books_tags_associations", force: true do |t|
-    t.integer "book_id"
-    t.integer "tag_id"
-  end
-
   create_table "default_settings", force: true do |t|
     t.string   "name"
     t.string   "value"

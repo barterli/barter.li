@@ -14,6 +14,7 @@ BarterLi::Application.configure do
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
+
   # Enable Rack::Cache to put a simple HTTP cache in front of your application
   # Add `rack-cache` to your Gemfile before enabling this.
   # For large-scale production use, consider using a caching reverse proxy like nginx, varnish or squid.
@@ -21,6 +22,15 @@ BarterLi::Application.configure do
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
   config.serve_static_assets = true
+  
+  # for rac-cache -manual
+  config.static_cache_control = "public, max-age=2592000"
+  
+  # for rack cache using redis -manual
+  config.action_dispatch.rack_cache = {
+    metastore:   'redis://localhost:6379/1/metastore',
+    entitystore: 'redis://localhost:6379/1/entitystore'
+   }
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
