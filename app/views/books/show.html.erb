@@ -1,4 +1,4 @@
-
+<% cache @book do %>
 <h2>Book</h2>
 <p id="notice"><%= notice %></p>
 
@@ -86,6 +86,8 @@
   <strong>Prefered time:</strong>
   <%= @book.prefered_time %>
 </p>
+
+<% end %>
 
 <%= link_to 'Edit', edit_book_path(@book) %> |
 <%= link_to 'Back', books_path %> |

@@ -7,8 +7,10 @@ class PublicController < ApplicationController
 
 
    def welcome
-     @register = Register.new
-     render layout: "welcome"
+     if stale?(:etag => 'welcome page', :last_modified => Code[:etag_last_modified], :public => true)
+       @register = Register.new
+       render layout: "welcome"
+     end
    end
 
     def register_email
@@ -26,7 +28,9 @@ class PublicController < ApplicationController
 
 
    def collaborate
-     render layout: "welcome"
+     if stale?(:etag => 'Collabarate', :last_modified => Code[:etag_last_modified], :public => true)
+       render layout: "welcome"
+     end
    end
 
 end
