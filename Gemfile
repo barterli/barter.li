@@ -101,6 +101,10 @@ gem 'capistrano-rails', '~> 1.0.0'
 
 gem 'capistrano-rvm'
 
+gem 'redis-rails'
+
+gem "redis-rack-cache"
+
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
