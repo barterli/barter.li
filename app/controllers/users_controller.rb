@@ -3,10 +3,12 @@ class UsersController < ApplicationController
   respond_to :json, :html, only: [ :create_user_review ]
   
   #edit profile of the user
+  #get /profile
   def edit_profile
   	@user = current_user
   end
-
+  
+  #patch /profile
   def update_profile
     respond_to do |format|
       if current_user.update(user_params)
@@ -18,16 +20,15 @@ class UsersController < ApplicationController
       end
     end
   end
-
+  
+  #post /user_reviews
   def create_user_review
     @user_review = UserReview.new(user_review_params)
-    respond_to do |format|
       if @user_review.save
         respond_with(@user_review) 
       else
         respond_with(@user_review.errors)
       end
-    end
   end
 
   private

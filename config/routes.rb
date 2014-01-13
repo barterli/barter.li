@@ -12,6 +12,7 @@ BarterLi::Application.routes.draw do
   get '/book_info', to: 'books#book_info_open_library'
   post '/wish_list', to: 'books#add_wish_list'
   get '/my_books', to: 'books#my_books', as: 'my_books'
+  post '/user_reviews', to: 'users#create_user_review', as: 'user_review'
   devise_for :users 
   resources :books 
   resources :tags

@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe SearchController do
   before(:each) do
-   @user = FactoryGirl.create(:user)  
-   @books =  @user.books.create(:title => 'test title', :author=>'john edward')
+    @user = FactoryGirl.create(:user)  
+    @books =  @user.books.create(:title => 'test title', :author=>'john edward')
   end
 
   describe "GET search_books without authentication " do
@@ -40,7 +40,7 @@ describe SearchController do
       assigns(:books).should eq([])
     end
   
- end
+  end
 
   describe "GET search_books with authentication  " do
 
@@ -62,6 +62,6 @@ describe SearchController do
       assigns(:books).should eq([])
     end
   
- end
+  end
 
 end
