@@ -19,36 +19,39 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe TagsController do
-
+  before(:each) do
+   @user = FactoryGirl.create(:user)
+   sign_in @user
+  end
   # This should return the minimal set of attributes required to create a valid
   # Tag. As you add validations to Tag, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { { "name" => "MyString" } }
+  let(:valid_attributes) { { "name" => "science" } }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # TagsController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+
 
   describe "GET index" do
     it "assigns all tags as @tags" do
       tag = Tag.create! valid_attributes
-      get :index, {}, valid_session
+      get :index, {}
       assigns(:tags).should eq([tag])
     end
   end
 
-  describe "GET show" do
-    it "assigns the requested tag as @tag" do
-      tag = Tag.create! valid_attributes
-      get :show, {:id => tag.to_param}, valid_session
-      assigns(:tag).should eq(tag)
-    end
-  end
+  # describe "GET show" do
+  #   it "assigns the requested tag as @tag" do
+  #     tag = Tag.create! valid_attributes
+  #     get :show, {:id => tag.to_param}
+  #     assigns(:tag).should eq(tag)
+  #   end
+  # end
 
   describe "GET new" do
     it "assigns a new tag as @tag" do
-      get :new, {}, valid_session
+      get :new, {}
       assigns(:tag).should be_a_new(Tag)
     end
   end
@@ -56,7 +59,7 @@ describe TagsController do
   describe "GET edit" do
     it "assigns the requested tag as @tag" do
       tag = Tag.create! valid_attributes
-      get :edit, {:id => tag.to_param}, valid_session
+      get :edit, {:id => tag.to_param}
       assigns(:tag).should eq(tag)
     end
   end
@@ -65,18 +68,18 @@ describe TagsController do
     describe "with valid params" do
       it "creates a new Tag" do
         expect {
-          post :create, {:tag => valid_attributes}, valid_session
+          post :create, {:tag => valid_attributes}
         }.to change(Tag, :count).by(1)
       end
 
       it "assigns a newly created tag as @tag" do
-        post :create, {:tag => valid_attributes}, valid_session
+        post :create, {:tag => valid_attributes}
         assigns(:tag).should be_a(Tag)
         assigns(:tag).should be_persisted
       end
 
       it "redirects to the created tag" do
-        post :create, {:tag => valid_attributes}, valid_session
+        post :create, {:tag => valid_attributes}
         response.should redirect_to(Tag.last)
       end
     end
@@ -85,14 +88,14 @@ describe TagsController do
       it "assigns a newly created but unsaved tag as @tag" do
         # Trigger the behavior that occurs when invalid params are submitted
         Tag.any_instance.stub(:save).and_return(false)
-        post :create, {:tag => { "name" => "invalid value" }}, valid_session
+        post :create, {:tag => { "name" => "invalid value" }}
         assigns(:tag).should be_a_new(Tag)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Tag.any_instance.stub(:save).and_return(false)
-        post :create, {:tag => { "name" => "invalid value" }}, valid_session
+        post :create, {:tag => { "name" => "invalid value" }}
         response.should render_template("new")
       end
     end
@@ -107,18 +110,18 @@ describe TagsController do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         Tag.any_instance.should_receive(:update).with({ "name" => "MyString" })
-        put :update, {:id => tag.to_param, :tag => { "name" => "MyString" }}, valid_session
+        put :update, {:id => tag.to_param, :tag => { "name" => "MyString" }}
       end
 
       it "assigns the requested tag as @tag" do
         tag = Tag.create! valid_attributes
-        put :update, {:id => tag.to_param, :tag => valid_attributes}, valid_session
+        put :update, {:id => tag.to_param, :tag => valid_attributes}
         assigns(:tag).should eq(tag)
       end
 
       it "redirects to the tag" do
         tag = Tag.create! valid_attributes
-        put :update, {:id => tag.to_param, :tag => valid_attributes}, valid_session
+        put :update, {:id => tag.to_param, :tag => valid_attributes}
         response.should redirect_to(tag)
       end
     end
@@ -128,7 +131,7 @@ describe TagsController do
         tag = Tag.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Tag.any_instance.stub(:save).and_return(false)
-        put :update, {:id => tag.to_param, :tag => { "name" => "invalid value" }}, valid_session
+        put :update, {:id => tag.to_param, :tag => { "name" => "invalid value" }}
         assigns(:tag).should eq(tag)
       end
 
@@ -136,7 +139,7 @@ describe TagsController do
         tag = Tag.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Tag.any_instance.stub(:save).and_return(false)
-        put :update, {:id => tag.to_param, :tag => { "name" => "invalid value" }}, valid_session
+        put :update, {:id => tag.to_param, :tag => { "name" => "invalid value" }}
         response.should render_template("edit")
       end
     end
@@ -146,13 +149,13 @@ describe TagsController do
     it "destroys the requested tag" do
       tag = Tag.create! valid_attributes
       expect {
-        delete :destroy, {:id => tag.to_param}, valid_session
+        delete :destroy, {:id => tag.to_param}
       }.to change(Tag, :count).by(-1)
     end
 
     it "redirects to the tags list" do
       tag = Tag.create! valid_attributes
-      delete :destroy, {:id => tag.to_param}, valid_session
+      delete :destroy, {:id => tag.to_param}
       response.should redirect_to(tags_url)
     end
   end
