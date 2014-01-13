@@ -4,6 +4,8 @@ FactoryGirl.define do
   factory :user do
     sequence(:email) { |n| "foo#{n}@example.com" }
     password '12345678'
+    city 'bangalore'
+    country 'india'
     password_confirmation '12345678'
     confirmed_at Time.now
   end
