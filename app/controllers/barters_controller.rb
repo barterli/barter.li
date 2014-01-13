@@ -1,6 +1,7 @@
 class BartersController < ApplicationController
   before_action :authenticate_user!
 
+  # get /barter/new
   def new
   	@barter = Barter.new
   	@barter.notifications.build
@@ -27,6 +28,7 @@ class BartersController < ApplicationController
   
   def edit
     @barter = Barter.find(params[:id])
+    render nothing: true
   end
 
   def update

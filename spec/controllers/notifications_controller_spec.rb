@@ -8,7 +8,6 @@ describe NotificationsController do
     @second_book =  @second_user.books.create(:title => 'second title', :author=>'elvin edward')
     @barter = Barter.create(user_id: @user.id, notifier_id: @second_user.id, exchange_book_id: @second_book.id, book_id: @book.id)
     @notification = @barter.notifications.create(user_id: @user.id, notifier_id: @second_user.id, target_id: @second_user.id, message: "sample message", parent_id: 0, sent_by: @user.id )
-    
   end
 
 
