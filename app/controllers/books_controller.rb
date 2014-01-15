@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   before_action :authenticate_user!, only: [:index, :edit, :update, :destroy, :new, :my_books, :add_wish_list]
-  respond_to :json, :html, only: [:book_info_open_library, :add_wish_list]
+  respond_to :json, :html, only: [:add_wish_list, :book_info]
   # GET /books
   # GET /books.json 
   def index
@@ -73,12 +73,27 @@ class BooksController < ApplicationController
   def my_books
     @books = current_user.books
   end
-
+ 
+  # get /book_info
+  def book_info
+    results = book_info_goodreads_library
+    respond_with results
+  end
+  
   #call to open library to get book info
   def book_info_open_library
     client = Openlibrary::Client.new
     results = client.search(params[:q])
-    respond_with results
+  rescue
+    []
+  end
+ 
+ #call to goodreads library to get book info
+  def book_info_goodreads_library
+    client = Goodreads::Client.new(Goodreads.configuration)
+    results = client.book_by_title(params[:q])
+  rescue
+    []
   end
 
   # wish list for book title and author
@@ -95,7 +110,6 @@ class BooksController < ApplicationController
   def book_suggestions
       book_titles = Array.new()
       book_titles << goodreads_titles 
-      book_titles << openlibrary_titles
       book_titles = book_titles.flatten.compact
       render json: book_titles.uniq
   end
@@ -104,12 +118,14 @@ class BooksController < ApplicationController
 
     def goodreads_titles
       arr = Array.new
-      client = Goodreads::Client.new(:api_key => ENV["GOODREADS_KEY"], :api_secret => ENV["GOODREADS_SECRET"])
+      client = Goodreads::Client.new(Goodreads.configuration)
       search = client.search_books(params[:q])
       search.results.work.each do |book|
-        arr << book.best_book.title.to_s + " - Goodreads" 
+        arr << book.best_book.title.to_s 
       end
       return arr
+    rescue
+      []
     end
 
     def openlibrary_titles
@@ -117,9 +133,11 @@ class BooksController < ApplicationController
       openlibrary = Openlibrary::Client.new
       search = openlibrary.search(params[:q])
       search.each do |result|
-        arr << result.title.to_s + " - openlibrary"
+        arr << result.title.to_s
       end
       return arr
+    rescue
+      []
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

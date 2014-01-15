@@ -6,24 +6,32 @@ barterApp.controller('openLibraryCtrl', ['$scope','$http',function ($scope,$http
       	return;
       }
       $http.get('/book_info.json?q='+value).then(function(res){
-        if($.isArray(res.data) ||  res.data.length)
+        if(Object.keys(res).length !== 0)
         {
-          var data = res.data[0];
-          console.log(data);
-          $scope.author = data.author_name.join(",");
-          $scope.isbn_13 = data.isbn[0];
-          $scope.isbn_10 = data.isbn[1];
-          $scope.publication_year = data.publish_year[0];
-          $scope.publication_month = data.publish_date[0].split(" ")[0];
-          console.log($scope.publication_month);
-          $scope.edition = data.edition_count;
-          $scope.publisher = data.publisher[0];
-          $scope.goodreads_id = data.id_goodreads[0];
+           data = res.data
+           console.log(data);
+           $scope.author = $scope.getAuthors(data.authors)
+           $scope.isbn_13 = data.isbn13;
+           $scope.isbn_10 = data.isbn;
+           $scope.publication_year = data.publication_year
+           $scope.publication_month = data.publication_month
+           // $scope.edition = data.edition_count;
+           $scope.publisher = data.publisher;
+          
         }
       });
     }
         
-     // $scope.$watch('title', function() { 
-     //     $scope.getBookInfo();
-     // });
+     $scope.getAuthors = function(data){
+      names = new Array();
+      console.log(data.author.name);
+      if (typeof(data.author.name) != 'undefined')
+      {
+        return data.author.name;
+      }
+      angular.forEach(data.author, function(value, key){
+         names.push(value.name);
+       });
+      return names.join(",");
+     }
 }]);

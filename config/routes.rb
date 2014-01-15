@@ -9,7 +9,7 @@ BarterLi::Application.routes.draw do
   get '/collaborate', to: 'public#collaborate', as: 'collaborate'
   get '/notifications', to: 'notifications#user_notifications', as: 'user_notifications'
   get '/search', to: 'search#search_books', as: 'search'
-  get '/book_info', to: 'books#book_info_open_library'
+  get '/book_info', to: 'books#book_info'
   post '/wish_list', to: 'books#add_wish_list'
   get '/my_books', to: 'books#my_books', as: 'my_books'
   post '/book_suggestions', to: 'books#book_suggestions'

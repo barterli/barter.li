@@ -1,6 +1,6 @@
 class Book < ActiveRecord::Base
   before_save :change_lowercase
-  after_create :save_book_cover_image
+  # after_create :save_book_cover_image
   attr_accessor :image_cache
   belongs_to :user
   has_and_belongs_to_many :tags
