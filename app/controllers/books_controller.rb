@@ -2,7 +2,7 @@ class BooksController < ApplicationController
   before_action :authenticate_user!, only: [:index, :edit, :update, :destroy, :new, :my_books, :add_wish_list]
   respond_to :json, :html, only: [:book_info_open_library, :add_wish_list]
   # GET /books
-  # GET /books.json
+  # GET /books.json 
   def index
     @books = current_user.books
   end
@@ -91,7 +91,36 @@ class BooksController < ApplicationController
     end
   end
 
+ #post /book_suggestions
+  def book_suggestions
+      book_titles = Array.new()
+      book_titles << goodreads_titles 
+      book_titles << openlibrary_titles
+      book_titles = book_titles.flatten.compact
+      render json: book_titles.uniq
+  end
+
   private
+
+    def goodreads_titles
+      arr = Array.new
+      client = Goodreads::Client.new(:api_key => ENV["GOODREADS_KEY"], :api_secret => ENV["GOODREADS_SECRET"])
+      search = client.search_books(params[:q])
+      search.results.work.each do |book|
+        arr << book.best_book.title.to_s + " - Goodreads" 
+      end
+      return arr
+    end
+
+    def openlibrary_titles
+      arr = Array.new
+      openlibrary = Openlibrary::Client.new
+      search = openlibrary.search(params[:q])
+      search.each do |result|
+        arr << result.title.to_s + " - openlibrary"
+      end
+      return arr
+    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params

@@ -10,3 +10,8 @@ barterApp.controller('serverCtrl', ['$scope', 'WishList', function ($scope, Wish
     }
    
 }]);
+
+
+
+
+

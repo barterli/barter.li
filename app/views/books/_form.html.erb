@@ -3,7 +3,9 @@
 
   <div class="form-inputs">
    <p>title
-   <input type="text" ng-model="title" name="book[title]" ng-blur="getBookInfo()" /></p>
+   <input type="text" ng-model="title" id="title" name="book[title]"  />
+   <autosuggest modelupdate = "title" suggestions = "book_suggestions" urlsend="/book_suggestions.json"> </autosuggest>
+   </p>
    <p>author
     <input type="text" ng-model="author" name="book[author]", value="{{author}}" /></p>
     <p>isbn10
@@ -29,3 +31,9 @@
     <%= f.button :submit %>
   </div>
 <% end %>
+
+
+
+
+
+

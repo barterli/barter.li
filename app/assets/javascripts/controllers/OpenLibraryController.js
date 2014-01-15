@@ -1,11 +1,11 @@
 barterApp.controller('openLibraryCtrl', ['$scope','$http',function ($scope,$http) {
     $scope.title = "";
-    $scope.getBookInfo = function(){
-      if($scope.title == "" || $scope.title == " ")
+    $scope.getBookInfo = function(value){
+      if(value == "" || value == " ")
       {
       	return;
       }
-      $http.get('/book_info.json?q='+$scope.title).then(function(res){
+      $http.get('/book_info.json?q='+value).then(function(res){
         if($.isArray(res.data) ||  res.data.length)
         {
           var data = res.data[0];
@@ -22,5 +22,8 @@ barterApp.controller('openLibraryCtrl', ['$scope','$http',function ($scope,$http
         }
       });
     }
-  
+        
+     // $scope.$watch('title', function() { 
+     //     $scope.getBookInfo();
+     // });
 }]);

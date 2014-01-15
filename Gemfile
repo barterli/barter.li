@@ -69,6 +69,8 @@ gem 'sinatra', require: false
 
 gem 'slim'
 
+gem 'goodreads'
+
 group :test, :development do
   gem 'rspec-rails'
   gem 'selenium-webdriver'
