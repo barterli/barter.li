@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140104080342) do
+ActiveRecord::Schema.define(version: 20140116101418) do
 
   create_table "alerts", force: true do |t|
     t.integer  "user_id"
@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 20140104080342) do
     t.string   "author"
     t.string   "isbn_10"
     t.string   "isbn_13"
-    t.integer  "edition"
+    t.string   "edition"
     t.integer  "print"
     t.integer  "publication_year"
     t.string   "publication_month"
@@ -67,9 +67,17 @@ ActiveRecord::Schema.define(version: 20140104080342) do
     t.string   "image"
     t.string   "publisher"
     t.string   "goodreads_id"
+    t.string   "image_url"
+    t.integer  "pages"
+    t.string   "language_code"
   end
 
   create_table "books_tags", force: true do |t|
+    t.integer "book_id"
+    t.integer "tag_id"
+  end
+
+  create_table "books_tags_associations", force: true do |t|
     t.integer "book_id"
     t.integer "tag_id"
   end
