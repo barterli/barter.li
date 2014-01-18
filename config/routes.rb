@@ -1,7 +1,7 @@
 BarterLi::Application.routes.draw do
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
-  root 'public#welcome'
+  root 'public#index'
   get '/index', to: 'public#index'
   get '/profile', to: 'users#edit_profile', as: 'edit_profile'
   patch '/profile', to: 'users#update_profile', as: 'update_profile'

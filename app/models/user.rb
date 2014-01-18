@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
     self.locality.downcase! if self.locality
   end
 
-  #foursquare api to get users near by locations
+  # foursquare api to get users near by locations
   def near_by_hangouts
     client = Foursquare2::Client.new(:client_id => ENV["FOURSQUARE_CLIENT_ID"], :client_secret => ENV["FOURSQUARE_CLIENT_SECRET"])
     if(self.latitude.present? && self.longitude.present?)

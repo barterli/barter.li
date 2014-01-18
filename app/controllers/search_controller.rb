@@ -2,7 +2,7 @@ class SearchController < ApplicationController
   
   def search_books
   	set_search_params
-  	#uses kaminari for pagination
+  	# uses kaminari for pagination
     @books = Book.search(params[:search]).page(params[:page]).per(params[:per])
   end
 

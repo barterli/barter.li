@@ -80,7 +80,7 @@ class BooksController < ApplicationController
     respond_with results
   end
   
-  #call to open library to get book info
+  # call to open library to get book info
   def book_info_open_library
     client = Openlibrary::Client.new
     results = client.search(params[:q])
@@ -88,7 +88,7 @@ class BooksController < ApplicationController
     []
   end
  
- #call to goodreads library to get book info
+ # call to goodreads library to get book info
   def book_info_goodreads_library
     client = Goodreads::Client.new(Goodreads.configuration)
     results = client.book_by_title(params[:q])
@@ -106,7 +106,7 @@ class BooksController < ApplicationController
     end
   end
 
- #post /book_suggestions
+ # post /book_suggestions
   def book_suggestions
       book_titles = Array.new()
       book_titles << goodreads_titles 

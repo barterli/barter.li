@@ -2,13 +2,13 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
   respond_to :json, :html, only: [ :create_user_review ]
   
-  #edit profile of the user
-  #get /profile
+  # edit profile of the user
+  # get /profile
   def edit_profile
   	@user = current_user
   end
   
-  #patch /profile
+  # patch /profile
   def update_profile
     respond_to do |format|
       if current_user.update(user_params)
@@ -21,7 +21,7 @@ class UsersController < ApplicationController
     end
   end
   
-  #post /user_reviews
+  # post /user_reviews
   def create_user_review
     @user_review = UserReview.new(user_review_params)
       if @user_review.save
