@@ -1,5 +1,6 @@
 set :application, 'barter.li'
 set :repo_url, 'git@github.com:barterli/barter.li.git'
+#SSHKit.config.command_map[:rake] = "bundle exec rake"
 
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
