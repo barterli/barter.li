@@ -4,7 +4,7 @@ angular.module('barter_server', [])
   return {
     saveWishList: function(column, word){
        var send_word = {
-        wish_list: {column:word},
+        wish_list: {title: word},
       };
       return $http.post('/wish_list.json', send_word);
     }

@@ -147,6 +147,6 @@ class BooksController < ApplicationController
     end
 
     def wish_list_params
-      params.require(:wish_list).permit(:tilte, :author)
+      params.require(:wish_list).permit(:title, :author)
     end 
 end
