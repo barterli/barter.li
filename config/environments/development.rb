@@ -29,11 +29,11 @@ BarterLi::Application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-   :address              => "smtp.live.com",
+   :address              => "smtp.gmail.com",
    :port                 => 587,
    :enable_starttls_auto => true,
-   :user_name            => ENV["OUTLOOK_USERNAME_DEV"],
-   :password             => ENV["OUTLOOK_PASSWORD_DEV"],
+   :user_name            => ENV["SMTP_USERNAME_DEV"],
+   :password             => ENV["SMTP_PASSWORD_DEV"],
    :domain               => 'barter.li',
    :authentication       => 'plain'
  }
