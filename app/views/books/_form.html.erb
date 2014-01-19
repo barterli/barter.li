@@ -16,8 +16,6 @@
     <input type="text" ng-model="edition" name="book[edition]", value="{{edition}}" /></p>
     <p>description
     <textarea  ng-model="description" name="book[description]">{{description}}</textarea></p>
-   
-   
     <input type="hidden" ng-model="image_url" name="book[image_url]", value="{{image_url}}" />
      <p>Language Code
      <input type="text" ng-model="language_code" name="book[language_code]", value="{{language_code}}" /></p>
@@ -32,6 +30,7 @@
     <%= f.input :condition %>
     <%= f.input :value %>
     <%= f.input :image %>
+    <%= f.input :barter_type, :collection => Book.barter_categories.map {|k,v| [k, v]} %>
     <%= f.input :image_cache, :as => :hidden %>
   </div>
 

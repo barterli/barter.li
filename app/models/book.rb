@@ -37,7 +37,10 @@ class Book < ActiveRecord::Base
     self.author.downcase! if self.author
   end
 
-
+  def self.barter_categories
+    Code[:barter_categories]
+  end
+ 
   # normal sql search
   def self.search(params)
     if params.present?
