@@ -5,7 +5,7 @@
     <title><%= content_for?(:title) ? yield(:title) : "Barter Li" %></title>
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Barter Li" %>">
     <%= stylesheet_link_tag "application", "framework_and_overrides", media: "all", "data-turbolinks-track" => true %>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
     <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
     <%= csrf_meta_tags %>
     <%= yield :view_specific_css %>
@@ -16,6 +16,7 @@
     </header>
     <main role="main">
        <%= render 'layouts/messages' %>
+       
        <%= yield %>
   <!--      <div ng-controller="serverCtrl">
        <input type="text" ng-blur="sendWishList('vvv')">

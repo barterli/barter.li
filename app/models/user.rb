@@ -93,6 +93,12 @@ class User < ActiveRecord::Base
     alert.reason_type = alert_type
     alert.save
   end
+  
+  # address to display on maps
+  def map_address
+    map_address = [self.country.to_s, self.city.to_s, self.locality.to_s]
+    map_address.join(",")
+  end
 
   # geocode address only on update and fields have changed
   def geocode_address

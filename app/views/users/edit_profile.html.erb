@@ -1,20 +1,17 @@
+<div ng-controller = "mapsCtrl" ng-init="setattributes('<%=@user.latitude%>', lng='<%=@user.longitude%>', address='<%=@user.map_address%>')">
 <h2> Edit Profile </h2>
 <%= simple_form_for @user, url: :update_profile, :html => { :class => 'form-horizontal' } do |f| %>
   <%= f.input :first_name %>
   <%= f.input :last_name %>
   <%= f.input :middle_name %>
-  <%= f.input :gender %>
-  <%= f.input :age %>
-  <%= f.input :birthday %>
-  <%= f.input :anniversary %>
-  <%= f.input :occupancy %>
-  <%= f.input :marital_status %>
   <%= f.input :mobile %>
-  <%= f.input :country, as: :string %>
-  <%= f.input :state %>
-  <%= f.input :city %>
-  <%= f.input :locality %>
-  <%= f.input :street %>
-  <%= f.input :pincode %>
+ <p>country<input type="text" ng-model="country" name="user[country]", value="{{country}}" placeholder="<%=@user.country%>"/></p>
+  <p>city <input type="text" ng-model="city" name="user[city]", value="{{city}}" placeholder="<%=@user.city%>" /></p>
+   <p>locality<input type="text" ng-model="locality" name="user[locality]", value="{{locality}}" placeholder="<%=@user.locality%>" ></p>
+
   <%= f.button :submit %>
 <% end %>
+
+<map mapattributes = "map_attributes" ></map>
+
+</div>

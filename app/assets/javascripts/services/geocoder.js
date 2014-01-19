@@ -24,7 +24,8 @@ geocoder = new google.maps.Geocoder();
 geocoder.geocode({'latLng': task.latlng}, function (result, status) {
 if (status === google.maps.GeocoderStatus.OK) {
   var geoaddress = {
-  address: result[1].formatted_address
+  address: result[1].formatted_address,
+  details: result[1]
 };
  
 queue.shift();
