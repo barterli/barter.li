@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140120054026) do
+ActiveRecord::Schema.define(version: 20140120064904) do
 
   create_table "alerts", force: true do |t|
     t.integer  "user_id"
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 20140120054026) do
     t.string   "uid"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "token"
+    t.string   "token_secret"
   end
 
   create_table "barters", force: true do |t|
