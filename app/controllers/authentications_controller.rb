@@ -1,4 +1,5 @@
 class AuthenticationsController < ApplicationController
+  
   def facebook
     omni = request.env["omniauth.auth"]
     authentication = Authentication.find_by(:provider => omni['provider'], :uid => omni['uid'])
@@ -12,10 +13,7 @@ class AuthenticationsController < ApplicationController
       flash[:notice] = "Authentication successful."
       sign_in_and_redirect current_user, :event => :authentication
     else
-      user = User.new
-      user.email = omni['extra']['raw_info'].email
-      user.password = Devise.friendly_token.first(8)
-      user.confirmed_at = Time.now
+       user = user_create(omni)
       if user.save
       	user.apply_omniauth(omni)
         flash[:notice] = "Logged in."
@@ -26,5 +24,16 @@ class AuthenticationsController < ApplicationController
     end
   end
 
-
+  def user_create(omni)
+    user = User.find_by(:email => omni['extra']['raw_info'].email)
+    if(user.present?)
+      return user
+    else
+      user = User.new
+      user.email = omni['extra']['raw_info'].email
+      user.password = Devise.friendly_token.first(8)
+      user.confirmed_at = Time.now
+      return user
+    end
+  end
 end
