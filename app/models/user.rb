@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   before_save :change_lowercase
   before_update :geocode_address
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable, :registerable, :omniauthable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   has_many :books
@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :email_tracks
   has_many :wish_lists
   has_many :alerts
+  has_many :authentications
   
 
   def change_lowercase
@@ -98,6 +99,11 @@ class User < ActiveRecord::Base
   def map_address
     map_address = [self.country.to_s, self.city.to_s, self.locality.to_s]
     map_address.join(",")
+  end
+
+  def apply_omniauth(omni)
+    self.authentications.create(:provider => omni['provider'], :uid => omni['uid'],
+    :token => omni['credentials'].token, :token_secret => omni['credentials'].secret)
   end
 
   # geocode address only on update and fields have changed

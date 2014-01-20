@@ -14,7 +14,7 @@ BarterLi::Application.routes.draw do
   get '/my_books', to: 'books#my_books', as: 'my_books'
   post '/book_suggestions', to: 'books#book_suggestions'
   post '/user_reviews', to: 'users#create_user_review', as: 'user_review'
-  devise_for :users 
+  devise_for :users, controllers: {omniauth_callbacks: "authentications"}
   resources :books 
   resources :tags
   resources :barters do
