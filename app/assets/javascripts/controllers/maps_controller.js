@@ -1,4 +1,4 @@
-barterApp.controller('mapsCtrl', ['$scope', function ($scope) {
+barterApp.controller('mapsProfileCtrl', ['$scope', function ($scope) {
     $scope.setattributes = function(lat, lng, address){
     $scope.map_attributes = {
       width: "50%",
@@ -30,3 +30,5 @@ barterApp.controller('mapsCtrl', ['$scope', function ($scope) {
 
    
 }]);
+
+
