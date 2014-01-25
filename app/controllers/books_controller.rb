@@ -96,7 +96,7 @@ class BooksController < ApplicationController
     []
   end
 
-  # wish list for book title and author
+  # post '/wish_list'
   def add_wish_list
     @wish_list = current_user.wish_lists.new(wish_list_params)
     if(@wish_list.save)

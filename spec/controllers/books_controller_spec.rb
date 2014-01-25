@@ -165,6 +165,24 @@ describe BooksController do
         response.should render_template("edit")
       end
     end
+
+
+    describe "book suggestions" do
+      it "Get book_info" do
+        sign_in @user
+        get :book_info, {:q => "rails", :format => 'json'}
+        response.body.should_not be_empty
+      end
+    end
+  
+
+    describe "add wishlist" do
+      it "Post wishlist" do
+        sign_in @user
+        post :add_wish_list, {:wish_list => {:title => "rails"}}
+        assigns(:wish_list).should eq(@user.wish_lists.last)
+      end
+     end
   end
 
   # describe "DELETE destroy" do
