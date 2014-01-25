@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   def near_by_hangouts
     client = Foursquare2::Client.new(:client_id => ENV["FOURSQUARE_CLIENT_ID"], :client_secret => ENV["FOURSQUARE_CLIENT_SECRET"])
     if(self.latitude.present? && self.longitude.present?)
-      return client.search_venues(:ll => self.latitude+','+self.longitude, :query => 'coffee')
+      return client.search_venues(:ll => self.latitude.to_s+','+self.longitude.to_s, :query => 'coffee')
     else
       return " "
     end
@@ -63,7 +63,7 @@ class User < ActiveRecord::Base
   def setting_email_count_month
     #pending
     email_per_month = self.settings.find_by(:name => "email_per_month")
-    email_per_month = email_per_month.present? ? duration.value.to_i : DefaultSetting.email_per_month.to_i
+    email_per_month = email_per_month.present? ? email_per_month.value.to_i : DefaultSetting.email_per_month.to_i
   end
   
   # attributes

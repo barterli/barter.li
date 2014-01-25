@@ -7,7 +7,7 @@ describe Book do
        :author => "Dave",
      }
    end
-   it "should create Book with tile and author in lowercase" do
+   it "should create Book with title and author in lowercase" do
      book = Book.create(@attr)
      book.title.chr.ord.should_not eq("R".chr.ord)
      book.title.chr.upcase.ord.should eq("R".chr.ord)
