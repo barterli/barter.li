@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
   end
 
   # send wish list mail for users
-  # attributs book modelc object, wishlist model object
+  # attributs book model object, wishlist model object
   def mail_wish_list(book, wishlist)
     if self.can_send_mail
       Notifier.wish_list_book(self, book).deliver
@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   # for no of emails and duration
   def can_send_mail
     month_emails = self.mails_by_month(Time.now.month)
-    if(month_emails.count <= self.setting_email_count_month )
+    if(month_emails.count < self.setting_email_count_month )
       return true if month_emails.count == 0
       last_email_sent = month_emails.first.created_at
       (mail_duration(last_email_sent) >= self.setting_email_duration) ? true : false
@@ -55,13 +55,11 @@ class User < ActiveRecord::Base
   end
 
   def setting_email_duration
-    #pending
     duration = self.settings.find_by(:name => "email_duration")
     duration = duration.present? ? duration.value.to_i : DefaultSetting.email_duration.to_i
   end
 
   def setting_email_count_month
-    #pending
     email_per_month = self.settings.find_by(:name => "email_per_month")
     email_per_month = email_per_month.present? ? email_per_month.value.to_i : DefaultSetting.email_per_month.to_i
   end
