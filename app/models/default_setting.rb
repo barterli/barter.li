@@ -9,7 +9,7 @@ class DefaultSetting < ActiveRecord::Base
       setting.save
     end
   end
-
+  
   def self.method_missing(name, *args, &blk)
   	setting = DefaultSetting.find_by(name: name)
     if setting.present?

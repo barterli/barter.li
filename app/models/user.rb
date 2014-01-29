@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
   has_many :wish_lists
   has_many :alerts
   has_many :authentications
+  has_many :posts
+  has_many :groups
   
 
   def change_lowercase

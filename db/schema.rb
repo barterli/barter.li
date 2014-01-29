@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140120064904) do
+ActiveRecord::Schema.define(version: 20140129064538) do
 
   create_table "alerts", force: true do |t|
     t.integer  "user_id"
@@ -109,6 +109,23 @@ ActiveRecord::Schema.define(version: 20140120064904) do
     t.datetime "updated_at"
   end
 
+  create_table "groups", force: true do |t|
+    t.integer  "user_id"
+    t.string   "title"
+    t.text     "description"
+    t.boolean  "is_private",  default: false
+    t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "members", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "notifications", force: true do |t|
     t.integer  "user_id"
     t.integer  "notifier_id"
@@ -120,6 +137,17 @@ ActiveRecord::Schema.define(version: 20140120064904) do
     t.boolean  "is_seen",     default: false
     t.integer  "target_id"
     t.integer  "sent_by"
+  end
+
+  create_table "posts", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "group_id"
+    t.text     "body"
+    t.string   "title"
+    t.integer  "publish_type"
+    t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "registers", force: true do |t|
