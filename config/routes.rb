@@ -1,8 +1,4 @@
 BarterLi::Application.routes.draw do
-  resources :posts
-
-  resources :groups
-
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
   root 'public#index'
@@ -18,11 +14,20 @@ BarterLi::Application.routes.draw do
   get '/my_books', to: 'books#my_books', as: 'my_books'
   post '/book_suggestions', to: 'books#book_suggestions'
   post '/user_reviews', to: 'users#create_user_review', as: 'user_review'
+  get '/join_group/:group_id', to: 'members#join_group'
   devise_for :users, controllers: {omniauth_callbacks: "authentications"}
   resources :books 
   resources :tags
   resources :barters do
     resources :notifications
+  end
+  resources :groups do
+    resources :posts
+    member do
+      get 'manage_members'
+      get 'membership_approval'
+      post 'assign_membership_status'
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

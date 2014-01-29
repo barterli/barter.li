@@ -1,13 +1,10 @@
-<%= simple_form_for(@post) do |f| %>
+<%= simple_form_for([@group, @post]) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :user_id %>
-    <%= f.input :group_id %>
     <%= f.input :body %>
     <%= f.input :title %>
     <%= f.input :publish_type %>
-    <%= f.input :status %>
   </div>
 
   <div class="form-actions">

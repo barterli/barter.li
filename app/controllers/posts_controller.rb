@@ -1,31 +1,37 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:create, :update, :destroy, :new]
+  before_action :set_group, only: [:show, :create, :new]
+  before_action :verify_membership, only: [:create, :new]
 
-  # GET /posts
+  # GET groups/:group_id/posts
   # GET /posts.json
   def index
-    @posts = Post.all
+    #@posts = Post.joins(groups: :member).where("posts.group_id = #{params[:group_id]} or members.user_id = #{current_user.id}")
   end
 
-  # GET /posts/1
+
+  # GET groups/:group_id/posts/1
   # GET /posts/1.json
   def show
+     @post =  @group.posts.find(params[:id])
   end
 
   # GET /posts/new
   def new
-    @post = Post.new
+    @post = @group.posts.new
   end
 
-  # GET /posts/1/edit
+  # GET groups/:group_id/posts/1/edit
   def edit
+    @post = current_user.posts.find(params[:id])
   end
 
-  # POST /posts
+  # POST groups/:group_id/posts
   # POST /posts.json
   def create
-    @post = Post.new(post_params)
-
+    raise 'Unauthorized' unless check_group_post_permission
+    @post = @group.posts.new(post_params)
+    @post.user_id = current_user.id
     respond_to do |format|
       if @post.save
         format.html { redirect_to @post, notice: 'Post was successfully created.' }
@@ -37,9 +43,10 @@ class PostsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /posts/1
-  # PATCH/PUT /posts/1.json
+  # PATCH/PUT groups/:group_id/posts/1
+  # PATCH/PUT groups/:group_id/posts/1.json
   def update
+    @post = current_user.posts.find(params[:id])
     respond_to do |format|
       if @post.update(post_params)
         format.html { redirect_to @post, notice: 'Post was successfully updated.' }
@@ -51,9 +58,10 @@ class PostsController < ApplicationController
     end
   end
 
-  # DELETE /posts/1
-  # DELETE /posts/1.json
+  # DELETE groups/:group_id/posts/1
+  # DELETE groups/:group_id/posts/1.json
   def destroy
+    @post = current_user.posts.find(params[:id])
     @post.destroy
     respond_to do |format|
       format.html { redirect_to posts_url }
@@ -63,12 +71,24 @@ class PostsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_post
-      @post = Post.find(params[:id])
+    def set_group
+      @group = Group.find(params[:group_id]) 
+    end
+
+    def check_group_post_permission
+      @member = @group.members.find_by(:user_id => current_user.id)
+      return false unless @member.present?
+      status = @member.status.to_i == 1 ? true : false
+      return status
+    end
+
+    def verify_membership
+      @member = @group.members.find_by(:user_id => current_user.id)
+      is_member = @member.present? ? true : false 
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:user_id, :group_id, :body, :title, :publish_type, :status)
+      params.require(:post).permit(:group_id, :body, :title, :publish_type)
     end
 end

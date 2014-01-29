@@ -7,7 +7,15 @@ class Code
          :barter_categories => {:lend => 1,
             :barter => 2,
             :give_away => 3
-           }
+           },
+          :membership => {
+            :unapproved => 0,
+            :approved => 1
+          },
+          :publish_type => {
+            :public => 1,
+            :private => 2
+          }          
         }
       if code[k.to_sym].present?
         return code[k.to_sym]

@@ -17,4 +17,11 @@ class Notifier < ActionMailer::Base
     @book = book
     mail to: @user.email, subject: "Notification for wishlist"
   end
+
+  def group_membership_request(group, member_id)
+    @user = User.find(member_id)
+    @group = group
+    mail to: @group.user.email, subject: "Membership Request"
+  end
+
 end
