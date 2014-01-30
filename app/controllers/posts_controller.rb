@@ -1,12 +1,15 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!, only: [:create, :update, :destroy, :new]
-  before_action :set_group, only: [:show, :create, :new]
+  before_action :set_group, only: [:index, :show, :create, :new, :update]
   before_action :verify_membership, only: [:create, :new]
 
   # GET groups/:group_id/posts
   # GET /posts.json
   def index
-    #@posts = Post.joins(groups: :member).where("posts.group_id = #{params[:group_id]} or members.user_id = #{current_user.id}")
+    #@posts = Post.joins(group: :members).where("(posts.group_id = #{params[:group_id]} AND posts.publish_type = #{Code[:publish_type][:public]}) or members.user_id = #{current_user.id}")
+     @posts = @group.posts.where(:publish_type => Code[:publish_type][:public])
+     @posts <<  Post.joins(group: :members).where("posts.group_id = #{params[:group_id]} AND members.user_id = #{current_user.id} AND members.status = #{Code[:membership][:approved]}")
+     @posts  = @posts.flatten.uniq 
   end
 
 
@@ -34,7 +37,7 @@ class PostsController < ApplicationController
     @post.user_id = current_user.id
     respond_to do |format|
       if @post.save
-        format.html { redirect_to @post, notice: 'Post was successfully created.' }
+        format.html { redirect_to [@group,@post], notice: 'Post was successfully created.' }
         format.json { render action: 'show', status: :created, location: @post }
       else
         format.html { render action: 'new' }
@@ -49,7 +52,7 @@ class PostsController < ApplicationController
     @post = current_user.posts.find(params[:id])
     respond_to do |format|
       if @post.update(post_params)
-        format.html { redirect_to @post, notice: 'Post was successfully updated.' }
+        format.html { redirect_to [@group, @post], notice: 'Post was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }

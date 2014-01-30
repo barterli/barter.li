@@ -36,13 +36,37 @@ describe PostsController do
   # PostsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  # describe "GET index" do
-  #   it "assigns all posts as @posts" do
-  #     post = Post.create! valid_attributes
-  #     get :index, {}
-  #     assigns(:posts).should eq([post])
-  #   end
-  # end
+  describe "GET index" do
+    it "assigns group public posts as @posts" do
+      @member = @group.members.create!(:user_id => @user.id, :status => 1)
+      @group.posts.delete_all
+      post = @user.posts.create! valid_attributes.merge!(:group_id => @group.id, :group_id => @group.id, :publish_type => Code[:publish_type][:public])
+      get :index, {:group_id => @group.id}
+      assigns(:posts).should eq([post])
+    end
+  
+
+   it "assigns group public and private posts as @posts" do
+      @group.posts.delete_all
+      @user2 = FactoryGirl.create(:user) 
+      @user2.posts.create! valid_attributes.merge!(:group_id => @group.id, :publish_type => Code[:publish_type][:private])
+      @member = @group.members.create!(:user_id => @user2.id, :status => 1)
+      @user.posts.create! valid_attributes.merge!(:group_id => @group.id, :publish_type => Code[:publish_type][:public])
+      get :index, {:group_id => @group.id}
+      assigns(:posts).count.should eq(1)
+    end
+
+    it "members can see all private group posts" do
+      @group.posts.delete_all
+      @user2 = FactoryGirl.create(:user) 
+      @user2.posts.create! valid_attributes.merge!(:group_id => @group.id, :publish_type => Code[:publish_type][:private])
+      @member = @group.members.create!(:user_id => @user2.id, :status => 1)
+      @member = @group.members.create!(:user_id => @user.id, :status => 1)
+      @user.posts.create! valid_attributes.merge!(:group_id => @group.id, :publish_type => Code[:publish_type][:public])
+      get :index, {:group_id => @group.id}
+      assigns(:posts).count.should eq(2)
+    end
+  end
 
   describe "GET show" do
     it "assigns the requested post as @post" do
@@ -69,7 +93,7 @@ describe PostsController do
 
   describe "POST create" do
     before(:each) do
-     @member = @group.members.create!(:user_id => @user.id)
+     @member = @group.members.create!(:user_id => @user.id, :status => 1)
     end
     describe "with valid params" do
       it "creates a new Post" do
@@ -86,70 +110,77 @@ describe PostsController do
 
       it "redirects to the created post" do
         post :create, {:post => valid_attributes, :group_id => @group.id}
-        response.should redirect_to(Post.last)
+        response.should redirect_to([@group,Post.last])
       end
     end
 
-  #   describe "with invalid params" do
-  #     it "assigns a newly created but unsaved post as @post" do
-  #       # Trigger the behavior that occurs when invalid params are submitted
-  #       Post.any_instance.stub(:save).and_return(false)
-  #       post :create, {:post => { "user_id" => "invalid value" }}
-  #       assigns(:post).should be_a_new(Post)
-  #     end
+    describe "with invalid params" do
+      it "assigns a newly created but unsaved post as @post" do
+        # Trigger the behavior that occurs when invalid params are submitted
+        Post.any_instance.stub(:save).and_return(false)
+        post :create, {:post => valid_attributes, :group_id => @group.id}
+        assigns(:post).should be_a_new(Post)
+      end
 
-  #     it "re-renders the 'new' template" do
-  #       # Trigger the behavior that occurs when invalid params are submitted
-  #       Post.any_instance.stub(:save).and_return(false)
-  #       post :create, {:post => { "user_id" => "invalid value" }}
-  #       response.should render_template("new")
-  #     end
-  #   end
+      it "raise unautherized if user is not member of the group" do
+        @group.members.delete_all
+        expect {
+        post :create, {:post => valid_attributes, :group_id => @group.id}
+        }.to raise_error
+      end
+
+      it "re-renders the 'new' template" do
+        # Trigger the behavior that occurs when invalid params are submitted
+        Post.any_instance.stub(:save).and_return(false)
+        post :create, {:post => valid_attributes, :group_id => @group.id}
+        response.should render_template("new")
+      end
+    end
    end
 
-  # describe "PUT update" do
-  #   describe "with valid params" do
-  #     it "updates the requested post" do
-  #       post = Post.create! valid_attributes
-  #       # Assuming there are no other posts in the database, this
-  #       # specifies that the Post created on the previous line
-  #       # receives the :update_attributes message with whatever params are
-  #       # submitted in the request.
-  #       Post.any_instance.should_receive(:update).with({ "user_id" => "1" })
-  #       put :update, {:id => post.to_param, :post => { "user_id" => "1" }}
-  #     end
+  describe "PUT update" do
+    describe "with valid params" do
+      it "updates the requested post" do
+        post = @user.posts.create! valid_attributes
+        # Assuming there are no other posts in the database, this
+        # specifies that the Post created on the previous line
+        # receives the :update_attributes message with whatever params are
+        # submitted in the request.
+        Post.any_instance.should_receive(:update).with({ "title" => "test" })
+        put :update, {:id => post.to_param, :post => { "title" => "test" }, :group_id => @group.id}
+      end
 
-  #     it "assigns the requested post as @post" do
-  #       post = Post.create! valid_attributes
-  #       put :update, {:id => post.to_param, :post => valid_attributes}
-  #       assigns(:post).should eq(post)
-  #     end
+      it "assigns the requested post as @post" do
+        post = @user.posts.create! valid_attributes
+        put :update, {:id => post.to_param, :post => valid_attributes, :group_id => @group.id}
+        assigns(:post).should eq(post)
+      end
 
-  #     it "redirects to the post" do
-  #       post = Post.create! valid_attributes
-  #       put :update, {:id => post.to_param, :post => valid_attributes}
-  #       response.should redirect_to(post)
-  #     end
-  #   end
+      it "redirects to the post" do
+        post = @user.posts.create! valid_attributes
+        put :update, {:id => post.to_param, :post => valid_attributes, :group_id => @group.id}
+        response.should redirect_to([@group, post])
+      end
+    end
 
-  #   describe "with invalid params" do
-  #     it "assigns the post as @post" do
-  #       post = Post.create! valid_attributes
-  #       # Trigger the behavior that occurs when invalid params are submitted
-  #       Post.any_instance.stub(:save).and_return(false)
-  #       put :update, {:id => post.to_param, :post => { "user_id" => "invalid value" }}
-  #       assigns(:post).should eq(post)
-  #     end
+    describe "with invalid params" do
+      it "assigns the post as @post" do
+        post = @user.posts.create! valid_attributes
+        # Trigger the behavior that occurs when invalid params are submitted
+        Post.any_instance.stub(:save).and_return(false)
+        put :update, {:id => post.to_param, :post => { "title" => "invalid value" }, :group_id => @group.id}
+        assigns(:post).should eq(post)
+      end
 
-  #     it "re-renders the 'edit' template" do
-  #       post = Post.create! valid_attributes
-  #       # Trigger the behavior that occurs when invalid params are submitted
-  #       Post.any_instance.stub(:save).and_return(false)
-  #       put :update, {:id => post.to_param, :post => { "user_id" => "invalid value" }}
-  #       response.should render_template("edit")
-  #     end
-  #   end
-  # end
+      it "re-renders the 'edit' template" do
+        post = @user.posts.create! valid_attributes
+        # Trigger the behavior that occurs when invalid params are submitted
+        Post.any_instance.stub(:save).and_return(false)
+        put :update, {:id => post.to_param, :post => { "title" => "invalid value" }, :group_id => @group.id}
+        response.should render_template("edit")
+      end
+    end
+   end
 
   # describe "DELETE destroy" do
   #   it "destroys the requested post" do
