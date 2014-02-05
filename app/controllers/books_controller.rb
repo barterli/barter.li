@@ -91,7 +91,9 @@ class BooksController < ApplicationController
  # call to goodreads library to get book info
   def book_info_goodreads_library
     client = Goodreads::Client.new(Goodreads.configuration)
-    results = client.book_by_title(params[:q])
+    results = client.book_by_title(params[:q]) if (params[:t] == "title" || params[:t].blank?)
+    results = client.book_by_isbn(params[:q]) if params[:t] == "isbn"
+    return results
   rescue
     []
   end
@@ -120,6 +122,7 @@ class BooksController < ApplicationController
       arr = Array.new
       client = Goodreads::Client.new(Goodreads.configuration)
       search = client.search_books(params[:q])
+      return search.results.work.best_book.title unless search.results.work.kind_of?(Array)
       search.results.work.each do |book|
         arr << book.best_book.title.to_s 
       end
