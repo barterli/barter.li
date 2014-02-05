@@ -28,13 +28,14 @@ module NotificationsHelper
   def user_hangouts
     places = Array.new
     hangouts = current_user.near_by_hangouts
-    if(hangouts.present? && hangouts[:groups].present?)
-      hangouts[:groups][0][:items].each do |hangout|
+    if(hangouts.present? && hangouts[:venues].present?)
+      hangouts[:venues].each do |hangout|
+        next unless hangout.verified
         address = hangout.location.address
         name = hangout.name
         name = " " if name.nil? #to prevent nil to string in array push
         address = " " if address.nil? 
-        places.push(name+','+address)
+        places.push(name.to_s+','+address.to_s)
       end
     end
     return places

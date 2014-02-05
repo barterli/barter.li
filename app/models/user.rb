@@ -26,12 +26,14 @@ class User < ActiveRecord::Base
 
   # foursquare api to get users near by locations
   def near_by_hangouts
-    client = Foursquare2::Client.new(:client_id => ENV["FOURSQUARE_CLIENT_ID"], :client_secret => ENV["FOURSQUARE_CLIENT_SECRET"], :api_version => 20131016)
+    client = Foursquare2::Client.new(:client_id => ENV["FOURSQUARE_CLIENT_ID"], :client_secret => ENV["FOURSQUARE_CLIENT_SECRET"], :api_version => 20121016)
     if(self.latitude.present? && self.longitude.present?)
-      return client.search_venues(:ll => self.latitude.to_s+','+self.longitude.to_s, :query => 'coffee')
+      result = client.search_venues(:ll => self.latitude.to_s+','+self.longitude.to_s, :query => 'coffee')
     else
-      return "not present"
+      result =  "not present"
     end
+    # binding.pry
+    return result
   end
 
   # send wish list mail for users
