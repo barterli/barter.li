@@ -7,39 +7,11 @@
 
 <%= render partial: "message_form", locals: {notification: @notification, barter: @barter}%>
 
-
-
-<% if @is_notifier %>
-  <%= simple_form_for(@barter) do |f| %>
-  <%= f.error_notification %>
-
-  <div class="form-inputs">
-  <h4>Choose Location For Barter</h4>
-      <%= f.input :country, as: :string %>
-      <%= f.input :place, collection: user_hangouts %>
-      <h4>Which Book You Like To Exchange</h4>
-      <%= f.input :exchange_book_id %>
-      <h4>Choose Date And Time</h4>
-      <%= f.input :time %>
-      <%= f.input :date %>
-    </div>
-
-    <div class="form-actions">
-     <%= f.button :submit %>
-    </div>
-  <% end %>
-
-<% else %>
+<% if !@is_notifier %>
    <h2>Barterer Preferred Location</h2>
-   <p><%=@barter.country%></p>
-   <p><%=@barter.state%></p>
-   <p><%=@barter.city%></p>
-   <p><%=@barter.street%></p>
-   <p><%=@barter.address%></p>
-   <p><%=@barter.place%></p>
-   <h2>Barterer Preferred Date And Time</h2>
-   <p><%=@barter.date%>:<%@barter.time%></p>
-
+   <p><%=@notifier.country%></p>
+   <p><%=@notifier.city%></p>
+   <p><%=@notifier.locality%></p>
 <% end %>
 
 

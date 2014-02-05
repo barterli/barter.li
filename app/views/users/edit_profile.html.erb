@@ -8,6 +8,7 @@
  <p>country<input type="text" ng-model="country" name="user[country]", value="{{country}}" placeholder="<%=@user.country%>"/></p>
   <p>city <input type="text" ng-model="city" name="user[city]", value="{{city}}" placeholder="<%=@user.city%>" /></p>
    <p>locality<input type="text" ng-model="locality" name="user[locality]", value="{{locality}}" placeholder="<%=@user.locality%>" ></p>
+  <%= f.input :place, collection: user_hangouts %>
 
   <%= f.button :submit %>
 <% end %>

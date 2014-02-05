@@ -19,6 +19,7 @@ class NotificationsController < ApplicationController
   	@notifications = @barter.notifications
     set_notification_seen
     @notification = @barter.notifications.new
+    @notifier = User.find(@barter.notifier_id)
     @is_notifier = (@barter.notifier_id == current_user.id)
 
   end
