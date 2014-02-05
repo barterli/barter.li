@@ -17,7 +17,7 @@ barterApp.directive('autosuggest', function($timeout, $http) {
          var send_query = {
                   q:scope.modelupdate
                  };
-        $http.post(scope.urlsend, send_query).then(function(data){
+        $http.get(scope.urlsend+'?q='+scope.modelupdate).then(function(data){
                  scope.suggestions = data.data;
                  if(scope.que)
                  {

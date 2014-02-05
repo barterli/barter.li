@@ -12,7 +12,7 @@ BarterLi::Application.routes.draw do
   get '/book_info', to: 'books#book_info'
   post '/wish_list', to: 'books#add_wish_list'
   get '/my_books', to: 'books#my_books', as: 'my_books'
-  post '/book_suggestions', to: 'books#book_suggestions'
+  get '/book_suggestions', to: 'books#book_suggestions'
   post '/user_reviews', to: 'users#create_user_review', as: 'user_review'
   get '/join_group/:group_id', to: 'members#join_group'
   devise_for :users, controllers: {omniauth_callbacks: "authentications"}

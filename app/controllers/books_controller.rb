@@ -106,7 +106,7 @@ class BooksController < ApplicationController
     end
   end
 
- # post /book_suggestions
+ # get /book_suggestions
   def book_suggestions
       book_titles = Array.new()
       book_titles << goodreads_titles 
