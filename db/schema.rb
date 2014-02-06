@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140206072043) do
+ActiveRecord::Schema.define(version: 20140206172802) do
 
   create_table "alerts", force: true do |t|
     t.integer  "user_id"
@@ -115,6 +115,18 @@ ActiveRecord::Schema.define(version: 20140206072043) do
     t.text     "description"
     t.boolean  "is_private",  default: false
     t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "locations", force: true do |t|
+    t.string   "country"
+    t.string   "state"
+    t.string   "city"
+    t.string   "locality"
+    t.string   "name"
+    t.string   "latitude"
+    t.string   "longitude"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

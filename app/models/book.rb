@@ -3,6 +3,7 @@ class Book < ActiveRecord::Base
   # after_create :save_book_cover_image
   attr_accessor :image_cache
   belongs_to :user
+  belongs_to :location
   has_and_belongs_to_many :tags
   validates :title, :presence => true
   validates :print, numericality: { only_integer: true }, allow_blank: true
@@ -39,6 +40,11 @@ class Book < ActiveRecord::Base
 
   def self.barter_categories
     Code[:barter_categories]
+  end
+
+
+  def self.read_locations_by_city(city)
+    # pending
   end
  
   # normal sql search

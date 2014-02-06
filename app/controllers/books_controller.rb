@@ -87,7 +87,8 @@ class BooksController < ApplicationController
   rescue
     []
   end
- 
+
+
  # call to goodreads library to get book info
   def book_info_goodreads_library
     client = Goodreads::Client.new(Goodreads.configuration)

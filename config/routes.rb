@@ -1,4 +1,6 @@
 BarterLi::Application.routes.draw do
+  resources :locations
+
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
   root 'public#index'
