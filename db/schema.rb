@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140205132017) do
+ActiveRecord::Schema.define(version: 20140206072043) do
 
   create_table "alerts", force: true do |t|
     t.integer  "user_id"
@@ -241,6 +241,7 @@ ActiveRecord::Schema.define(version: 20140205132017) do
     t.string   "unconfirmed_email"
     t.string   "locality"
     t.string   "place"
+    t.string   "authentication_token"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

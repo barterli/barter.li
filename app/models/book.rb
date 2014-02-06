@@ -44,7 +44,7 @@ class Book < ActiveRecord::Base
   # normal sql search
   def self.search(params)
     if params.present?
-      books = Book.scoped
+      books = Book.where(nil)
       books = books.where.not(user_id: params[:user_id]) if params[:user_id].present?
       books = books.where("title like ?", "%#{params[:title]}%") if params[:title].present? 
       books = books.where("author like ?", "%#{params[:author]}%") if params[:author].present?

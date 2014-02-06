@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   before_save :change_lowercase
+  before_save :ensure_authentication_token
   before_update :geocode_address
   devise :database_authenticatable, :registerable, :omniauthable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
@@ -15,6 +16,11 @@ class User < ActiveRecord::Base
   has_many :posts
   has_many :groups
   
+  def ensure_authentication_token
+    if authentication_token.blank?
+    self.authentication_token = generate_authentication_token
+    end
+  end
 
   def change_lowercase
     self.country.downcase! if self.country
@@ -117,5 +123,13 @@ class User < ActiveRecord::Base
       self.longitude = coords[1];
     end
   end
+
+  private
+    def generate_authentication_token
+      loop do
+        token = Devise.friendly_token
+        break token unless User.where(authentication_token: token).first
+      end
+    end
 
 end
