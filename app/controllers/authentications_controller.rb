@@ -36,4 +36,20 @@ class AuthenticationsController < ApplicationController
       return user
     end
   end
+  
+  # post /auth_token
+  def get_auth_token
+    authentication = Authentication.find_by(:provider => params[:provider], :uid => params[:uid])
+    if authentication
+      user = User.find(authentication.user_id)
+      respond_to do |format|
+        format.json { render json: {auth_token: user.authentication_token, status: 'success'} }
+      end
+    else
+      respond_to do |format|
+        format.json { render json: {status: 'error'} }
+      end
+    end
+  end
+
 end

@@ -15,6 +15,7 @@ BarterLi::Application.routes.draw do
   get '/book_suggestions', to: 'books#book_suggestions'
   post '/user_reviews', to: 'users#create_user_review', as: 'user_review'
   get '/join_group/:group_id', to: 'members#join_group'
+  post '/auth_token', to: 'authentications#get_auth_token'
   devise_for :users, controllers: {omniauth_callbacks: "authentications"}
   resources :books 
   resources :tags
