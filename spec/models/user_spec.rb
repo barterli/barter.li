@@ -12,18 +12,9 @@ describe User do
      }
    end
   
-   it "should create user with latitude and longitude set with address changed on update and with address in lowercase" do
-     user = User.create(@attr)
-     user.city = "Bangalore"
-     user.save
-     user.latitude.kind_of?(Float).should be_true
-     user.longitude.kind_of?(Float).should be_true
-     user.city.chr.ord.should_not eq("B".chr.ord)
-     user.city.chr.upcase.ord.should eq("B".chr.ord)
-   end
 
    it "should create alerts for objects passed with type" do
-     book = Book.create(:title => "rails")
+     book = Book.create(:title => "rails", :location_id => 1)
      user = User.create(@attr)
      user.create_alert(book, "W")
      alert = Alert.last
@@ -52,7 +43,7 @@ describe User do
 
    it "should give mails by month" do
      user = User.create(@attr)
-     book = Book.create(:title => "rails")
+     book = Book.create(:title => "rails", :location_id => 1)
      DefaultSetting.create_setting("email_duration", 0)
      DefaultSetting.create_setting("email_per_month", 10)
      user.mail_wish_list(book, "wishlist")
@@ -80,9 +71,22 @@ describe User do
      user.setting_email_duration.should eq(12)
   end
 
+  it "should give user preferred location" do
+     user = User.create(@attr)
+     location = Location.create!(:city => "bangalore")
+     user.settings.create!(:name => "location", :value => 1)
+     user.preferred_location.should eq(location)
+  end
+
+  it "should give set user preferred location" do
+     user = User.create(@attr)
+     user.preferred_location=({:city => "bangalore"})
+     user.preferred_location.city.should eq("bangalore")
+  end
+
   it "Should send wishlist mail according to user mailer settings" do
     user = User.create(@attr) 
-    book = Book.create(:title => "rails")
+    book = Book.create(:title => "rails", :location_id => 1)
     DefaultSetting.create_setting("email_per_month", 1)
     Notifier.should_receive(:wish_list_book).with(user, book).and_return( double("Notifier", :deliver => true) )
     user.mail_wish_list(book, "wishlist")
@@ -94,7 +98,7 @@ describe User do
 
   it "Should not send wishlist mail if no of mails excedes default setting" do
     user = User.create(@attr) 
-    book = Book.create(:title => "rails")
+    book = Book.create(:title => "rails", :location_id => 1)
     DefaultSetting.create_setting("email_per_month", 1)
     DefaultSetting.create_setting("email_duration", 0)
     Notifier.should_receive(:wish_list_book).with(user, book).and_return( double("Notifier", :deliver => true) )
@@ -108,7 +112,7 @@ describe User do
 
    it "Should not send wishlist mail if default  mail duration exceeds" do
     user = User.create(@attr) 
-    book = Book.create(:title => "rails")
+    book = Book.create(:title => "rails", :location_id => 1)
     DefaultSetting.create_setting("email_per_month", 2)
     DefaultSetting.create_setting("email_duration", 1)
     Notifier.should_receive(:wish_list_book).with(user, book).and_return( double("Notifier", :deliver => true) )
@@ -122,7 +126,7 @@ describe User do
 
    it "Should not send wishlist mail if no of mails excedes user setting" do
     user = User.create(@attr) 
-    book = Book.create(:title => "rails")
+    book = Book.create(:title => "rails", :location_id => 1)
     DefaultSetting.create_setting("email_per_month", 5)
     DefaultSetting.create_setting("email_duration", 0)
     user.settings.create(:name => "email_duration", :value => 0)
@@ -138,7 +142,7 @@ describe User do
 
    it "Should not send wishlist mail if user setting mail duration exceeds" do
     user = User.create(@attr) 
-    book = Book.create(:title => "rails")
+    book = Book.create(:title => "rails", :location_id => 1)
     DefaultSetting.create_setting("email_per_month", 2)
     DefaultSetting.create_setting("email_duration", 1)
     user.settings.create(:name => "email_duration", :value => 1)

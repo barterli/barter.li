@@ -52,10 +52,10 @@ class AuthenticationsController < ApplicationController
     end
   end
 
-
-  # post /auth_token
+  # post /create_user
   def create_user
-    user = User.find_by(:email => params[:email])
+    authentication = Authentication.find_by(:uid => params[:uid])
+    user = authentication.present? ? User.find(authentication.user_id) : false
     if(!user.present?)
       user = User.new
       user.email = params[:email]

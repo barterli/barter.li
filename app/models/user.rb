@@ -111,7 +111,7 @@ class User < ActiveRecord::Base
   end
 
   def preferred_location
-    location = self.settings.find(:name => "location")
+    location = self.settings.find_by(:name => "location")
     if(location.present?)
       location = Location.find(location.value)
     end
