@@ -31,6 +31,7 @@ class BooksController < ApplicationController
   # POST /books.json
   def create
     @book = current_user.books.new(book_params)
+    @book.location.id = current_user.try(:preferred_location).try(:id)
     respond_to do |format|
       if @book.save
         WishListWorker.perform_async(@book.id)  # for background wishlist processing

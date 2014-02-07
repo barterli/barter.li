@@ -3,8 +3,8 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   before_save :change_lowercase
   before_save :ensure_authentication_token
-  before_update :geocode_address
-  devise :database_authenticatable, :registerable, :omniauthable,
+  
+  devise :database_authenticatable, :omniauthable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   has_many :books
@@ -30,17 +30,7 @@ class User < ActiveRecord::Base
     self.locality.downcase! if self.locality
   end
 
-  # foursquare api to get users near by locations
-  def near_by_hangouts
-    client = Foursquare2::Client.new(:client_id => ENV["FOURSQUARE_CLIENT_ID"], :client_secret => ENV["FOURSQUARE_CLIENT_SECRET"], :api_version => 20131016)
-    if(self.latitude.present? && self.longitude.present?)
-      result = client.search_venues(:ll => self.latitude.to_s+','+self.longitude.to_s, :query => 'coffee')
-    else
-      result =  "not present"
-    end
-    # binding.pry
-    return result
-  end
+
 
   # send wish list mail for users
   # attributs book model object, wishlist model object
@@ -103,25 +93,29 @@ class User < ActiveRecord::Base
     alert.save
   end
   
-  # address to display on maps
-  def map_address
-    map_address = [self.country.to_s, self.city.to_s, self.locality.to_s]
-    map_address.join(",")
-  end
-
   def apply_omniauth(omni)
     self.authentications.create(:provider => omni['provider'], :uid => omni['uid'],
     :token => omni['credentials'].token, :token_secret => omni['credentials'].secret)
   end
 
-  # geocode address only on update and fields have changed
-  def geocode_address
-    return unless street_changed? || city_changed? || country_changed? || locality_changed? || state_changed?
-    coords = Geocoder.coordinates(self.street.to_s+","+self.locality.to_s+','+self.city.to_s+','+self.country.to_s)
-    if coords.kind_of?(Array)
-      self.latitude = coords[0];
-      self.longitude = coords[1];
+  def preferred_location=(params)
+    location = Location.find_by(:latitude => params[:latitude], :longitude => params[:longitude])
+    if(location.present?)
+      self.settings.create!(:name => "location", :value => location.id)
+    else
+      location = Location.create!(:country => params[:country], :city => params[:city], :name => params[:name], :locality => params[:locality])
+      self.settings.create!(:name => "location", :value => location.id)
     end
+  rescue
+    return false
+  end
+
+  def preferred_location
+    location = self.settings.find(:name => "location")
+    if(location.present?)
+      location = Location.find(location.value)
+    end
+    return location
   end
 
   private

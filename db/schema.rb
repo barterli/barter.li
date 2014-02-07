@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140206172802) do
+ActiveRecord::Schema.define(version: 20140207083133) do
 
   create_table "alerts", force: true do |t|
     t.integer  "user_id"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 20140206172802) do
     t.integer  "pages"
     t.string   "language_code"
     t.string   "barter_type"
+    t.integer  "location_id"
   end
 
   create_table "books_tags", force: true do |t|

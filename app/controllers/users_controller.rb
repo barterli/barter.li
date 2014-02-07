@@ -7,6 +7,19 @@ class UsersController < ApplicationController
   def edit_profile
   	@user = current_user
   end
+
+  
+  # post /prefered_location
+  def set_prefered_location
+    location = current_user.preferred_location=(params)
+    respond_to do |format|
+      if location
+        format.json { render :json => {status: :created} }
+      else
+        format.json { render :json => {status: :error} }
+      end
+    end
+  end  
   
   # patch /profile
   def update_profile

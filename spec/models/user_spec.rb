@@ -32,14 +32,6 @@ describe User do
      alert.reason_type.should eq("W")
   end
 
-  it "should get near by hangouts of user address using foursquare api" do
-     user = User.create(@attr)
-     user.city = "Bangalore"
-     user.save
-     hangouts = user.near_by_hangouts
-     hangouts.kind_of?(Hash).should be_true
-  end
-
   it "should give default email per month count" do
      user = User.create(@attr)
      DefaultSetting.create_setting("email_per_month", 10)
@@ -58,12 +50,6 @@ describe User do
      track.sent_for.should eq("W")
   end
 
-   it "should give user address joind by comma" do
-     user = User.create(@attr)
-     address = user.map_address
-     address.should eq("india,bangalore,koramangala")
-  end
-
    it "should give mails by month" do
      user = User.create(@attr)
      book = Book.create(:title => "rails")
@@ -80,7 +66,6 @@ describe User do
      user.settings.create(:name => "email_per_month", :value => 12)
      user.setting_email_count_month.should eq(12)
   end
-
 
   it "should give default email duration" do
      user = User.create(@attr)

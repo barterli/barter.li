@@ -52,4 +52,28 @@ class AuthenticationsController < ApplicationController
     end
   end
 
+
+  # post /auth_token
+  def create_user
+    user = User.find_by(:email => params[:email])
+    if(!user.present?)
+      user = User.new
+      user.email = params[:email]
+      user.first_name = params[:first_name]
+      user.last_name = params[:last_name]
+      user.password = Devise.friendly_token.first(8)
+      user.confirmed_at = Time.now
+      user.save!
+      user.authentications.create!(:provider => params[:provider], :uid => params[:uid], :token => params[:token])
+    end
+      respond_to do |format|
+        format.json { render json: {:auth_token: user.authentication_token, status: 'success'} }
+      end
+  rescue
+      respond_to do |format|
+        format.json { render json: {status: 'error'} }
+      end
+  end
+
+
 end
