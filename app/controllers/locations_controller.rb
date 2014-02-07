@@ -12,6 +12,11 @@ class LocationsController < ApplicationController
   def show
   end
 
+  # get /hangouts
+  def hangouts
+    Location.hangouts_address_by_latlng(params[:latitude], params[:longitude])
+  end
+
   # GET /locations/new
   def new
     @location = Location.new

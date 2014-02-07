@@ -20,21 +20,21 @@ class Location < ActiveRecord::Base
 
 
   # foursquare api to get users near by locations
-  def hangouts_full_results
+  def hangouts_full_hash
     client = Foursquare2::Client.new(:client_id => ENV["FOURSQUARE_CLIENT_ID"], :client_secret => ENV["FOURSQUARE_CLIENT_SECRET"], :api_version => 20131016)
     if(self.latitude.present? && self.longitude.present?)
       result = client.search_venues(:ll => self.latitude.to_s+','+self.longitude.to_s, :query => 'coffee')
     else
       result =  "not present"
     end
-    # binding.pry
     return result
   end
 
-  def hangouts_address
+
+  def self.hangouts_address_by_latlng(lat, lng)
     client = Foursquare2::Client.new(:client_id => ENV["FOURSQUARE_CLIENT_ID"], :client_secret => ENV["FOURSQUARE_CLIENT_SECRET"], :api_version => 20131016)
     places = Array.new
-    hangouts = client.search_venues(:ll => self.latitude.to_s+','+self.longitude.to_s, :query => 'coffee')
+    hangouts = client.search_venues(:ll => lat.to_s+','+lng.to_s, :query => 'coffee')
     if(hangouts.present? && hangouts[:venues].present?)
       hangouts[:venues].each do |hangout|
         address = hangout.location.address

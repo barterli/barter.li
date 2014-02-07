@@ -12,7 +12,6 @@ describe User do
      }
    end
   
-
    it "should create alerts for objects passed with type" do
      book = Book.create(:title => "rails", :location_id => 1)
      user = User.create(@attr)

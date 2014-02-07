@@ -19,6 +19,7 @@ BarterLi::Application.routes.draw do
   get '/join_group/:group_id', to: 'members#join_group'
   post '/auth_token', to: 'authentications#get_auth_token'
   post '/create_user', to: 'authentications#create_user'
+  get '/hangouts', to: 'locations#hangouts'
   devise_for :users, controllers: {omniauth_callbacks: "authentications"}
   resources :books 
   resources :tags
