@@ -14,7 +14,8 @@ class LocationsController < ApplicationController
 
   # get /hangouts
   def hangouts
-    Location.hangouts_address_by_latlng(params[:latitude], params[:longitude])
+    locations = Location.hangouts_address_by_latlng(params[:latitude], params[:longitude])
+    render :json => locations
   end
 
   # GET /locations/new

@@ -17,9 +17,8 @@ BarterLi::Application.routes.draw do
   get '/book_suggestions', to: 'books#book_suggestions'
   post '/user_reviews', to: 'users#create_user_review', as: 'user_review'
   get '/join_group/:group_id', to: 'members#join_group'
-  post '/auth_token', to: 'authentications#get_auth_token'
-  post '/create_user', to: 'authentications#create_user'
-  get '/hangouts', to: 'locations#hangouts'
+  get 'hangouts', to: 'locations#hangouts'
+  
   devise_for :users, controllers: {omniauth_callbacks: "authentications"}
   resources :books 
   resources :tags
@@ -32,6 +31,16 @@ BarterLi::Application.routes.draw do
       get 'manage_members'
       get 'membership_approval'
       post 'assign_membership_status'
+    end
+   end 
+  get '/api/v1/book_info', to: 'books#book_info'
+  get '/api/v1/book_suggestions', to: 'books#book_suggestions'
+  get '/api/v1/hangouts', to: 'locations#hangouts'
+  
+  namespace :api do
+    namespace :v1 do
+        post '/auth_token', to: 'authentications#get_auth_token'
+        post '/create_user', to: 'authentications#create_user'
     end
   end
 
