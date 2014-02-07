@@ -67,11 +67,11 @@ class AuthenticationsController < ApplicationController
       user.authentications.create!(:provider => params[:provider], :uid => params[:uid], :token => params[:token])
     end
       respond_to do |format|
-        format.json { render json: {:auth_token: user.authentication_token, status: 'success'} }
+        format.json { render json: {:auth_token => user.authentication_token, status: 'success'} }
       end
   rescue
       respond_to do |format|
-        format.json { render json: {status: 'error'} }
+        format.json { render json: {:status => 'error'} }
       end
   end
 
