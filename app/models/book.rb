@@ -6,7 +6,7 @@ class Book < ActiveRecord::Base
   belongs_to :location
   has_and_belongs_to_many :tags
   validates :title, :presence => true
-  validates :location_id, :presence => true, :message => "Please set your preferred location"
+  validates :location_id, :presence => true
   validates :print, numericality: { only_integer: true }, allow_blank: true
   validates :publication_year, numericality: { only_integer: true }, allow_blank: true
   validates :edition, numericality: { only_integer: true }, allow_blank: true
