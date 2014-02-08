@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   before_save :change_lowercase
   before_save :ensure_authentication_token
   
-  devise :database_authenticatable, :omniauthable,
+  devise :database_authenticatable, :omniauthable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   has_many :books
@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   has_many :email_tracks
   has_many :wish_lists
   has_many :alerts
-  has_many :authentications
+  has_many :authentications, :dependent => :destroy
   has_many :posts
   has_many :groups
   

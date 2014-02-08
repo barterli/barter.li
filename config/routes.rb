@@ -38,9 +38,10 @@ BarterLi::Application.routes.draw do
   get '/api/v1/hangouts', to: 'locations#hangouts'
   
   namespace :api do
-    namespace :v1 do
+    namespace :v1, defaults:{format: 'json'} do
         post '/auth_token', to: 'authentications#get_auth_token'
         post '/create_user', to: 'authentications#create_user'
+        resources :books
     end
   end
 
