@@ -39,7 +39,7 @@ extend ActiveSupport::Concern
       if @book.save
         WishListWorker.perform_async(@book.id)  # for background wishlist processing
         format.html { redirect_to @book, notice: 'Book was successfully created.' }
-        format.json { render json: { status: :success, location: @book} }
+        format.json { render json: { status: :success, book: @book} }
       else
         format.html { render action: 'new' }
         format.json { render json: @book.errors, status: :error }
@@ -119,6 +119,18 @@ extend ActiveSupport::Concern
       book_titles << goodreads_titles 
       book_titles = book_titles.flatten.compact
       render json: book_titles.uniq
+  end
+
+  def user_preferred_location
+    location = current_user.settings.where(:name => "location").first
+    location = location.present? ? location : false
+    render json: {location: location}
+  end
+
+
+  def set_user_preferred_location
+    location = (current_user.set_preferred_location(params[:location]))
+    render json: {location: location}
   end
 
   #private

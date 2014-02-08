@@ -98,14 +98,15 @@ class User < ActiveRecord::Base
     :token => omni['credentials'].token, :token_secret => omni['credentials'].secret)
   end
 
-  def preferred_location=(params)
-    location = Location.find_by(:latitude => params[:latitude], :longitude => params[:longitude])
+  def set_preferred_location(params)
+    location = Location.find_by(:name => params[:name], :city => params[:city], :locality => params[:locality])
     if(location.present?)
-      self.settings.create!(:name => "location", :value => location.id)
+      setting = self.settings.create(:name => "location", :value => location.id)
     else
       location = Location.create!(:country => params[:country], :city => params[:city], :name => params[:name], :locality => params[:locality])
-      self.settings.create!(:name => "location", :value => location.id)
+      setting = self.settings.create(:name => "location", :value => location.id)
     end
+    return setting
   rescue
     return false
   end

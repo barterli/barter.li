@@ -41,6 +41,8 @@ BarterLi::Application.routes.draw do
     namespace :v1, defaults:{format: 'json'} do
         post '/auth_token', to: 'authentications#get_auth_token'
         post '/create_user', to: 'authentications#create_user'
+        get '/user_preferred_location', to: 'books#user_preferred_location'
+        post '/user_preferred_location', to: 'books#set_user_preferred_location'
         resources :books
     end
   end
