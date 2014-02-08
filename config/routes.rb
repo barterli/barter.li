@@ -32,7 +32,7 @@ BarterLi::Application.routes.draw do
       get 'membership_approval'
       post 'assign_membership_status'
     end
-   end 
+  end 
   get '/api/v1/book_info', to: 'books#book_info'
   get '/api/v1/book_suggestions', to: 'books#book_suggestions'
   get '/api/v1/hangouts', to: 'locations#hangouts'
@@ -45,6 +45,8 @@ BarterLi::Application.routes.draw do
         post '/user_preferred_location', to: 'books#set_user_preferred_location'
         get '/search', to: "search#search"
         post '/barter_notification', to: "barters#send_barter_notification"
+        get '/user_profile', to: "users#show"
+        patch '/user_update', to: "users#update"
         resources :books
     end
   end

@@ -3,11 +3,11 @@ class Api::V1::UsersController < Api::V1::BaseController
   
   def show
     user  = User.find(params[:id])
-    respond_with user
+    render :json => {user: user, books: user.books}
   end
 
   def update
-    user  = User.find(params[:id])
+    user  = current_user
     if(user.update_attributes(user_params))
       render json: {status: :success, user: user}
     else
