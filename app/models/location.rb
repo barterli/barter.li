@@ -4,8 +4,8 @@ class Location < ActiveRecord::Base
 
   # geocode address only on update and fields have changed
   def geocode_address
-    return unless name_changed? || city_changed? || country_changed? || locality_changed?
-    coords = Geocoder.coordinates(self.name.to_s+","+self.locality.to_s+','+self.city.to_s+','+self.country.to_s)
+    return unless city_changed? || country_changed? || locality_changed?
+    coords = Geocoder.coordinates(self.locality.to_s+','+self.city.to_s+','+self.country.to_s)
     if coords.kind_of?(Array)
       self.latitude = coords[0];
       self.longitude = coords[1];

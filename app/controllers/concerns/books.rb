@@ -123,7 +123,7 @@ extend ActiveSupport::Concern
 
   def user_preferred_location
     location = current_user.settings.where(:name => "location").first
-    location = location.present? ? location : false
+    location = location.present? ? true : false
     render json: {location: location}
   end
 
