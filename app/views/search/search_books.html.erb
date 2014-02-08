@@ -1,27 +1,23 @@
-<h2>Search</h2>
-<%= simple_form_for :search, :url => search_path, method: :get do |f| %>
-  <p>Title
-  <%= f.text_field :title %>
-  </p>
-  <p>Author,
-  <%= f.text_field :author %>
-  </p>
-  <p>City
-  <%= f.text_field :city %>
-  </p>
-  <%= f.submit :Search %>
-<% end %>
 
-<% @books.try(:each) do |book| %>
-  
-  <p><%= link_to book.title, book %></p>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <?php require('sidebar.php'); ?>
+        <div class="span9"><!-- Display Books List -->
+          <div class="stickie-books">
+            <ul>
+              <% @books.each do |book| %>
+              <li> <a href="<%=book_path(book.id)%>"><img src="<%=book_image(book)%>"  alt="book image"><span class="distance"><%=book_city(book)%></span></a></li>
 
+              <% end %>
+             <!-- <li> <a href="book.php"><img src="img/1.jpg"  alt="book image"><span class="distance">Distance:5km</span></a></li>
+             <li> <a href="book.php"><img src="img/book.jpg"  alt="book image"><span class="distance">Distance:5km</span></a></li>
+             <li> <a href="book.php"><img src="img/book.jpg"  alt="book image"><span class="distance">Distance:5km</span></a></li>
+             <li> <a href="book.php"><img src="img/book.jpg"  alt="book image"><span class="distance">Distance:5km</span></a></li>
+             <li> <a href="book.php"><img src="img/book.jpg"  alt="book image"><span class="distance">Distance:5km</span></a></li> -->
+            </ul>
+          </div>
+           <%= paginate @books %>
+        </div><!--/span-->
+           
+      </div><!--/row-->
 
-<%end%>
- <% if user_signed_in? %>
-    <div ng-controller = "serverCtrl">
-        <input type="text" ng-model = "wishlist">
-        <button ng-click="sendWishList()"> Add WishList</button>
-    </div>
- <% end %>
-<%= paginate @books %>

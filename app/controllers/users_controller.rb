@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   
   # post /prefered_location
   def set_prefered_location
-    location = current_user.preferred_location=(params)
+    location = current_user.set_preferred_location(params)
     respond_to do |format|
       if location
         format.json { render :json => {status: :created} }
@@ -42,6 +42,14 @@ class UsersController < ApplicationController
       else
         respond_with(@user_review.errors)
       end
+  end
+
+
+  def my_library
+    @books = current_user.books.page(params[:page]).per(params[:per])
+    respond_to do |format|
+      format.html { render template: "search/search_books" }
+    end
   end
 
   private

@@ -17,6 +17,7 @@ BarterLi::Application.routes.draw do
   get '/book_suggestions', to: 'books#book_suggestions'
   post '/user_reviews', to: 'users#create_user_review', as: 'user_review'
   get '/join_group/:group_id', to: 'members#join_group'
+  get '/my_library', to: 'users#my_library', as: 'my_library'
   get 'hangouts', to: 'locations#hangouts'
   
   devise_for :users, controllers: {omniauth_callbacks: "authentications"}
@@ -43,7 +44,7 @@ BarterLi::Application.routes.draw do
         post '/create_user', to: 'authentications#create_user'
         get '/user_preferred_location', to: 'books#user_preferred_location'
         post '/user_preferred_location', to: 'books#set_user_preferred_location'
-        get '/search', to: "search#search"
+        get '/search', to: "search#search_books"
         post '/barter_notification', to: "barters#send_barter_notification"
         get '/user_profile', to: "users#user_profile"
         get '/current_user_profile', to: "users#show"

@@ -1,12 +1,6 @@
 class SearchController < ApplicationController
   
-  def search_books
-  	set_search_params
-  	# uses kaminari for pagination
-    @books = Book.search(params[:search]).page(params[:page]).per(params[:per])
-    # add to wish list if search result is empty
-    add_wishlist
-  end
+  include Searches
 
 
   def add_wishlist

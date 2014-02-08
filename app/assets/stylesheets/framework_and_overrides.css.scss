@@ -1,8 +1,9 @@
 // import the CSS framework
 @import "bootstrap";
+@import "bootstrap-responsive";
 @import "font-awesome";
 
-// make all images responsive by default
+/*// make all images responsive by default
 img {
   @extend .img-responsive;
   margin: 0 auto;
@@ -44,3 +45,4 @@ section {
   @extend .row;
   margin-top: 20px;
   }
+*/

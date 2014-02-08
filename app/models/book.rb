@@ -1,5 +1,6 @@
 class Book < ActiveRecord::Base
   before_save :change_lowercase
+  before_save :trim_image_url
   # after_create :save_book_cover_image
   attr_accessor :image_cache
   belongs_to :user
@@ -11,7 +12,7 @@ class Book < ActiveRecord::Base
   validates :publication_year, numericality: { only_integer: true }, allow_blank: true
   validates :edition, numericality: { only_integer: true }, allow_blank: true
   validates :value, numericality: { only_integer: true }, allow_blank: true
-  mount_uploader :image, ImageUploader
+  #mount_uploader :image, ImageUploader
 
   # kaminari pagination per page display
   paginates_per 10
@@ -56,6 +57,7 @@ class Book < ActiveRecord::Base
       books = books.where("title like ?", "%#{params[:title]}%") if params[:title].present? 
       books = books.where("isbn_10 = ? or isbn_13 = ?", "#{params[:isbn]}","#{params[:isbn]}") if params[:isbn].present? 
       books = books.where("author like ?", "%#{params[:author]}%") if params[:author].present?
+      books = books.where(:barter_type => code[params[:barter_type].to_sym]) if params[:barter_type].present?
       books = books.where("author like ? or title like ?", "%#{params[:book_or_author]}%", "%#{params[:book_or_author]}%") if params[:book_or_author].present?
       #books = books.joins(:user).where(users: {country: params[:country]}) if params[:country].present?
       #books = books.joins(:user).where(users: {city: params[:city]}) if params[:city].present?
@@ -64,6 +66,11 @@ class Book < ActiveRecord::Base
       books = Book.all.order("RAND()")
     end
     return books
+   end
+
+   def trim_image_url
+     return if self.image_url.blank?
+     self.image_url.strip
    end
 
    private

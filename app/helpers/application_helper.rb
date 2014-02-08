@@ -7,4 +7,12 @@ module ApplicationHelper
       return 0
     end
   end
+
+  def user_location
+    return "" if current_user.blank?
+    location = current_user.settings.where(name: 'location').first
+    return "" if location.blank?
+    location = Location.find(location.value)
+    return "#{location.city},#{location.country}"
+  end
 end

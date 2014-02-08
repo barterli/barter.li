@@ -29,7 +29,7 @@ module Books
   def edit
     @book = current_user.books.find(params[:id])
   end
-
+  
   # POST /books
   # POST /books.json
   def create

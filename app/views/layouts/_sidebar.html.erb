@@ -1,0 +1,17 @@
+<div class="span3">
+          <div class="well sidebar-nav" ng-controller="serverCtrl">
+            <ul class="nav nav-list">
+              <li class="nav-header active">Settings</li>
+              <li>
+              <% if user_signed_in? %>
+              <a  href="#"><i class="fa fa-map-marker"></i><%=user_location%></a></li>
+               <%else%>
+                  <a  href="#" ng-init="currentLocation()"><i class="fa fa-map-marker" ></i>{{currentUserLocation}}</a></li>
+              <% end %>
+              <% if user_signed_in? %>
+              <li><a href="<%=edit_profile_path%>"><i class="fa fa-user"></i> &nbsp;My Profile</a></li>
+              <li><a href="<%=my_library_path%>"><i class="fa fa-book"></i> &nbsp;My Libary</a></li>
+              <% end %>
+            </ul>
+          </div><!--/.well -->
+        </div>
