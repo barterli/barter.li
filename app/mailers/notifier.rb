@@ -24,4 +24,12 @@ class Notifier < ActionMailer::Base
     mail to: @group.user.email, subject: "Membership Request"
   end
 
+  def barter_request(owner,user,book,message)
+    @user = user
+    @owner = owner
+    @book = book
+    @message = message
+    mail to: @user.email, subject: "Barter.li request for book"
+  end
+
 end
