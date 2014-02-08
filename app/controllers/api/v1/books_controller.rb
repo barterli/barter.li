@@ -1,5 +1,5 @@
 class Api::V1::BooksController < Api::V1::BaseController
-  before_action :authenticate_user!, only: [:create, :index, :edit, :update, :destroy, :new, :my_books, :add_wish_list]
+  before_action :authenticate_user!, only: [:set_user_preferred_location, :create, :index, :edit, :update, :destroy, :new, :my_books, :add_wish_list]
   include Books
 
   # def add_book

@@ -100,7 +100,7 @@ class User < ActiveRecord::Base
 
   def set_preferred_location(params)
     location = Location.find_by(:country=> params[:country], :city => params[:city], :locality => params[:locality])
-    setting = self.settings.find(name: "location")
+    setting = self.settings.find_by(name: "location")
     setting.destroy if setting.present?
     if(location.present?)
       setting = self.settings.create(:name => "location", :value => location.id)
