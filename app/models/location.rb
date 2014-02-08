@@ -38,6 +38,7 @@ class Location < ActiveRecord::Base
     if(hangouts.present? && hangouts[:venues].present?)
       hangouts[:venues].each do |hangout|
         address = hangout.location.address
+        next unless address.present?
         name = hangout.name
         name = " " if name.nil? #to prevent nil to string in array push
         address = " " if address.nil? 

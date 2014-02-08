@@ -1,6 +1,6 @@
 module Books 
 
-extend ActiveSupport::Concern
+  extend ActiveSupport::Concern
   
   def index
     @books = current_user.books
