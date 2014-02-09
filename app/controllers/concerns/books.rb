@@ -54,7 +54,7 @@ module Books
     respond_to do |format|
       if @book.update(book_params)
         format.html { redirect_to @book, notice: 'Book was successfully updated.' }
-        #format.json { head :no_content }
+        format.json { render json: {status: :success, book: @book } }
       else
         format.html { render action: 'edit' }
         format.json { render json:  @book.errors, status: :unprocessable_entity }
