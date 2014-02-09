@@ -1,96 +1,51 @@
 <% cache @book do %>
-<h2>Book</h2>
-<p id="notice"><%= notice %></p>
+ <div class="sapn9">
+          <br>
+            
 
-<p>
-  <strong>Title:</strong>
-  <%= @book.title %>
-</p>
+            <div class="row-fluid">
+              
+                <div class="span3">
+                  <div class="book-profile">
+                    <img src="<%=book_image(@book)%>" alt="book profile image">
+                  </div>
+                </div>
+              
+                <div class="sapn9">
 
-<p>
-  <strong>Author:</strong>
-  <%= @book.author %>
-</p>
+                  <div class="book-attributes">
+                    <ul>
+                      <li id="name"><%=@book.title%></li>
+                      <li id="author"><%=@book.author%></li>
+                      <li id="desc" >
+                        <span rel="tooltip" title="credits Good reads">Description</span>
+                      <p><%=@book.description%>
+                         </p>
+                      </li>
+                      <li id="isbn">@book.isbn_13</li>
+                      <!-- <li id="edition">Edition : 2<sup>nd </sup></li>
+                      <li id="publication"> Release Date :15 June 2013</li> -->
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="span9 offset3">
+                <br>
+                  <a href="<%=user_profile_path(:id=>@book.user_id)%>" class="btn btn-large btn-primary" > Profile</a>
+                  <div class="pull-right">
+                  <a href="<%=new_barter_path(:book_id => @book)%>">  <button class="btn btn-large btn-primary" id="interested">
+                  Contact
+                </button></a>
 
-<p>
-  <strong>Isbn 10:</strong>
-  <%= @book.isbn_10 %>
-</p>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+<%= link_to 'Edit', edit_book_path(@book) %> |
+<%= link_to 'Back', books_path %> 
 
-<p>
-  <strong>Isbn 13:</strong>
-  <%= @book.isbn_13 %>
-</p>
 
-<p>
-  <strong>Edition:</strong>
-  <%= @book.edition %>
-</p>
-
-<p>
-  <strong>Print:</strong>
-  <%= @book.print %>
-</p>
-
-<p>
-  <strong>Publication year:</strong>
-  <%= @book.publication_year %>
-</p>
-
-<p>
-  <strong>Publication month:</strong>
-  <%= @book.publication_month %>
-</p>
-
-<p>
-  <strong>Condition:</strong>
-  <%= @book.condition %>
-</p>
-
-<p>
-  <strong>Value:</strong>
-  <%= @book.value %>
-</p>
-
-<p>
-  <strong>Status:</strong>
-  <%= @book.status %>
-</p>
-
-<p>
-  <strong>Stage:</strong>
-  <%= @book.stage %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @book.description %>
-</p>
-
-<p>
-  <strong>Visits:</strong>
-  <%= @book.visits %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @book.user_id %>
-</p>
-
-<p>
-  <strong>Prefered place:</strong>
-  <%= @book.prefered_place %>
-</p>
-
-<p>
-  <strong>Prefered time:</strong>
-  <%= @book.prefered_time %>
-</p>
 
 <% end %>
-
-<%= link_to 'Edit', edit_book_path(@book) %> |
-<%= link_to 'Back', books_path %> |
-<%= link_to 'Barter', new_barter_path(:book_id => @book) %>
-
-

@@ -7,7 +7,12 @@ class UsersController < ApplicationController
   def edit_profile
   	@user = current_user
   end
-
+ 
+  def user_profile
+    @user  = User.find(params[:id])
+    @setting = @user.settings.find_by(name: "location")
+    @location = @setting.present? ? Location.find(setting.value) : false 
+  end
   
   # post /prefered_location
   def set_prefered_location

@@ -47,7 +47,7 @@ gem 'angularjs-rails'
 
 gem 'rails_layout'
 
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', '2.3'
 
 gem "mini_magick"
 

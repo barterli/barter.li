@@ -7,12 +7,6 @@
 
 <%= render partial: "message_form", locals: {notification: @notification, barter: @barter}%>
 
-<% if !@is_notifier %>
-   <h2>Barterer Preferred Location</h2>
-   <p><%=@notifier.country%></p>
-   <p><%=@notifier.city%></p>
-   <p><%=@notifier.locality%></p>
-<% end %>
 
 
 
