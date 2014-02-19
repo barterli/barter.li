@@ -46,8 +46,9 @@ BarterLi::Application.routes.draw do
         get '/search', to: "search#search"
         post '/barter_notification', to: "barters#send_barter_notification"
         get '/user_profile', to: "users#user_profile"
-        get '/current_user_profile', to: "users#show"
+        post '/current_user_profile', to: "users#show"
         patch '/user_update', to: "users#update"
+        post '/feedback', to: "tracker#create_feedback"
         resources :books
     end
   end

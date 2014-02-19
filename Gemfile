@@ -39,6 +39,10 @@ group :development do
    gem 'quiet_assets'
 end
 
+gem "github_api"
+
+gem "octokit", "~> 2.0"
+
 gem 'devise'
 
 gem 'cancan'
