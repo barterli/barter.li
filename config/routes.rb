@@ -49,6 +49,7 @@ BarterLi::Application.routes.draw do
         post '/current_user_profile', to: "users#show"
         patch '/user_update', to: "users#update"
         post '/feedback', to: "tracker#create_feedback"
+        post '/chat', to: "messages#create"
         resources :books
     end
   end

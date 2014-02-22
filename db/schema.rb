@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140208112509) do
+ActiveRecord::Schema.define(version: 20140222100205) do
 
   create_table "alerts", force: true do |t|
     t.integer  "user_id"
@@ -94,6 +94,19 @@ ActiveRecord::Schema.define(version: 20140208112509) do
     t.integer "tag_id"
   end
 
+  create_table "chat_groups", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "chat_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "chats", force: true do |t|
+    t.string   "msg_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "default_settings", force: true do |t|
     t.string   "name"
     t.string   "value"
@@ -138,6 +151,15 @@ ActiveRecord::Schema.define(version: 20140208112509) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "status"
+  end
+
+  create_table "messages", force: true do |t|
+    t.text     "body"
+    t.integer  "msg_from"
+    t.integer  "msg_to"
+    t.string   "chat_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "notifications", force: true do |t|

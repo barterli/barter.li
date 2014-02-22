@@ -75,6 +75,10 @@ gem 'slim'
 
 gem 'goodreads'
 
+gem 'private_pub'
+
+gem 'thin'
+
 group :test, :development do
   gem 'rspec-rails'
   gem 'selenium-webdriver'
