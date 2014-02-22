@@ -37,6 +37,6 @@ namespace :deploy do
     end
   end
 
-  after :finishing, 'deploy:cleanup', 'deploy:migrate'
+  after :finishing, 'deploy:cleanup'
 
 end
