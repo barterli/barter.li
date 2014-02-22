@@ -50,6 +50,7 @@ BarterLi::Application.routes.draw do
         patch '/user_update', to: "users#update"
         post '/feedback', to: "tracker#create_feedback"
         post '/chat', to: "messages#create"
+        post '/chat/public', to: "messages#public"
         resources :books
     end
   end

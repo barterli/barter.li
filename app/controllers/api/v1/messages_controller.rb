@@ -1,6 +1,6 @@
 require 'digest/md5'
 class Api::V1::MessagesController < Api::V1::BaseController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only: [:create]
 
   def create
     raise "No user present" if User.find(params[:sender_id]).blank?
@@ -17,6 +17,11 @@ class Api::V1::MessagesController < Api::V1::BaseController
     render json: {status: :sent}
    rescue
     render json: {status: :error}
+  end
+
+  def public
+    PrivatePub.publish_to("/messages", params[:message])
+    render json: {status: :sent}
   end
 
 end
