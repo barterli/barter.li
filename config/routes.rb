@@ -31,6 +31,7 @@ BarterLi::Application.routes.draw do
   
   namespace :api do
     namespace :v1, defaults:{format: 'json'} do
+        get '/share_token', to: 'users#get_share_token'
         get '/tags', to: 'books#get_tags'
         post '/auth_token', to: 'authentications#get_auth_token'
         post '/create_user', to: 'authentications#create_user'

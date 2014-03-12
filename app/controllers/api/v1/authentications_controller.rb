@@ -23,6 +23,9 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
       user.password = Devise.friendly_token.first(8)
       user.confirmed_at = Time.now
       user.save!
+      if(params[:share_token].present?)
+        user.register_shares(params[:share_token])
+      end
       user.authentications.create!(:provider => params[:provider], :uid => params[:uid], :token => params[:token])
     end
       render json: {:auth_token => user.authentication_token, status: 'success'} 

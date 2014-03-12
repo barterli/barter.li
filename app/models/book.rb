@@ -65,9 +65,9 @@ class Book < ActiveRecord::Base
       books = Book.all.order("RAND()")
     end
     return books
-   end
+  end
 
-   private
+  private
    # get cover image of book if book image is not uploaded 
    # using open library
     def save_book_cover_image
