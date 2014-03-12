@@ -1,4 +1,4 @@
-class MembersController < ApplicationController
+class MembersController < Api::V1::BaseController
   before_action :authenticate_user!
   
   def join_group

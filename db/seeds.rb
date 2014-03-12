@@ -8,3 +8,7 @@
 
    DefaultSetting.create_setting("email_per_month", "7")
    DefaultSetting.create_setting("email_duration", "4")
+   
+   if Tag.first.blank?
+   	Tag.create([{name: "free"},{name: "sale"},{name: "barter"}, {name: "private"}])
+   end

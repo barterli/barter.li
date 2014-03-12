@@ -1,5 +1,5 @@
 class Api::V1::TrackerController < Api::V1::BaseController
-  before_action :authenticate_user!
+  #before_action :authenticate_user!
   before_action :set_github
   
   def create_feedback
@@ -8,6 +8,8 @@ class Api::V1::TrackerController < Api::V1::BaseController
   rescue
   	render json: {status: :error}
   end
+
+
 
   private
     def set_github

@@ -24,4 +24,14 @@ class Api::V1::MessagesController < Api::V1::BaseController
     render json: {status: :sent}
   end
 
+  
+  def ampq
+    connection = AMQP.connect(:host => '127.0.0.1')
+    channel  = AMQP::Channel.new(connection)
+    channel.direct("nodes.metadata7").publish "Hello, world!", :routing_key => "shared.key"
+    render :nothing => true
+ end
+
+
+
 end

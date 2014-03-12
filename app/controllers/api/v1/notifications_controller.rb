@@ -1,4 +1,4 @@
-class NotificationsController < ApplicationController
+class NotificationsController < Api::V1::BaseController
   before_action :set_barter, except: [:user_notifications]
   before_action :authenticate_user!
 

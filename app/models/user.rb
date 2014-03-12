@@ -13,8 +13,7 @@ class User < ActiveRecord::Base
   has_many :wish_lists
   has_many :alerts
   has_many :authentications, :dependent => :destroy
-  has_many :posts
-  has_many :groups
+
   
   def ensure_authentication_token
     if authentication_token.blank?

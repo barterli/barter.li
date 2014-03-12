@@ -75,7 +75,7 @@ gem 'slim'
 
 gem 'goodreads'
 
-gem 'private_pub'
+gem "amqp", "~> 1.3.0"
 
 gem 'thin'
 

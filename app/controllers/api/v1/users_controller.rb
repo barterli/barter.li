@@ -24,6 +24,18 @@ class Api::V1::UsersController < Api::V1::BaseController
     end
   end
 
+  # post /prefered_location
+  def set_prefered_location
+    location = current_user.preferred_location=(params)
+    respond_to do |format|
+      if location
+        format.json { render :json => {status: :created} }
+      else
+        format.json { render :json => {status: :error} }
+      end
+    end
+  end 
+
   private
     def user_params
       params.require(:user).permit(:first_name, :last_name, :description, :email

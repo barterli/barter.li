@@ -5,9 +5,10 @@ BarterLi::Application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
   root 'public#index'
   get '/index', to: 'public#index'
+  post '/change_owner', to: "books#change_owner"
   get '/profile', to: 'users#edit_profile', as: 'edit_profile'
   patch '/profile', to: 'users#update_profile', as: 'update_profile'
-  post '/register', to: 'public#register_email', as: 'register_email'
+  
   get '/collaborate', to: 'public#collaborate', as: 'collaborate'
   get '/notifications', to: 'notifications#user_notifications', as: 'user_notifications'
   get '/search', to: 'search#search_books', as: 'search'
@@ -25,20 +26,12 @@ BarterLi::Application.routes.draw do
   resources :barters do
     resources :notifications
   end
-  resources :groups do
-    resources :posts
-    member do
-      get 'manage_members'
-      get 'membership_approval'
-      post 'assign_membership_status'
-    end
-  end 
-  get '/api/v1/book_info', to: 'books#book_info'
-  get '/api/v1/book_suggestions', to: 'books#book_suggestions'
-  get '/api/v1/hangouts', to: 'locations#hangouts'
+ 
+  
   
   namespace :api do
     namespace :v1, defaults:{format: 'json'} do
+        get '/tags', to: 'books#get_tags'
         post '/auth_token', to: 'authentications#get_auth_token'
         post '/create_user', to: 'authentications#create_user'
         get '/user_preferred_location', to: 'books#user_preferred_location'
@@ -47,10 +40,15 @@ BarterLi::Application.routes.draw do
         post '/barter_notification', to: "barters#send_barter_notification"
         get '/user_profile', to: "users#user_profile"
         post '/current_user_profile', to: "users#show"
+        post '/register', to: 'public#register', as: 'register'
         patch '/user_update', to: "users#update"
         post '/feedback', to: "tracker#create_feedback"
         post '/chat', to: "messages#create"
         post '/chat/public', to: "messages#public"
+        get '/ampq', to: "messages#ampq"
+        get '/book_info', to: 'books#book_info'
+        get '/book_suggestions', to: 'books#book_suggestions'
+        get '/hangouts', to: 'locations#hangouts'
         resources :books
     end
   end
