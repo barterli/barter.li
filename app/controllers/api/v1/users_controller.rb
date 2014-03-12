@@ -1,5 +1,6 @@
 class Api::V1::UsersController < Api::V1::BaseController
-  before_action :authenticate_user!, only: [:update, :show]
+  before_action :authenticate_user!, only: [:update, :show, :get_share_token, :generate_share_token,
+    :set_preferred_location]
   
   def user_profile
     user  = User.find(params[:id])
@@ -35,8 +36,18 @@ class Api::V1::UsersController < Api::V1::BaseController
       end
     end
   end 
+ 
+  def generate_share_token
+    token = current_user.generate_share_token
+    render :json => {share_token: token}
+  end
 
-  private
+  def get_share_token
+    token = current_user.share_token 
+    render :json => {share_token: token}
+  end
+
+ private
     def user_params
       params.require(:user).permit(:first_name, :last_name, :description, :email
       )

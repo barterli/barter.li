@@ -1,9 +1,10 @@
+require 'digest/md5'
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   before_save :change_lowercase
   before_save :ensure_authentication_token
-  
+  after_create :generate_share_token
   devise :database_authenticatable, :omniauthable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
@@ -13,6 +14,7 @@ class User < ActiveRecord::Base
   has_many :wish_lists
   has_many :alerts
   has_many :authentications, :dependent => :destroy
+  has_many :user_shares
 
   
   def ensure_authentication_token
@@ -98,7 +100,7 @@ class User < ActiveRecord::Base
   end
 
   def set_preferred_location(params)
-    location = Location.find_by(:country=> params[:country], :city => params[:city], :locality => params[:locality])
+    location = Location.find_by(:latitude => params[:latitude], :longitude => params[:longitude])
     setting = self.settings.find_by(name: "location")
     setting.destroy if setting.present?
     if(location.present?)
@@ -118,6 +120,24 @@ class User < ActiveRecord::Base
       location = Location.find(location.value)
     end
     return location
+  end
+  
+  def generate_share_token
+    token = Digest::MD5.hexdigest(current_user.email)
+    self.share_token = token
+    self.save
+    token
+  end
+
+  def self.user_by_token(token)
+    user = User.find(share_token: token)
+    return user
+  end
+
+  def self.register_shares(token)
+    link_user = User.user_by_roken(token)
+    link_user.user_shares.new(share_user_id: self.id)
+    link_user.save
   end
 
   private

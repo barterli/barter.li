@@ -1,6 +1,7 @@
 class Location < ActiveRecord::Base
   before_update :geocode_address
   has_many :books
+  reverse_geocoded_by :latitude, :longitude
 
   # geocode address only on update and fields have changed
   def geocode_address
