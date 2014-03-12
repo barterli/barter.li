@@ -10,5 +10,5 @@
    DefaultSetting.create_setting("email_duration", "4")
    
    if Tag.first.blank?
-   	Tag.create([{name: "free"},{name: "sale"},{name: "barter"}, {name: "private"},{name: "rent"}, {name: "read"}])
+     Tag.create([{name: "free"},{name: "sale"},{name: "barter"}, {name: "private"},{name: "rent"}, {name: "read"}])
    end

@@ -139,10 +139,10 @@ class Api::V1::BooksController < Api::V1::BaseController
 
  # get /book_suggestions
   def book_suggestions
-      book_titles = Array.new()
-      book_titles << goodreads_titles 
-      book_titles = book_titles.flatten.compact
-      render json: book_titles.uniq
+    book_titles = Array.new()
+    book_titles << goodreads_titles 
+    book_titles = book_titles.flatten.compact
+    render json: book_titles.uniq
   end
 
   def user_preferred_location
