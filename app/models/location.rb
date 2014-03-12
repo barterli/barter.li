@@ -31,6 +31,15 @@ class Location < ActiveRecord::Base
     return result
   end
 
+  def self.set_location(params)
+    location = Location.find_by(:latitude => params[:latitude], :longitude => params[:longitude]
+    if(location.blank?)
+      location = Location.create!(:country => params[:country], :city => params[:city], :name => params[:name], :locality => params[:locality])
+    end
+    return location.id
+  rescue
+    return false
+  end
 
   def self.hangouts_address_by_latlng(lat, lng)
     client = Foursquare2::Client.new(:client_id => ENV["FOURSQUARE_CLIENT_ID"], :client_secret => ENV["FOURSQUARE_CLIENT_SECRET"], :api_version => 20131016)

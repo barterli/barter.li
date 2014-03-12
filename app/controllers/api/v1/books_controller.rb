@@ -33,7 +33,7 @@ class Api::V1::BooksController < Api::V1::BaseController
   # POST /books.json
   def create
     @book = current_user.books.new(book_params)
-    @book.location_id = current_user.try(:preferred_location).try(:id)
+    @book.location_id = book_location if(book_location)
     respond_to do |format|
       if @book.save
         WishListWorker.perform_async(@book.id)  # for background wishlist processing
@@ -43,6 +43,14 @@ class Api::V1::BooksController < Api::V1::BaseController
         format.html { render action: 'new' }
         format.json { render json: @book.errors, status: :error }
       end
+    end
+  end
+  
+  def book_location
+    if(params[:location].present?)
+      return Location.set_location(params[:location])
+    else
+      return current_user.try(:preferred_location).try(:id)
     end
   end
   
