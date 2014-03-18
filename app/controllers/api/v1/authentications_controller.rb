@@ -40,23 +40,26 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
         user.confirmed_at = Time.now
         user.save!
       end
-      if(params[:share_token].present?)
-        user.register_shares(params[:share_token])
-      end
+      register_shares(user)
       user.authentications.create!(:provider => "facebook", :uid => FB.auth_hash["uid"], :token => params[:access_token])
     end
       render json: {:auth_token => user.authentication_token, status: 'success'} 
   rescue
       render json: {:status => 'error'} 
   end
-
+   
+  def register_shares(user)
+    if(params[:share_token].present?)
+      user.register_shares(params[:share_token])
+    end
+   end
+  
   def manual
     user = User.find_or_create_by(email: params[:email], password: params[:password])
+    register_shares(user)
     render json: {:auth_token => user.authentication_token, status: 'success'} 
   rescue
       render json: {:status => 'error'} 
   end
-
-
 
 end
