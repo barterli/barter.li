@@ -123,7 +123,7 @@ class User < ActiveRecord::Base
   end
   
   def generate_share_token
-    token = Digest::MD5.hexdigest(current_user.email)
+    token = Digest::MD5.hexdigest(self.email)
     self.share_token = token
     self.save
     token

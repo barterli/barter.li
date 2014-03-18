@@ -1,5 +1,5 @@
 class Api::V1::AuthenticationsController < Api::V1::BaseController
- 
+ FB = OmniAuth::Strategies::Facebook.new("", "") 
  # post api/v1/auth_token
   def get_auth_token
     authentication = Authentication.find_by(:provider => params[:provider], :uid => params[:uid])
@@ -13,22 +13,46 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
 
   # post api/v1/create_user
   def create_user
-    authentication = Authentication.find_by(:uid => params[:uid])
+    case params[:provider]
+    when "facebook"
+      facebook
+    when "manual"
+      manual
+    else
+      render json:{status: :error}
+    end
+  end
+
+  def facebook
+    client = OAuth2::Client.new("", "", FB.options.client_options) 
+    token = OAuth2::AccessToken.new(client, params[:access_token], FB.options.access_token_options)
+    FB.access_token = token
+    authentication = Authentication.where(:uid => FB.auth_hash["uid"], :provider => "facebook").first
     user = authentication.present? ? User.find(authentication.user_id) : false
     if(!user.present?)
-      user = User.new
-      user.email = params[:email]
-      user.first_name = params[:first_name]
-      user.last_name = params[:last_name]
-      user.password = Devise.friendly_token.first(8)
-      user.confirmed_at = Time.now
-      user.save!
+      user = User.find_by(email: FB.auth_hash["extra"]["raw_info"]["email"]) 
+      user = user.present? ? user : User.new
+      unless user.persisted?
+        user.email = FB.auth_hash["extra"]["raw_info"]["email"]
+        user.first_name = FB.auth_hash["extra"]["raw_info"]["first_name"]
+        user.last_name = FB.auth_hash["extra"]["raw_info"]["last_name"]
+        user.password = Devise.friendly_token.first(8)
+        user.confirmed_at = Time.now
+        user.save!
+      end
       if(params[:share_token].present?)
         user.register_shares(params[:share_token])
       end
-      user.authentications.create!(:provider => params[:provider], :uid => params[:uid], :token => params[:token])
+      user.authentications.create!(:provider => "facebook", :uid => FB.auth_hash["uid"], :token => params[:access_token])
     end
       render json: {:auth_token => user.authentication_token, status: 'success'} 
+  rescue
+      render json: {:status => 'error'} 
+  end
+
+  def manual
+    user = User.find_or_create_by(email: params[:email], password: params[:password])
+    render json: {:auth_token => user.authentication_token, status: 'success'} 
   rescue
       render json: {:status => 'error'} 
   end

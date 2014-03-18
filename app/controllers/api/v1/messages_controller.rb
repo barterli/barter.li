@@ -28,7 +28,34 @@ class Api::V1::MessagesController < Api::V1::BaseController
   def ampq
     connection = AMQP.connect(:host => '127.0.0.1')
     channel  = AMQP::Channel.new(connection)
-    channel.direct("nodes.metadata7").publish "Hello, world!", :routing_key => "shared.key"
+    channel.direct("nodes.metadatap21").publish "Hello, world!", :routing_key => "shared.key"
+
+# EventMachine.next_tick do
+#   connection = AMQP.connect(:host => '127.0.0.1')
+#   channel  = AMQP::Channel.new(connection)
+#   exchange = channel.fanout("nodes.metadatap21")
+
+#   # channel.queue("joe", :auto_delete => true).bind(exchange).subscribe do |payload|
+#   #   puts "#{payload} => joe"
+#   # end
+
+#   # channel.queue("aaron", :auto_delete => true).bind(exchange).subscribe do |payload|
+#   #   puts "#{payload} => aaron"
+#   # end
+
+#   # channel.queue("bob", :auto_delete => true).bind(exchange).subscribe do |payload|
+#   #   puts "#{payload} => bob"
+#   # end
+
+#   exchange.publish("hello world")
+
+#   # disconnect & exit after 2 seconds
+#   EventMachine.add_timer(2) do
+#     #exchange.delete
+
+#     # connection.close { EventMachine.stop }
+#   end
+#end
     render :nothing => true
  end
 
