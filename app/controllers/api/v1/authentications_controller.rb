@@ -43,7 +43,7 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
       register_shares(user)
       user.authentications.create!(:provider => "facebook", :uid => FB.auth_hash["uid"], :token => params[:access_token])
     end
-      render json: {:auth_token => user.authentication_token, status: 'success'} 
+      render json: {:auth_token => user.authentication_token, status: 'success', location: user.preferred_location} 
   rescue
       render json: {:status => 'error'} 
   end
@@ -52,12 +52,12 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
     if(params[:share_token].present?)
       user.register_shares(params[:share_token])
     end
-   end
+  end
   
   def manual
-    user = User.find_or_create_by(email: params[:email], password: params[:password])
+    user = User.create_or_find_by_email_and_password(params[:email], params[:password])
     register_shares(user)
-    render json: {:auth_token => user.authentication_token, status: 'success'} 
+    render json: {:auth_token => user.authentication_token, status: 'success', location: user.preferred_location} 
   rescue
       render json: {:status => 'error'} 
   end

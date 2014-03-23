@@ -6,11 +6,11 @@ class Book < ActiveRecord::Base
   belongs_to :location
   has_and_belongs_to_many :tags
   validates :title, :presence => true
-  #validates :location_id, :presence => true
-  validates :print, numericality: { only_integer: true }, allow_blank: true
-  validates :publication_year, numericality: { only_integer: true }, allow_blank: true
-  validates :edition, numericality: { only_integer: true }, allow_blank: true
-  validates :value, numericality: { only_integer: true }, allow_blank: true
+  validates :location_id, :presence => true
+  #validates :print, numericality: { only_integer: true }, allow_blank: true
+  #validates :publication_year, numericality: { only_integer: true }, allow_blank: true
+  #validates :edition, numericality: { only_integer: true }, allow_blank: true
+  #validates :value, numericality: { only_integer: true }, allow_blank: true
   mount_uploader :image, ImageUploader
 
   # kaminari pagination per page display
@@ -52,7 +52,7 @@ class Book < ActiveRecord::Base
   def self.search(params)
     if params.present?
       books = Book.where(nil)
-      locations = Location.near([params[:latitude], params[:longitude]], 100)
+      locations = Location.near([params[:latitude], params[:longitude]], 100) if params[:latitude].present? && params[:longitude].present?
       books = books.where.not(user_id: params[:user_id]) if params[:user_id].present?
       books = books.where("title like ?", "%#{params[:title]}%") if params[:title].present? 
       books = books.where("isbn_10 = ? or isbn_13 = ?", "#{params[:isbn]}","#{params[:isbn]}") if params[:isbn].present? 
@@ -60,7 +60,7 @@ class Book < ActiveRecord::Base
       books = books.where("author like ? or title like ?", "%#{params[:book_or_author]}%", "%#{params[:book_or_author]}%") if params[:book_or_author].present?
       #books = books.joins(:user).where(users: {country: params[:country]}) if params[:country].present?
       #books = books.joins(:user).where(users: {city: params[:city]}) if params[:city].present?
-      books = books.joins(:location).merge(locations)
+      books = books.joins(:location).merge(locations) if locations.present?
     else
       books = Book.all.order("RAND()")
     end

@@ -32,8 +32,7 @@ class Api::V1::BooksController < Api::V1::BaseController
   # POST /books
   # POST /books.json
   def create
-    @book = current_user.books.new(book_params)
-    @book.location_id = book_location if(book_location)
+    @book = current_user.books.new(book_params.merge(location_id: book_location))
     respond_to do |format|
       if @book.save
         WishListWorker.perform_async(@book.id)  # for background wishlist processing

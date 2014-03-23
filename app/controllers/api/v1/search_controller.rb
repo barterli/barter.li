@@ -8,7 +8,7 @@ class Api::V1::SearchController < Api::V1::BaseController
   	  params[:search_filter][:book_or_author] = params[:search]
   	end
     @books = Book.search(params[:search_filter]).page(params[:page]).per(params[:per])
-    respond_with @books
+    render json: {books: @books}
   end
 
   

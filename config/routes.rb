@@ -1,34 +1,8 @@
 BarterLi::Application.routes.draw do
-  resources :locations
 
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
-  root 'public#index'
-  get '/index', to: 'public#index'
-  post '/change_owner', to: "books#change_owner"
-  get '/profile', to: 'users#edit_profile', as: 'edit_profile'
-  patch '/profile', to: 'users#update_profile', as: 'update_profile'
-  
-  get '/collaborate', to: 'public#collaborate', as: 'collaborate'
-  get '/notifications', to: 'notifications#user_notifications', as: 'user_notifications'
-  get '/search', to: 'search#search_books', as: 'search'
-  get '/book_info', to: 'books#book_info'
-  post '/wish_list', to: 'books#add_wish_list'
-  get '/my_books', to: 'books#my_books', as: 'my_books'
-  get '/book_suggestions', to: 'books#book_suggestions'
-  post '/user_reviews', to: 'users#create_user_review', as: 'user_review'
-  get '/join_group/:group_id', to: 'members#join_group'
-  get 'hangouts', to: 'locations#hangouts'
-  
-  devise_for :users, controllers: {omniauth_callbacks: "authentications"}
-  resources :books 
-  resources :tags
-  resources :barters do
-    resources :notifications
-  end
- 
-  
-  
+  devise_for :users
   namespace :api do
     namespace :v1, defaults:{format: 'json'} do
         get "/facebook", to: 'authentications#facebook'
@@ -42,7 +16,7 @@ BarterLi::Application.routes.draw do
         post '/barter_notification', to: "barters#send_barter_notification"
         get '/user_profile', to: "users#user_profile"
         post '/current_user_profile', to: "users#show"
-        post '/register', to: 'public#register', as: 'register'
+        post '/register', to: 'public#register'
         patch '/user_update', to: "users#update"
         post '/feedback', to: "tracker#create_feedback"
         post '/chat', to: "messages#create"

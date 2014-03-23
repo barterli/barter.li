@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   before_save :ensure_authentication_token
   after_create :generate_share_token
   devise :database_authenticatable, :omniauthable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable
+         :recoverable, :rememberable, :trackable, :validatable
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   has_many :books
   has_many :settings
@@ -118,6 +118,8 @@ class User < ActiveRecord::Base
     location = self.settings.find_by(:name => "location")
     if(location.present?)
       location = Location.find(location.value)
+    else
+      location = ""
     end
     return location
   end
@@ -138,6 +140,14 @@ class User < ActiveRecord::Base
     link_user = User.user_by_roken(token)
     link_user.user_shares.new(share_user_id: self.id)
     link_user.save
+  end
+
+  def self.create_or_find_by_email_and_password(email, password)
+    user = User.where(email: email, encrypted_password: password).first
+    if(user.blank?)
+      user = User.create!(email: email, password: password)
+    end
+    user
   end
 
   private
