@@ -25,6 +25,13 @@ class Api::V1::UsersController < Api::V1::BaseController
     end
   end
 
+  def get_profile_image(id)
+    image_url = User.find(id).image.url
+    render json: {image_url: image_url, status: :success}
+  rescue
+    render json: {image_url: "", status: :error}
+  end
+
   # post /prefered_location
   def set_prefered_location
     location = current_user.preferred_location=(params)

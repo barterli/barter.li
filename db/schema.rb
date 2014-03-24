@@ -116,6 +116,8 @@ ActiveRecord::Schema.define(version: 20140312083026) do
     t.string   "country"
     t.string   "state"
     t.string   "city"
+    t.string   "address"
+    t.string   "postal_code"
     t.string   "locality"
     t.string   "name"
     t.string   "latitude"

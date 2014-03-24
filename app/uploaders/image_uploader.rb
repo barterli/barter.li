@@ -13,6 +13,11 @@ class ImageUploader < CarrierWave::Uploader::Base
     %w(jpg jpeg gif png)
   end
 
+  # default image for url
+  def default_url
+    ActionController::Base.helpers.asset_path("fallback/" + [1, "default.png"].compact.join('_'))
+  end
+
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir

@@ -32,17 +32,26 @@ class Api::V1::BooksController < Api::V1::BaseController
   # POST /books
   # POST /books.json
   def create
-    @book = current_user.books.new(book_params.merge(location_id: book_location))
+    tag_ids = get_tag_ids
+    @book = current_user.books.new(book_params.merge(location_id: book_location, tag_ids: tag_ids))
     respond_to do |format|
       if @book.save
         WishListWorker.perform_async(@book.id)  # for background wishlist processing
-        format.html { redirect_to @book, notice: 'Book was successfully created.' }
         format.json { render json: { status: :success, book: @book} }
       else
-        format.html { render action: 'new' }
         format.json { render json: @book.errors, status: :error }
       end
     end
+  end
+
+  def get_tag_ids
+    return [] if params[:tag_names].blank?
+    ids = Array.new
+    params[:tag_names].each do |name|
+      tag = Tag.find_by(name: name.downcase)
+      ids << tag.id if tag.present?
+    end
+    return ids
   end
   
   def book_location
@@ -186,7 +195,7 @@ class Api::V1::BooksController < Api::V1::BaseController
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
       params.require(:book).permit(:title, :author, :isbn_10, :isbn_13, :edition, :print, :publication_year, :publication_month, :condition, :value, :status, :stage, :description, :visits, 
-        :user_id, :prefered_place, {:tag_ids => []}, :prefered_time, :image, :image_cache, :goodreads_id, :publisher, :language_code, :pages, :image_url)
+        :user_id, :location_id, :prefered_place, {:tag_ids => []}, :prefered_time, :image, :image_cache, :goodreads_id, :publisher, :language_code, :pages, :image_url)
     end
 
     def wish_list_params

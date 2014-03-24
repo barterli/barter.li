@@ -1,5 +1,4 @@
 BarterLi::Application.routes.draw do
-
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
   devise_for :users
@@ -8,9 +7,9 @@ BarterLi::Application.routes.draw do
         get "/facebook", to: 'authentications#facebook'
         get '/share_token', to: 'users#get_share_token'
         get '/tags', to: 'books#get_tags'
+        get '/profile_image', to: 'users#get_profile_image'
         post '/auth_token', to: 'authentications#get_auth_token'
         post '/create_user', to: 'authentications#create_user'
-        get '/google', to: 'authentications#google' 
         get '/user_preferred_location', to: 'books#user_preferred_location'
         post '/user_preferred_location', to: 'books#set_user_preferred_location'
         get '/search', to: "search#search"
@@ -20,8 +19,6 @@ BarterLi::Application.routes.draw do
         post '/register', to: 'public#register'
         patch '/user_update', to: "users#update"
         post '/feedback', to: "tracker#create_feedback"
-        post '/chat', to: "messages#create"
-        post '/chat/public', to: "messages#public"
         get '/ampq', to: "messages#ampq"
         get '/book_info', to: 'books#book_info'
         get '/book_suggestions', to: 'books#book_suggestions'

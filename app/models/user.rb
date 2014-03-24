@@ -15,9 +15,8 @@ class User < ActiveRecord::Base
   has_many :alerts
   has_many :authentications, :dependent => :destroy
   has_many :user_shares
-  mount_uploader :image, ImageUploader
+  mount_uploader :profile, ImageUploader
 
-  
   def ensure_authentication_token
     if authentication_token.blank?
     self.authentication_token = generate_authentication_token
@@ -31,8 +30,6 @@ class User < ActiveRecord::Base
     self.street.downcase! if self.street
     self.locality.downcase! if self.locality
   end
-
-
 
   # send wish list mail for users
   # attributs book model object, wishlist model object
@@ -107,7 +104,7 @@ class User < ActiveRecord::Base
     if(location.present?)
       setting = self.settings.create(:name => "location", :value => location.id)
     else
-      location = Location.create!(:country => params[:country], :city => params[:city], :name => params[:name], :locality => params[:locality])
+      location = Location.create!(:country => params[:country], :city => params[:city], :state => params[:state] ,:address => params[:address])
       setting = self.settings.create(:name => "location", :value => location.id)
     end
     return setting
