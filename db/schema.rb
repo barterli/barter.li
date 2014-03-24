@@ -221,6 +221,7 @@ ActiveRecord::Schema.define(version: 20140312083026) do
     t.string   "city"
     t.string   "street"
     t.string   "address"
+    t.string   "profile"
     t.string   "pincode"
     t.string   "latitude"
     t.string   "longitude"
