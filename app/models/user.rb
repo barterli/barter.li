@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   has_many :alerts
   has_many :authentications, :dependent => :destroy
   has_many :user_shares
+  mount_uploader :image, ImageUploader
 
   
   def ensure_authentication_token

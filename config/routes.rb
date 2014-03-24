@@ -10,6 +10,7 @@ BarterLi::Application.routes.draw do
         get '/tags', to: 'books#get_tags'
         post '/auth_token', to: 'authentications#get_auth_token'
         post '/create_user', to: 'authentications#create_user'
+        get '/google', to: 'authentications#google' 
         get '/user_preferred_location', to: 'books#user_preferred_location'
         post '/user_preferred_location', to: 'books#set_user_preferred_location'
         get '/search', to: "search#search"
@@ -28,7 +29,7 @@ BarterLi::Application.routes.draw do
         resources :books
     end
   end
-
+   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

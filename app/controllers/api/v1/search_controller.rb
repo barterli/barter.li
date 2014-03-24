@@ -1,7 +1,10 @@
 class Api::V1::SearchController < Api::V1::BaseController
  
+  # GET /search
   def search
-  	params[:search_filter] = {:city => params[:city]}
+    params[:radius] ||= 10
+  	params[:search_filter] = {:latitude => params[:latitude], :longitude => params[:longitude]}
+    params[:search_filter][:radius] = params[:radius]
   	if(params[:search].to_s =~ /^[0-9]{10}$|^[0-9]{13}$/ )
   	  params[:search_filter][:isbn] = params[:search]
   	else
