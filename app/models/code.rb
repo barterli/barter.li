@@ -3,6 +3,12 @@ class Code
     def [](k)
   	  code = {
          :wish_list_book => 'WB',
+         :error_rescue => '103',
+         :error_no_resource => '104',
+         :error_email_taken => '102',
+         :error_resource => '105',
+         :status_error => 400,
+         :status_success => "success",
          :etag_last_modified => Time.new(2014, 01, 03),
          :barter_categories => {:free => 1,
             :barter => 2,

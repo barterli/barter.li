@@ -87,6 +87,8 @@ gem 'openlibrary'
 
 gem 'fb_graph'
 
+gem 'active_model_serializers'
+
 gem "email_spec", :group => :test
 
 gem 'capistrano', '~> 3.0.0'

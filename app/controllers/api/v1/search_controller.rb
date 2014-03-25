@@ -11,7 +11,9 @@ class Api::V1::SearchController < Api::V1::BaseController
   	  params[:search_filter][:book_or_author] = params[:search]
   	end
     @books = Book.search(params[:search_filter]).page(params[:page]).per(params[:per])
-    render json: {books: @books}
+    render json: @books
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
   

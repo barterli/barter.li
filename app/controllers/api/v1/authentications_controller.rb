@@ -7,8 +7,8 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
     if authentication
       user = User.find(authentication.user_id)
         render json: {auth_token: user.authentication_token, status: 'success'} 
-    else
-        render json: {status: 'error'}
+    else 
+        render json: {error_code: Code[:error_no_resource]}, status: Code[:status_error]
     end
   end
 
@@ -22,7 +22,7 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
       when "google"
         google
       else
-        render json:{status: :error}
+        render json:{error_code: Code[:error_no_resource]}, status: Code[:status_error]
     end
   end
 
@@ -46,9 +46,9 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
       register_shares(user)
       user.authentications.create!(:provider => "facebook", :uid => FB.auth_hash["uid"], :token => params[:access_token])
     end
-      render json: {:auth_token => user.authentication_token, status: 'success', location: user.preferred_location} 
-  rescue
-      render json: {:status => 'error'} 
+      render json: user  
+  rescue => e
+      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error] 
   end
    
 
@@ -73,9 +73,9 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
       register_shares(user)
       user.authentications.create!(:provider => "facebook", :uid => FB.auth_hash["uid"], :token => params[:access_token])
     end
-      render json: {:auth_token => user.authentication_token, status: 'success', location: user.preferred_location} 
-  rescue
-      render json: {:status => 'error'} 
+      render json: user 
+  rescue => e
+      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
   def register_shares(user)
@@ -88,12 +88,11 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
     user = User.create_or_find_by_email_and_password(params[:email], params[:password])
     if(user)
       register_shares(user)
-      render json: {:auth_token => user.authentication_token, status: 'success', location: user.preferred_location} 
+      render json: user
     else
-      render json: {:status => 'error', error_code: 102} 
+      render json: {error_code: Code[:error_email_taken], error_message: "email already taken"}, status: Code[:status_error]
     end
-  rescue
-      render json: {:status => 'error', error_code: 500} 
+  rescue => e
+      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
-
 end

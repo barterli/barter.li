@@ -3,10 +3,9 @@ class Api::V1::BooksController < Api::V1::BaseController
  
   def index
     @books = current_user.books
-    respond_to do |format|
-      format.html
-      format.json {render :json => @books}
-    end
+    render :json => @books
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
   # GET /books/1
@@ -17,16 +16,9 @@ class Api::V1::BooksController < Api::V1::BaseController
     if(session["warden.user.user.key"].present?)
       @book.book_visit_user(session["warden.user.user.key"][0][0])
     end
-  end
-
-  # GET /books/new
-  def new 
-    @book = Book.new
-  end
-
-  # GET /books/1/edit
-  def edit
-    @book = current_user.books.find(params[:id])
+    render json: book 
+  rescue => e
+    render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
   # POST /books
@@ -34,14 +26,14 @@ class Api::V1::BooksController < Api::V1::BaseController
   def create
     tag_ids = get_tag_ids
     @book = current_user.books.new(book_params.merge(location_id: book_location, tag_ids: tag_ids))
-    respond_to do |format|
-      if @book.save
-        WishListWorker.perform_async(@book.id)  # for background wishlist processing
-        format.json { render json: { status: :success, book: @book} }
-      else
-        format.json { render json: @book.errors, status: :error }
-      end
+    if @book.save
+      WishListWorker.perform_async(@book.id)  # for background wishlist processing
+      render json: @book 
+    else
+      render json: {error_message: @book.errors, error_code: Code[:error_resource]}, status: Code[:status_error]
     end
+  rescue => e
+    render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
   def get_tag_ids
@@ -56,7 +48,7 @@ class Api::V1::BooksController < Api::V1::BaseController
   
   def book_location
     if(params[:location].present?)
-      return Location.set_location(params[:location])
+      return Location.set_location(params[:location]).id
     else
       return current_user.try(:preferred_location).try(:id)
     end
@@ -64,22 +56,18 @@ class Api::V1::BooksController < Api::V1::BaseController
   
   #GET /tags
   def get_tags
-    render json: Tag.all, status: :error 
+    render json: Tag.all, status: Code[:status_success] 
   end
   
   # PATCH/PUT /books/1
   # PATCH/PUT /books/1.json
   def update
     @book = current_user.books.find(params[:id])
-    respond_to do |format|
       if @book.update(book_params)
-        format.html { redirect_to @book, notice: 'Book was successfully updated.' }
-        format.json { render json: {status: :success, book: @book } }
+        render json: @book  
       else
-        format.html { render action: 'edit' }
-        format.json { render json:  @book.errors, status: :unprocessable_entity }
+        render json: {error_message: @book.errors, error_code: Code[:error_resource]}, status: Code[:status_error]
       end
-    end
   end
 
   #POST /change_owner
@@ -88,9 +76,9 @@ class Api::V1::BooksController < Api::V1::BaseController
     @book.user_id = params[:user_id]
     @book.tags.destroy
     if(@book.tag_ids = [Tag.find_by(name:'private').id])
-      render json:{status: :success}
+      render json:{}, status: Code[:status_error]
     else
-      render json:{status: :error}
+      render json:{error_code: Code[:status_error]}, status: Code[:status_error]
     end
   end
 
@@ -99,15 +87,14 @@ class Api::V1::BooksController < Api::V1::BaseController
   def destroy
     @book = current_user.books.find(params[:id])
     @book.destroy
-    respond_to do |format|
-      format.html { redirect_to books_url }
-      format.json { head :no_content }
-    end
+    render json { head :no_content }
   end
 
   # Get list of users book
   def my_books
     @books = current_user.books
+  rescue => e
+    render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
  
   # get /book_info
