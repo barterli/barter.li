@@ -25,8 +25,8 @@ class Api::V1::UsersController < Api::V1::BaseController
     end
   end
 
-  def get_profile_image(id)
-    image_url = User.find(id).image.url
+  def get_profile_image
+    image_url = User.find(params[:id]).image.url
     render json: {image_url: image_url, status: :success}
   rescue
     render json: {image_url: "", status: :error}
@@ -56,7 +56,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
  private
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :description, :email
+      params.require(:user).permit(:first_name, :last_name, :description, :email, :profile
       )
     end
 end
