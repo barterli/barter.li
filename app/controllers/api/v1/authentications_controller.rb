@@ -86,10 +86,14 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
   
   def manual
     user = User.create_or_find_by_email_and_password(params[:email], params[:password])
-    register_shares(user)
-    render json: {:auth_token => user.authentication_token, status: 'success', location: user.preferred_location} 
+    if(user)
+      register_shares(user)
+      render json: {:auth_token => user.authentication_token, status: 'success', location: user.preferred_location} 
+    else
+      render json: {:status => 'error', error_code: 102} 
+    end
   rescue
-      render json: {:status => 'error'} 
+      render json: {:status => 'error', error_code: 500} 
   end
 
 end

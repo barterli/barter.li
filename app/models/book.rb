@@ -27,9 +27,9 @@ class Book < ActiveRecord::Base
     end
   end
    
-  def as_json(options = {})
-    super(options.merge(:methods => [:location, :tags]))
-  end
+  # def as_json(options = {})
+  #   super(options.merge(:methods => [:location, :tags]))
+  # end
    
   # increase book visit count
   def book_visit_count()

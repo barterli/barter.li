@@ -141,11 +141,14 @@ class User < ActiveRecord::Base
   end
 
   def self.create_or_find_by_email_and_password(email, password)
-    user = User.where(email: email, encrypted_password: password).first
-    if(user.blank?)
+    user = User.find_by(email: email)
+    if(user.present?)
+      return user if user.valid_password?(password)
+      return false
+    else
       user = User.create!(email: email, password: password)
+      return user
     end
-    user
   end
 
   private
