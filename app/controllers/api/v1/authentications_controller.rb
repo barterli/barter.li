@@ -16,11 +16,11 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
     end
   end
 
-  # @url  /api/v1/create_user.[format]?[arguments]
+  # @url /api/v1/create_user
   # @action POST
   #
   # creates a user if not present or returns a user with location
-  # supports two types of authrntication normal email , password and 
+  # supports two types of authentication normal email , password and 
   # outh(facebook or google)
   #
   # @required [String] format only json supported 
@@ -29,26 +29,26 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
   # @required [String] access_token used if provider is outh(facebook or google)
   # @required [String] provider can be manual, facebook, google
   #
-  # @response [User] the created user or existing user
+  # @response [User] The created user or existing user
   # 
   # @example_request_description Let's try to create a user
   # @example_request
-  # ```json
-  # {
-  #  password: "12345678"
-  #  email: "example@gmail.com"
-  #  provider: "manual"
-  # }
-  # or
-  # {
-  #  access_token: "1hdbfdfgbdbgdfkj94589hbvjdf"
-  #  provider: "facebook"
-  # }
-  # ```
+  #    ```json
+  #    {
+  #     "password": "12345678"
+  #     "email": "example@gmail.com"
+  #     "provider": "manual"
+  #    }
+  #    or
+  #    {
+  #     "access_token": "1hdbfdfgbdbgdfkj94589hbvjdf"
+  #     "provider": "facebook"
+  #    }
+  #    ```
   # @example_response_description The user should be created correctly
   # @example_response
-  # ```json
-  #   {
+  #    ```json
+  #    {
   #     "user": {
   #         "id": 25,
   #         "email": "example@gmail.com",
@@ -67,9 +67,9 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
   #         },
   #         "auth_token": "TRU2uUh1DxfyTdi3tnEs",
   #         "sign_in_count": 33
-  #     }
-  # }
-  # ```
+  #      }
+  #    }
+  #    ```
   def create_user
     case params[:provider]
       when "facebook"

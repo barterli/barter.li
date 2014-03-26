@@ -67,50 +67,14 @@
 		<div class="method">
       <h3>create_user</h3>
 			<p class="method_desc">creates a user if not present or returns a user with location
-supports two types of authrntication normal email , password and 
-outh(facebook or google)
-
-```json
-{
- password: "12345678"
- email: "example@gmail.com"
- provider: "manual"
-}
-or
-{
- access_token: "1hdbfdfgbdbgdfkj94589hbvjdf"
- provider: "facebook"
-}
-```
-```json
-  {
-    "user": {
-        "id": 25,
-        "email": "example@gmail.com",
-        "description": test,
-        "first_name": test,
-        "last_name": test,
-        "location": {
-            "id": 6,
-            "country": "34535",
-            "state": bihar,
-            "city": patna,
-            "name": coffee day,
-            "latitude": "12.334",
-            "longitude": "12.445",
-            "address": 201, cross street
-        },
-        "auth_token": "TRU2uUh1DxfyTdi3tnEs",
-        "sign_in_count": 33
-    }
-}
-```</p>
+supports two types of authentication normal email , password and 
+outh(facebook or google)</p>
 
       
         <div class="resource_url even">
           <h4>URL</h4>
           <span class="action">POST</span>
-          <span class="url">/api/v1/create_user.[format]?[arguments]</span>
+          <span class="url">/api/v1/create_user</span>
         </div>
       
 
@@ -176,7 +140,7 @@ or
             <li>
               <span class="type"><tt><span class='object_link'>User</span></tt></span>
               <span class="text">
-<p>the created user or existing user</p>
+<p>The created user or existing user</p>
 </span>
             </li>
           </ul>
@@ -203,6 +167,17 @@ or
 								
 									
 										
+<p>“`json 
+<pre class="code ruby"><code class="ruby">&quot;password&quot;: &quot;12345678&quot;
+&quot;email&quot;: &quot;example@gmail.com&quot;
+&quot;provider&quot;: &quot;manual&quot;</code></pre>
+
+<p> or 
+<pre class="code ruby"><code class="ruby">&quot;access_token&quot;: &quot;1hdbfdfgbdbgdfkj94589hbvjdf&quot;
+&quot;provider&quot;: &quot;facebook&quot;</code></pre>
+
+<p> “`</p>
+
 									
 								
 							</span>
@@ -211,6 +186,30 @@ or
 								
 									
 										
+<p>“`json {</p>
+
+<pre class="code ruby"><code class="ruby">&quot;user&quot;: {
+    &quot;id&quot;: 25,
+    &quot;email&quot;: &quot;example@gmail.com&quot;,
+    &quot;description&quot;: test,
+    &quot;first_name&quot;: test,
+    &quot;last_name&quot;: test,
+    &quot;location&quot;: {
+        &quot;id&quot;: 6,
+        &quot;country&quot;: &quot;34535&quot;,
+        &quot;state&quot;: bihar,
+        &quot;city&quot;: patna,
+        &quot;name&quot;: coffee day,
+        &quot;latitude&quot;: &quot;12.334&quot;,
+        &quot;longitude&quot;: &quot;12.445&quot;,
+        &quot;address&quot;: 201, cross street
+    },
+    &quot;auth_token&quot;: &quot;TRU2uUh1DxfyTdi3tnEs&quot;,
+    &quot;sign_in_count&quot;: 33
+ }</code></pre>
+
+<p>} “`</p>
+
 									
 								
 							</span>
@@ -236,7 +235,7 @@ or
 	</div>
 
     <div id="footer">
-  Generated on Wed Mar 26 21:10:14 2014 with ruby-2.0.0
+  Generated on Wed Mar 26 21:35:35 2014 with ruby-2.0.0
 </div>
 
   </body>

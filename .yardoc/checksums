@@ -30,4 +30,4 @@ app/controllers/api/v1/barters_controller.rb 4083a17d721b40ff27f739bcd0e6c010759
 app/controllers/api/v1/messages_controller.rb 9ec60bf5364c7a8f4f01e4601a01bb93cd0c0f37
 app/controllers/api/v1/locations_controller.rb 34270bb6f8ad887d385aa4bb868a395f135660dc
 app/controllers/api/v1/notifications_controller.rb de441bf92b12f344df2d2c1cde7f4c3e060b4704
-app/controllers/api/v1/authentications_controller.rb 02edff8504891654736d3929f373c91179cabdaf
+app/controllers/api/v1/authentications_controller.rb 9422b408151e7a749ca2ad72b4e0fbe1b376ff73
