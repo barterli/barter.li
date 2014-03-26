@@ -11,8 +11,44 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
         render json: {error_code: Code[:error_no_resource]}, status: Code[:status_error]
     end
   end
-
-  # post api/v1/create_user
+  
+  ##
+  # creates a user if not present or returns a user with location
+  # supports two types of authrntication normal email , password and 
+  # outh(facebook or google)
+  #
+  # @url [POST] /api/v1/create_user.[format]?[arguments]
+  #
+  # @argument [String] format only json supported 
+  # @argument [String] email used if provider is manual
+  # @argument [String] password used if provider is manual (minimum 8 characters)
+  # @argument [String] access_token used if provider is outh(facebook or google)
+  # @argument [String] provider can be manual, facebook, google
+  #
+    # @example_response
+  #   {
+  #     "user": {
+  #         "id": 25,
+  #         "email": "example@gmail.com",
+  #         "description": test,
+  #         "first_name": test,
+  #         "last_name": test,
+  #         "location": {
+  #             "id": 6,
+  #             "country": "34535",
+  #             "state": bihar,
+  #             "city": patna,
+  #             "name": coffee day,
+  #             "latitude": "12.334",
+  #             "longitude": "12.445",
+  #             "address": 201, cross street
+  #         },
+  #         "auth_token": "TRU2uUh1DxfyTdi3tnEs",
+  #         "sign_in_count": 33
+  #     }
+  # }
+  #
+  # @response_field [String] auth_token should be used for authentication purposes
   def create_user
     case params[:provider]
       when "facebook"
