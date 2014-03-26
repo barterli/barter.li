@@ -1,0 +1,6 @@
+--title "Barter.li API Documentation"
+--plugin restful
+--query '@restful_api.text == "1.0"'
+--output-dir ./public/api
+app/models/**/*.rb
+app/controllers/**/*.rb

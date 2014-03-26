@@ -103,6 +103,13 @@ gem 'redis-rails'
 
 gem 'redis-rack-cache'
 
+gem 'redcarpet'
+
+gem 'yard'
+
+gem 'yard-restful'
+
+
 
 
 

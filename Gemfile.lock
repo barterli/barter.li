@@ -211,6 +211,7 @@ GEM
     rake (10.1.1)
     rdoc (3.12.2)
       json (~> 1.4)
+    redcarpet (3.1.1)
     redis (3.0.6)
     redis-actionpack (4.0.0)
       actionpack (~> 4)
@@ -299,6 +300,9 @@ GEM
     tzinfo (0.3.38)
     warden (1.2.3)
       rack (>= 1.0)
+    yard (0.8.7.4)
+    yard-restful (1.2.3)
+      yard (~> 0.8.3)
 
 PLATFORMS
   ruby
@@ -336,6 +340,7 @@ DEPENDENCIES
   quiet_assets
   rails (= 4.0.2)
   rails-api
+  redcarpet
   redis-rack-cache
   redis-rails
   rspec-rails
@@ -344,3 +349,5 @@ DEPENDENCIES
   sinatra
   slim
   thin
+  yard
+  yard-restful

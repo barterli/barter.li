@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Api::V1::AuthenticationsController
+  
+    &mdash; Barter.li API Documentation
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../css/custom.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../../';
+  framesUrl = "../../frames.html#!Api/V1/AuthenticationsController.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/rest_plugin.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="search">
+  
+    <a class="full_list_link" id="resource_list_link"
+        href="../../resource_list.html">
+      Resources
+    </a>
+  
+    <a class="full_list_link" id="object_list_link"
+        href="../../object_list.html">
+      Objects
+    </a>
+  
+</div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content" style="padding-top: 12px;">
+		<div class="service">
+  <h1 class="noborder title">Barter.li API Documentation</h1>
+    <a class="back" href="../../index.html" title="back to the overview">&laquo; back to overview</a>
+    <h2>Authentications [1.0]</h2>
+    <div class="description">
+  
+<p>user creation and getting user objects</p>
+
+</div>
+
+
+  <div id="Services" class="method_details_list">
+    
+		<div class="method">
+      <h3>create_user</h3>
+			<p class="method_desc">creates a user if not present or returns a user with location
+supports two types of authrntication normal email , password and 
+outh(facebook or google)
+
+```json
+{
+ password: "12345678"
+ email: "example@gmail.com"
+ provider: "manual"
+}
+or
+{
+ access_token: "1hdbfdfgbdbgdfkj94589hbvjdf"
+ provider: "facebook"
+}
+```
+```json
+  {
+    "user": {
+        "id": 25,
+        "email": "example@gmail.com",
+        "description": test,
+        "first_name": test,
+        "last_name": test,
+        "location": {
+            "id": 6,
+            "country": "34535",
+            "state": bihar,
+            "city": patna,
+            "name": coffee day,
+            "latitude": "12.334",
+            "longitude": "12.445",
+            "address": 201, cross street
+        },
+        "auth_token": "TRU2uUh1DxfyTdi3tnEs",
+        "sign_in_count": 33
+    }
+}
+```</p>
+
+      
+        <div class="resource_url even">
+          <h4>URL</h4>
+          <span class="action">POST</span>
+          <span class="url">/api/v1/create_user.[format]?[arguments]</span>
+        </div>
+      
+
+      
+
+  <div class="parameters odd">
+    
+      <h4>Required Parameters</h4>
+    
+		<ul>
+  		
+				<li>
+					<span class="name">format</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>only json supported</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">email</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>used if provider is manual</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">password</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>used if provider is manual (minimum 8 characters)</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">access_token</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>used if provider is outh(facebook or google)</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">provider</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>can be manual, facebook, google</p>
+</span>
+				</li>
+  		
+	  </ul>
+	</div>
+
+
+      
+
+
+      
+        <div class="parameters even">
+          <h4>Response Object</h4>
+          <ul>
+            <li>
+              <span class="type"><tt><span class='object_link'>User</span></tt></span>
+              <span class="text">
+<p>the created user or existing user</p>
+</span>
+            </li>
+          </ul>
+        </div>
+      
+
+			
+				<div class="examples">
+					<h4>Examples</h4>
+					
+						<div class="example">
+							
+							
+							
+							<span class="description">
+								
+									
+										Let's try to create a user
+									
+								
+							</span>
+							<span class="hash request">
+								<strong class="type">Request</strong>
+								
+									
+										
+									
+								
+							</span>
+							<span class="hash response">
+								<strong class="type">Response</strong>
+								
+									
+										
+									
+								
+							</span>
+							<span class="description">
+								
+									
+										The user should be created correctly
+									
+								
+							</span>
+						</div>
+					
+				</div>
+			
+		</div>
+    
+  </div>
+
+
+</div>
+
+
+	</div>
+
+    <div id="footer">
+  Generated on Wed Mar 26 21:10:14 2014 with ruby-2.0.0
+</div>
+
+  </body>
+</html>

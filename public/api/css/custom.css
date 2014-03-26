@@ -1,0 +1,188 @@
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100%;
+}
+#toc {
+  height: 100%;
+  right: 0;
+  position: fixed;
+  top: 0;
+  width: 246px;
+  overflow-y: scroll;
+  margin-right: -16px;
+}
+#toc ol {
+  padding-bottom: 10px;
+}
+#header {
+  position: fixed;
+  top: 0;
+  z-index: 1001;
+}
+#header #search {
+  position: fixed;
+  top: 0;
+  right: 8px;
+  z-index: 1001;
+}
+#content {
+  margin-right: 285px;
+  position: relative;
+  padding: 20px;
+  z-index: 1;
+}
+#toc .title {display: none;}
+#toc a:link, #content a:visited { text-decoration: none; color: #05a; }
+#toc a:hover { background: #ffffa5; }
+pre code {
+  display: block;
+  background: #EAF0FF;
+  padding: 12px;
+  line-height: 1.9em;
+}
+a.back {
+  font-size: 1.2em;
+  padding: 4px;
+}
+p.method_desc {
+  padding: 16px 0 0 14px;
+  font-size: 1.2em;
+}
+h2 {
+  margin: 2.4em 0 0.5em;
+}
+.service .description p {
+  font-size: 1.2em;
+}
+.method {
+  display: block;
+  margin-top: 40px;
+  padding-top: 0;
+  position: relative;
+}
+h3 {
+  font-size: 1.6em;
+  padding-top: 6px;
+  margin-bottom: -6px;
+}
+h4 {
+  margin: 0;
+}
+#resources {
+  padding: 14px 50px 32px;
+}
+#resources li {
+  padding: 5px;
+  list-style-position: outside;
+  list-style-type: disc;
+  text-decoration: none;
+  font-weight: normal;
+  font-size: 1.4em;
+}
+.resource_url {
+  border: 1px solid white;
+  display: block;
+  margin-top: 11px;
+  padding: 12px 12px 18px;
+}
+.resource_url .action {
+  padding-left: 46px;
+  font-weight: bold;
+}
+#search_frame #search {
+  display: none;
+}
+.parameters {
+  padding: 12px;
+  border: 1px solid white;
+}
+.parameters ul li {
+  display: block;
+  padding: 4px 0 0 6px;
+}
+.parameters ul li .name {
+  font-weight: bold;
+  padding-right: 10px;
+}
+.parameters ul li .text {
+  display: block;
+}
+.parameters ul li .text p {
+  margin-top: 0px;
+}
+.parameters ul li .type tt {
+  font-family: "Lucida Sans", "Lucida Grande", Verdana, Arial, sans-serif; /*taken from original yard style.css*/
+}
+.odd {
+  background: #EAF0FF;
+}
+.even {
+  background: #D5E1FF;
+}
+.examples {
+  padding: 32px 12px 12px 12px;
+}
+.example {
+  border-bottom: 1px solid #BBB;
+  display: block;
+  padding: 18px 0 26px;
+  margin-bottom: 14px;
+  margin-top: 8px;
+}
+.example .description {
+  display: block;
+  font-size: 1.2em;
+  margin: 8px 0;
+}
+
+.example .hash {
+  display: block;
+  background: #EEF;
+  font-size: 1.1em;
+  border-radius: 4px;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+  padding: 12px;
+}
+
+.example .hash .type {
+  display: block;
+  font-size: 0.8em;
+  color: #99A;
+  padding-bottom: 6px;
+}
+
+.example .hash.request {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.example .hash.response {
+  border-top: 1px solid white;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+pre.code.json {
+  margin: 0;
+}
+
+pre.code.json code {
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: 6px;
+}
+
+pre.code.json code:hover {
+  background: #d4e5fe;
+}
+
+pre.code.json code:active {
+  background: #c1d8fb;
+}
+
+.object_properties_title {
+  margin-bottom: 16px;
+}

@@ -1,7 +1,11 @@
+# @restful_api 1.0
+#
+# user creation and getting user objects
+#
 class Api::V1::AuthenticationsController < Api::V1::BaseController
  FB = OmniAuth::Strategies::Facebook.new("", "") 
  GOOGLE = OmniAuth::Strategies::GoogleOauth2.new("", "") 
- # post api/v1/auth_token
+ 
   def get_auth_token
     authentication = Authentication.find_by(:provider => params[:provider], :uid => params[:uid])
     if authentication
@@ -11,21 +15,39 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
         render json: {error_code: Code[:error_no_resource]}, status: Code[:status_error]
     end
   end
-  
-  ##
+
+  # @url  /api/v1/create_user.[format]?[arguments]
+  # @action POST
+  #
   # creates a user if not present or returns a user with location
   # supports two types of authrntication normal email , password and 
   # outh(facebook or google)
   #
-  # @url [POST] /api/v1/create_user.[format]?[arguments]
+  # @required [String] format only json supported 
+  # @required [String] email used if provider is manual
+  # @required [String] password used if provider is manual (minimum 8 characters)
+  # @required [String] access_token used if provider is outh(facebook or google)
+  # @required [String] provider can be manual, facebook, google
   #
-  # @argument [String] format only json supported 
-  # @argument [String] email used if provider is manual
-  # @argument [String] password used if provider is manual (minimum 8 characters)
-  # @argument [String] access_token used if provider is outh(facebook or google)
-  # @argument [String] provider can be manual, facebook, google
-  #
-    # @example_response
+  # @response [User] the created user or existing user
+  # 
+  # @example_request_description Let's try to create a user
+  # @example_request
+  # ```json
+  # {
+  #  password: "12345678"
+  #  email: "example@gmail.com"
+  #  provider: "manual"
+  # }
+  # or
+  # {
+  #  access_token: "1hdbfdfgbdbgdfkj94589hbvjdf"
+  #  provider: "facebook"
+  # }
+  # ```
+  # @example_response_description The user should be created correctly
+  # @example_response
+  # ```json
   #   {
   #     "user": {
   #         "id": 25,
@@ -47,8 +69,7 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
   #         "sign_in_count": 33
   #     }
   # }
-  #
-  # @response_field [String] auth_token should be used for authentication purposes
+  # ```
   def create_user
     case params[:provider]
       when "facebook"
