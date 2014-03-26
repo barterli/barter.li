@@ -1,6 +1,6 @@
 class BookSerializer < ActiveModel::Serializer
   attributes :id, :title, :author, :publication_year, :publication_month, 
-             :image_url, :barter_type, :location, :tags, :location
+             :image_url, :barter_type, :location, :tags
   
   def location
     object.location.as_json(except: [:created_at, :updated_at])
@@ -8,6 +8,13 @@ class BookSerializer < ActiveModel::Serializer
 
   def tags
     object.tags.as_json(only: [:id, :name])
+  end
+
+  def image_url
+  	url = @options[:url_options]
+  	#return  ActionController::Base.helpers.asset_url(object.image.url)if object.image_url.present?
+    #return object.image_url if object.image_url.present?
+    "#{url[:protocol]}#{url[:host]}:#{url[:port]}#{object.image.url}"
   end
 
 end

@@ -101,7 +101,9 @@ gem 'capistrano-rvm'
 
 gem 'redis-rails'
 
-gem "redis-rack-cache"
+gem 'redis-rack-cache'
+
+
 
 
 # Use ActiveModel has_secure_password
