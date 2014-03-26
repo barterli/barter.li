@@ -1,6 +1,6 @@
 class Api::V1::UsersController < Api::V1::BaseController
   before_action :authenticate_user!, only: [:update, :show, :get_share_token, :generate_share_token,
-    :set_preferred_location]
+    :set_user_preferred_location, :user_preferred_location]
   
   def user_profile
     user  = User.find(params[:id])
@@ -33,16 +33,23 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   # post /prefered_location
-  def set_prefered_location
-    location = current_user.preferred_location=(params)
-    respond_to do |format|
+  def set_user_preferred_location
+    location = current_user.set_preferred_location(params)
       if location
-        format.json { render :json => {status: :created} }
+        render :json => location 
       else
-        format.json { render :json => {status: :error} }
+        render :json => {error_code: Code[:error_resource], error_message: "location not create"}, status: Code[:status_error]
       end
-    end
   end 
+
+  def user_preferred_location
+    location = current_user.preferred_location
+    if(location)
+      render json: location
+    else
+      render :json => {error_code: Code[:error_resource], error_message: "location not create"}, status: Code[:status_error]
+    end
+  end
  
   def generate_share_token
     token = current_user.generate_share_token

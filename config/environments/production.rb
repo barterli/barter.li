@@ -33,7 +33,8 @@ BarterLi::Application.configure do
    }
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
+  # removed due to rails api
+  # config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
   
   # assets other than application.css
@@ -93,7 +94,7 @@ BarterLi::Application.configure do
   config.log_formatter = ::Logger::Formatter.new
   
   # for angular.js
-  config.assets.js_compressor = Uglifier.new(mangle: false)
+  # config.assets.js_compressor = Uglifier.new(mangle: false)
 
     #added for devise and sending mail
   config.action_mailer.default_url_options = { :host => 'http://162.243.198.171' }

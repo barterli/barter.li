@@ -1,5 +1,5 @@
 class Api::V1::BooksController < Api::V1::BaseController
-  before_action :authenticate_user!, only: [:set_user_preferred_location, :create, :index, :edit, :update, :destroy, :new, :my_books, :add_wish_list]
+  before_action :authenticate_user!, only: [:create, :index, :edit, :update, :destroy, :new, :my_books, :add_wish_list]
  
   def index
     @books = current_user.books
@@ -101,14 +101,14 @@ class Api::V1::BooksController < Api::V1::BaseController
   def book_info
     results = book_info_goodreads_library
     respond_with results
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
   
   # call to open library to get book info
   def book_info_open_library
     client = Openlibrary::Client.new
     results = client.search(params[:q])
-  rescue
-    []
   end
 
 
@@ -118,8 +118,6 @@ class Api::V1::BooksController < Api::V1::BaseController
     results = client.book_by_title(params[:q]) if (params[:t] == "title" || params[:t].blank?)
     results = client.book_by_isbn(params[:q]) if params[:t] == "isbn"
     return results
-  rescue
-    []
   end
 
   # post '/wish_list'
@@ -138,18 +136,8 @@ class Api::V1::BooksController < Api::V1::BaseController
     book_titles << goodreads_titles 
     book_titles = book_titles.flatten.compact
     render json: book_titles.uniq
-  end
-
-  def user_preferred_location
-    location = current_user.settings.where(:name => "location").first
-    location = location.present? ? true : false
-    render json: {location: location}
-  end
-
-
-  def set_user_preferred_location
-    location = (current_user.set_preferred_location(params[:location]))
-    render json: {location: location}
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
   private
@@ -163,8 +151,6 @@ class Api::V1::BooksController < Api::V1::BaseController
         arr << book.best_book.title.to_s 
       end
       return arr
-    rescue
-      []
     end
 
     def openlibrary_titles
@@ -175,8 +161,6 @@ class Api::V1::BooksController < Api::V1::BaseController
         arr << result.title.to_s
       end
       return arr
-    rescue
-      []
     end
   
     # Never trust parameters from the scary internet, only allow the white list through.

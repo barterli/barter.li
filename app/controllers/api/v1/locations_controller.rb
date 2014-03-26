@@ -1,4 +1,4 @@
-class LocationsController < Api::V1::BaseController
+class Api::V1::LocationsController < Api::V1::BaseController
   before_action :set_location, only: [:show, :edit, :update, :destroy]
 
   # GET /locations
@@ -14,8 +14,10 @@ class LocationsController < Api::V1::BaseController
 
   # get /hangouts
   def hangouts
-    locations = Location.hangouts_address_by_latlng(params[:latitude], params[:longitude])
+    locations = Location.hangouts_address_by_latlng(params[:latitude], params[:longitude], params[:meters])
     render :json => locations
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
   # GET /locations/new

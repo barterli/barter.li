@@ -41,21 +41,19 @@ class Location < ActiveRecord::Base
     return false
   end
 
-  def self.hangouts_address_by_latlng(lat, lng)
+  def self.hangouts_address_by_latlng(lat, lng, meters)
     client = Foursquare2::Client.new(:client_id => ENV["FOURSQUARE_CLIENT_ID"], :client_secret => ENV["FOURSQUARE_CLIENT_SECRET"], :api_version => 20131016)
-    places = Array.new
-    hangouts = client.search_venues(:ll => lat.to_s+','+lng.to_s, :query => 'coffee')
+    venue = Array.new
+    hangouts = client.search_venues(:ll => lat.to_s+','+lng.to_s, :query => 'coffee', :llAcc => meters)
     if(hangouts.present? && hangouts[:venues].present?)
       hangouts[:venues].each do |hangout|
         address = hangout.location.address
         next unless address.present?
-        name = hangout.name
-        name = " " if name.nil? #to prevent nil to string in array push
-        address = " " if address.nil? 
-        places.push(name.to_s+','+address.to_s)
+        hangout.location.merge!(name: hangout.name)
+        venue << hangout.location
       end
     end
-    return places
+    return venue
   end
 
 end

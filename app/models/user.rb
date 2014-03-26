@@ -103,23 +103,21 @@ class User < ActiveRecord::Base
     setting.destroy if setting.present?
     if(location.present?)
       setting = self.settings.create(:name => "location", :value => location.id)
+      return location
     else
-      location = Location.create!(:country => params[:country], :city => params[:city], :state => params[:state] ,:address => params[:address])
+      location = Location.create!(:latitude => params[:latitude], :longitude => params[:longitude], :name => params[:name], :country => params[:country], :city => params[:city], :state => params[:state] ,:address => params[:address])
       setting = self.settings.create(:name => "location", :value => location.id)
+      return location
     end
-    return setting
-  rescue
-    return false
   end
 
   def preferred_location
     location = self.settings.find_by(:name => "location")
     if(location.present?)
-      location = Location.find(location.value)
+      return location = Location.find(location.value)
     else
-      location = ""
+      return location = ""
     end
-    return location
   end
   
   def generate_share_token
