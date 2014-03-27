@@ -23,6 +23,9 @@ BarterLi::Application.routes.draw do
         get '/book_info', to: 'books#book_info'
         get '/book_suggestions', to: 'books#book_suggestions'
         get '/hangouts', to: 'locations#hangouts'
+        post '/change_owner', to: 'books#change_owner'
+        post '/wish_list', to: 'books#set_wish_list'
+        get '/wish_list', to: 'books#get_wish_list'
         resources :books
     end
   end

@@ -25,6 +25,7 @@ describe Api::V1::BooksController do
    
   before(:each) do
     @user = FactoryGirl.create(:user)  
+    @tag = FactoryGirl.create(:tag) 
     @book = Book.create!(:title => "bookname", :user_id => @user.id, :location_id => 1, :user_id => @user.id)
   end
 
@@ -70,21 +71,6 @@ describe Api::V1::BooksController do
     end
   end
 
-  # describe "GET new" do
-  #   it "assigns a new book as @book" do
-  #     get :new, {}
-  #     assigns(:book).should be_a_new(Book)
-  #   end
-  # end
-
-  # describe "GET edit" do
-  #   it "assigns the requested book as @book" do
-  #     book = @user.books.create!(:title => "edit")
-  #     get :edit, {:id => book.to_param}
-  #     assigns(:book).should eq(book)
-  #   end
-  # end
-
   describe "POST create" do
     describe "with valid params" do
       it "creates a new Book" do
@@ -108,7 +94,6 @@ describe Api::V1::BooksController do
   end
 
   describe "Put update" do
-
     describe "with valid params" do
       it "updates the book" do
         put :update, valid_attributes.merge!(:id => @book.id)
@@ -129,21 +114,63 @@ describe Api::V1::BooksController do
   end
 
 
-  #   describe "book suggestions" do
-  #     it "Get book_info" do
-  #       get :book_info, {:q => "rails", :format => 'json'}
-  #       response.body.should_not be_empty
-  #     end
-  #   end
-  
+  describe "POST change_ownership" do
+    it "change the owner of book" do
+      @user2 = FactoryGirl.create(:user)
+      post :change_owner, {:user_token => @user.authentication_token, 
+     :user_email => @user.email, :book_id => @book.id, :user_id => @user2.id}
+      expect(response.status).to eq(200)
+      expect(@user2.books.last).to eq(@book)
+      expect(@user.books.count).to eq(0)
+    end
+    it "returns an error code if something went wrong" do
+      @user2 = FactoryGirl.create(:user)
+      post :change_owner, {:user_token => @user.authentication_token,  
+      :user_email => @user.email, :book_id => "", :user_id => @user2.id}
+      expect(response.status).to eq(400)
+      expect(json).to have_key('error_code')
+    end
+  end
 
-  #   describe "add wishlist" do
-  #     it "Post wishlist" do
-  #       post :add_wish_list, {:wish_list => {:title => "rails"}}
-  #       assigns(:wish_list).should eq(@user.wish_lists.last)
-  #     end
-  #    end
-  # end
+
+    describe "Get book_info " do
+      it "gives a particular book details" do
+        get :book_info, {:q => "rails", :format => 'json'}
+        response.body.should_not be_empty
+      end
+    end
+  
+   describe "Get book_suggestions" do
+      it "gives book title suggestions " do
+        get :book_suggestions, {:q => "rails", :format => 'json'}
+        response.body.should_not be_empty
+      end
+    end
+
+    describe "Post add_wish_list" do
+      it "add wishlists with valid params" do
+        post :set_wish_list, {:user_token => @user.authentication_token,  
+      :user_email => @user.email, :wish_list => {:title => "rails"}}
+        expect(response.status).to eq(200)
+        expect(@user.wish_lists.count).to eq(1)
+      end
+      it "add wishlists with invalid params returns error code" do
+        post :set_wish_list, {:user_token => @user.authentication_token,  
+       :user_email => @user.email, :wish_list => {}}
+        expect(response.status).to eq(400)
+        expect(json["wish_list"]).to eq(@user.wish_lists.last)
+      end
+    end
+
+    describe "get_wish_list" do 
+      it "gets the wishlist" do
+        get :get_wish_list, {:user_token => @user.authentication_token,  
+                              :user_email => @user.email}
+      expect(response.status).to eq(200)
+      response.body.should_not be_empty
+      end
+    end
+  
 
   # describe "DELETE destroy" do
   #   it "destroys the requested book" do

@@ -1,5 +1,6 @@
 class Api::V1::BooksController < Api::V1::BaseController
-  before_action :authenticate_user!, only: [:create, :index, :edit, :update, :destroy, :new, :my_books, :add_wish_list]
+  before_action :authenticate_user!, only: [:create, :index, :edit, :update, :destroy, :new, 
+                :change_owner, :my_books, :add_wish_list]
  
   def index
     @books = current_user.books
@@ -54,7 +55,7 @@ class Api::V1::BooksController < Api::V1::BaseController
     end
   end
   
-  #GET /tags
+  # GET /tags
   def get_tags
     render json: Tag.all, status: Code[:status_success] 
   end
@@ -70,16 +71,16 @@ class Api::V1::BooksController < Api::V1::BaseController
       end
   end
 
-  #POST /change_owner
+  # POST /change_owner
   def change_owner
     @book = current_user.books.find(params[:book_id])
     @book.user_id = params[:user_id]
     @book.tags.destroy
-    if(@book.tag_ids = [Tag.find_by(name:'private').id])
-      render json:{}, status: Code[:status_error]
-    else
-      render json:{error_code: Code[:status_error]}, status: Code[:status_error]
-    end
+    @book.tag_ids = [Tag.find_by(name:'private').id]
+    @book.save
+    render json:{}
+  rescue => e
+    render json:{error_code: Code[:error_rescue], error_message: e.message }, status: Code[:status_error]
   end
 
   # DELETE /books/1
@@ -89,18 +90,11 @@ class Api::V1::BooksController < Api::V1::BaseController
     @book.destroy
     render json { head :no_content }
   end
-
-  # Get list of users book
-  def my_books
-    @books = current_user.books
-  rescue => e
-    render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
-  end
  
-  # get /book_info
+  # GET /book_info
   def book_info
     results = book_info_goodreads_library
-    respond_with results
+    render json: results
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
@@ -120,17 +114,26 @@ class Api::V1::BooksController < Api::V1::BaseController
     return results
   end
 
-  # post '/wish_list'
-  def add_wish_list
+  # POST '/wish_list'
+  def set_wish_list
     @wish_list = current_user.wish_lists.new(wish_list_params)
     if(@wish_list.save)
-      respond_with(@wish_list)
+      render json: @wish_list
     else
-      respond_with(@wish_list.errors)
+      render json: {}, status: Code[:status_error]
     end
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
- # get /book_suggestions
+  def get_wish_list
+    @wish_lists = current_user.wish_lists
+    render json: @wish_lists
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  end
+
+ # GET /book_suggestions
   def book_suggestions
     book_titles = Array.new()
     book_titles << goodreads_titles 
