@@ -5,6 +5,7 @@ class Book < ActiveRecord::Base
   belongs_to :user
   belongs_to :location
   has_and_belongs_to_many :tags
+  has_many :user_book_visits
   validates :title, :presence => true
   validates :location_id, :presence => true
   #validates :print, numericality: { only_integer: true }, allow_blank: true

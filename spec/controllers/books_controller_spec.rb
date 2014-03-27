@@ -21,17 +21,20 @@ require 'spec_helper'
 
 
 
-describe BooksController do
+describe Api::V1::BooksController do
    
   before(:each) do
     @user = FactoryGirl.create(:user)  
+    @book = Book.create!(:title => "bookname", :user_id => @user.id, :location_id => 1, :user_id => @user.id)
   end
+
 
   
   # This should return the minimal set of attributes required to create a valid
   # Book. As you add validations to Book, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { { "title" => "bookname", "user_id" => @user.id} }
+  let(:valid_attributes) { {:format => 'json', :book => {:title => "bookname", :user_id => @user.id},
+      :user_token => @user.authentication_token, :user_email => @user.email, :location => {:latitude => 12.33, :longitude => 13.12}} } 
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -40,150 +43,107 @@ describe BooksController do
 
   describe "GET index" do
     it "shows list of current user books" do
-      sign_in @user
-      book = @user.books.create!(:title => "user")
-      get :index, {}
-      assigns(:books).should eq(@user.books)
+      get :index, {:user_token => @user.authentication_token, :user_email => @user.email}
+      expect(json).to have_key('books')
+      expect(json['books'].count).to eq(@user.books.count)
     end
   end
 
   describe "GET show" do
-    it "assigns the requested book as @book" do
-      sign_in @user
-      book = @user.books.create!(:title => "user")
-      visit_count = book.visits.to_i
-      get :show, {:id => book.to_param}
-      assigns(:book).should eq(book)
-      book = Book.find(book.id)
-      visit_count.should_not eq(book.visits)
+    it "returns the book without sign in" do
+      visit_count = @book.visits.to_i
+      get :show, {:id => @book.to_param}
+      visit_count.should_not eq(@book.visits.to_i+1)
+      expect(response.status).to eq(200)
+      expect(json).to have_key('book')
+    end
+    it "returns the book and adds user book visits with sign_in" do
+      get :show, {:id => @book.to_param, :user_token => @user.authentication_token, :user_email => @user.email}
+      expect(@book.user_book_visits.count).to eq(1)
+      expect(response.status).to eq(200)
+      expect(json).to have_key('book')
+    end
+    it "returns error if invalid book id" do
+      get :show, {:id => 100}
+      expect(response.status).to eq(400)
+      expect(json).to have_key('error_code')
     end
   end
 
-  describe "GET new" do
-    it "assigns a new book as @book" do
-      sign_in @user
-      get :new, {}
-      assigns(:book).should be_a_new(Book)
-    end
-  end
+  # describe "GET new" do
+  #   it "assigns a new book as @book" do
+  #     get :new, {}
+  #     assigns(:book).should be_a_new(Book)
+  #   end
+  # end
 
-  describe "GET edit" do
-    it "assigns the requested book as @book" do
-      sign_in @user
-      book = @user.books.create!(:title => "edit")
-      get :edit, {:id => book.to_param}
-      assigns(:book).should eq(book)
-    end
-  end
+  # describe "GET edit" do
+  #   it "assigns the requested book as @book" do
+  #     book = @user.books.create!(:title => "edit")
+  #     get :edit, {:id => book.to_param}
+  #     assigns(:book).should eq(book)
+  #   end
+  # end
 
   describe "POST create" do
     describe "with valid params" do
       it "creates a new Book" do
-        sign_in @user
         expect {
-          post :create, {:book => {:title => "test"}}
+          post :create, valid_attributes
         }.to change(Book, :count).by(1)
-      end
-
-      it "assigns a newly created book as @book" do
-        sign_in @user
-        post :create, {:book => valid_attributes}
-        assigns(:book).should be_a(Book)
-        assigns(:book).should be_persisted
-      end
-
-      it "redirects to the created book" do
-        sign_in @user
-        post :create, {:book => valid_attributes}
-        response.should redirect_to(Book.last)
+        expect(response.status).to eq(200)
+        expect(json).to have_key('book')
       end
     end
-
     describe "with invalid params" do
-      it "assigns a newly created but unsaved book as @book" do
-        sign_in @user
+      it "returns an error code" do
         # Trigger the behavior that occurs when invalid params are submitted
         Book.any_instance.stub(:save).and_return(false)
-        post :create, {:book => { "title" => "invalid value" }}
-        assigns(:book).should be_a_new(Book)
-      end
-
-      it "re-renders the 'new' template" do
-        sign_in @user
-        # Trigger the behavior that occurs when invalid params are submitted
-        Book.any_instance.stub(:save).and_return(false)
-        post :create, {:book => { "title" => "invalid value" }}
-        response.should render_template("new")
+        post :create, valid_attributes
+        expect(response.status).to eq(400)
+        expect(json).to have_key('error_code')
+        expect(json).to have_key('error_message')
       end
     end
   end
 
-  describe "PUT update" do
+  describe "Put update" do
+
     describe "with valid params" do
-      it "updates the requested book" do
-        sign_in @user
-        book = Book.create! valid_attributes
-        # Assuming there are no other books in the database, this
-        # specifies that the Book created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Book.any_instance.should_receive(:update).with({ "title" => "MyString" })
-        put :update, {:id => book.to_param, :book => { "title" => "MyString" }}
-      end
-
-      it "assigns the requested book as @book" do
-        sign_in @user
-        book = Book.create! valid_attributes
-        put :update, {:id => book.to_param, :book => valid_attributes}
-        assigns(:book).should eq(book)
-      end
-
-      it "redirects to the book" do
-        sign_in @user
-        book = Book.create! valid_attributes
-        put :update, {:id => book.to_param, :book => valid_attributes}
-        response.should redirect_to(book)
+      it "updates the book" do
+        put :update, valid_attributes.merge!(:id => @book.id)
+        expect(response.status).to eq(200)
+        expect(json).to have_key('book')
       end
     end
-
     describe "with invalid params" do
-      it "assigns the book as @book" do
-        sign_in @user
-        book = Book.create! valid_attributes
+      it "returns an error code" do
         # Trigger the behavior that occurs when invalid params are submitted
         Book.any_instance.stub(:save).and_return(false)
-        put :update, {:id => book.to_param, :book => { "title" => "invalid value" }}
-        assigns(:book).should eq(book)
-      end
-
-      it "re-renders the 'edit' template" do
-        sign_in @user
-        book = Book.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Book.any_instance.stub(:save).and_return(false)
-        put :update, {:id => book.to_param, :book => { "title" => "invalid value" }}
-        response.should render_template("edit")
+        put :update, valid_attributes.merge!(:id => @book.id)
+        expect(response.status).to eq(400)
+        expect(json).to have_key('error_code')
+        expect(json).to have_key('error_message')
       end
     end
+  end
 
 
-    describe "book suggestions" do
-      it "Get book_info" do
-        sign_in @user
-        get :book_info, {:q => "rails", :format => 'json'}
-        response.body.should_not be_empty
-      end
-    end
+  #   describe "book suggestions" do
+  #     it "Get book_info" do
+  #       get :book_info, {:q => "rails", :format => 'json'}
+  #       response.body.should_not be_empty
+  #     end
+  #   end
   
 
-    describe "add wishlist" do
-      it "Post wishlist" do
-        sign_in @user
-        post :add_wish_list, {:wish_list => {:title => "rails"}}
-        assigns(:wish_list).should eq(@user.wish_lists.last)
-      end
-     end
-  end
+  #   describe "add wishlist" do
+  #     it "Post wishlist" do
+  #       post :add_wish_list, {:wish_list => {:title => "rails"}}
+  #       assigns(:wish_list).should eq(@user.wish_lists.last)
+  #     end
+  #    end
+  # end
 
   # describe "DELETE destroy" do
   #   it "destroys the requested book" do

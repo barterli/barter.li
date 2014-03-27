@@ -1,4 +1,4 @@
-class PublicController < Api::V1::BaseController
+class Api::V1::PublicController < Api::V1::BaseController
 
 	 def index
 
@@ -15,8 +15,8 @@ class PublicController < Api::V1::BaseController
 
   def register
     @register = Register.new
-    @register.email = params[:register][:email]
-    @register.register_type = params[:register][:register_type]
+    @register.email = params[:email]
+    @register.register_type = params[:register_type]
     if(@register.save)
     	render json: {status: :success}
     else

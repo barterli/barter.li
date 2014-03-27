@@ -7,7 +7,7 @@ class UserSerializer < ActiveModel::Serializer
       location = Location.find(location.value)
       return location.as_json(except: [:created_at, :updated_at])
     else
-      return location = ""
+      return location = nil
     end  
   end
 

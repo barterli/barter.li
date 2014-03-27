@@ -13,10 +13,10 @@ class Api::V1::BooksController < Api::V1::BaseController
   def show
     @book = Book.find(params[:id])
     @book.book_visit_count
-    if(session["warden.user.user.key"].present?)
-      @book.book_visit_user(session["warden.user.user.key"][0][0])
+    if(current_user.present?)
+      @book.book_visit_user(current_user.id)
     end
-    render json: book 
+    render json: @book 
   rescue => e
     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end

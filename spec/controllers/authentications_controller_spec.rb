@@ -1,22 +1,28 @@
 require 'spec_helper'
-
-describe AuthenticationsController do
+describe Api::V1::AuthenticationsController do
 
   describe "POST create_user" do
     describe "with valid params" do
-      it "creates a new user" do
-        expect {
-          post :create_user, {:format => 'json', :email => "test@gmail.com", :uid => 3234234}
-        }.to change(User, :count).by(1)
-      end
-       it "response should contain status success with valid params" do
-          post :create_user, {:format => 'json', :email => "test@gmail.com", :uid => 3234234}
-          JSON.parse(response.body)["status"].should eq("success")
+       it "creates a new user with provider manual" do
+          post :create_user, {:format => 'json', :email => "test@gmail.com", :password => "3234234n6", :provider => "manual"}
+          expect(response.status).to eq(200)
+          expect(json).to have_key('user')
       end 
-       it "response should contain status error with inavalid params" do
-          post :create_user, {:format => 'json', :email => "tesmail.com", :uid => 3234234}
-          JSON.parse(response.body)["status"].should eq("error")
-      end       
+      it "gives the existing user if already present" do
+          post :create_user, {:format => 'json', :email => "test@gmail.com", :password => "3234234n6", :provider => "manual"}
+          expect(response.status).to eq(200)
+          expect(json).to have_key('user')
+          expect(User.count).to eq(1)
+      end 
+    end
+    describe "with invalid params" do
+       it "response should contain status error with inavalid params with manual" do
+          post :create_user, {:format => 'json', :email => "tesmail.com", :password => 3234234, :provider => "manual"}
+          expect(response.status).to eq(400)
+          expect(json).to have_key('error_code')
+          expect(json).to have_key('error_message')
+      end
     end
   end
 end
+

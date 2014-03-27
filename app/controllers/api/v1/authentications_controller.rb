@@ -104,8 +104,8 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
       user.authentications.create!(:provider => "facebook", :uid => FB.auth_hash["uid"], :token => params[:access_token])
     end
       render json: user  
-  rescue => e
-      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error] 
+  #rescue => e
+      #render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error] 
   end
    
 
