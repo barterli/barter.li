@@ -10,7 +10,7 @@ BarterLi::Application.routes.draw do
         get '/profile_image', to: 'users#get_profile_image'
         post '/auth_token', to: 'authentications#get_auth_token'
         post '/create_user', to: 'authentications#create_user'
-        get '/user_preferred_location', to: 'users#user_preferred_location'
+        get '/user_preferred_location', to: 'users#get_user_preferred_location'
         post '/user_preferred_location', to: 'users#set_user_preferred_location'
         get '/search', to: "search#search"
         post '/barter_notification', to: "barters#send_barter_notification"

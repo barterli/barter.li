@@ -117,7 +117,7 @@ class User < ActiveRecord::Base
     if(location.present?)
       return location = Location.find(location.value)
     else
-      return location = ""
+      return location = nil
     end
   end
   

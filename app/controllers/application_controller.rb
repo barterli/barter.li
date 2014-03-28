@@ -9,6 +9,7 @@ class ApplicationController < ActionController::API
 
   private
     def authenticate_user_from_token!
+      request.format = "json"
       user_token = token_and_options(request).presence
       return if user_token.blank?
       user_email = user_token[1][:email].presence 

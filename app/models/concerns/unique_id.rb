@@ -20,7 +20,7 @@ module UniqueId
    def model_generate_unique_id(field_name)
      loop do
         guid = SecureRandom.hex(8)
-        break guid unless User.where(:"#{field_name}" => id).first
+        break guid unless self.class.name.constantize.where(:"#{field_name}" => id).first
       end
    end
 

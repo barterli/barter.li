@@ -3,10 +3,6 @@ require 'spec_helper'
 describe User do
   before(:each) do
      @attr = {
-       :country => "india",
-       :state => "karnataka",
-       :city => "bangalore",
-       :locality => "koramangala",
        :email => "test@test.com",
        :password => "12345678"
      }
