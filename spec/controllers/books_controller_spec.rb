@@ -27,6 +27,7 @@ describe Api::V1::BooksController do
     @user = FactoryGirl.create(:user)  
     @tag = FactoryGirl.create(:tag) 
     @book = Book.create!(:title => "bookname", :user_id => @user.id, :location_id => 1, :user_id => @user.id)
+    http_login(@user.authentication_token, @user.email)
   end
 
 
@@ -35,7 +36,7 @@ describe Api::V1::BooksController do
   # Book. As you add validations to Book, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) { {:format => 'json', :book => {:title => "bookname", :user_id => @user.id},
-      :user_token => @user.authentication_token, :user_email => @user.email, :location => {:latitude => 12.33, :longitude => 13.12}} } 
+      :location => {:latitude => 12.33, :longitude => 13.12}} } 
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -44,7 +45,7 @@ describe Api::V1::BooksController do
 
   describe "GET index" do
     it "shows list of current user books" do
-      get :index, {:user_token => @user.authentication_token, :user_email => @user.email}
+      get :index, {}
       expect(json).to have_key('books')
       expect(json['books'].count).to eq(@user.books.count)
     end
@@ -59,7 +60,7 @@ describe Api::V1::BooksController do
       expect(json).to have_key('book')
     end
     it "returns the book and adds user book visits with sign_in" do
-      get :show, {:id => @book.to_param, :user_token => @user.authentication_token, :user_email => @user.email}
+      get :show, {:id => @book.to_param}
       expect(@book.user_book_visits.count).to eq(1)
       expect(response.status).to eq(200)
       expect(json).to have_key('book')
@@ -117,16 +118,14 @@ describe Api::V1::BooksController do
   describe "POST change_ownership" do
     it "change the owner of book" do
       @user2 = FactoryGirl.create(:user)
-      post :change_owner, {:user_token => @user.authentication_token, 
-     :user_email => @user.email, :book_id => @book.id, :user_id => @user2.id}
+      post :change_owner, {:book_id => @book.id, :user_id => @user2.id}
       expect(response.status).to eq(200)
       expect(@user2.books.last).to eq(@book)
       expect(@user.books.count).to eq(0)
     end
     it "returns an error code if something went wrong" do
       @user2 = FactoryGirl.create(:user)
-      post :change_owner, {:user_token => @user.authentication_token,  
-      :user_email => @user.email, :book_id => "", :user_id => @user2.id}
+      post :change_owner, {:book_id => "", :user_id => @user2.id}
       expect(response.status).to eq(400)
       expect(json).to have_key('error_code')
     end
@@ -149,14 +148,12 @@ describe Api::V1::BooksController do
 
     describe "Post add_wish_list" do
       it "add wishlists with valid params" do
-        post :set_wish_list, {:user_token => @user.authentication_token,  
-      :user_email => @user.email, :wish_list => {:title => "rails"}}
+        post :set_wish_list, {:wish_list => {:title => "rails"}}
         expect(response.status).to eq(200)
         expect(@user.wish_lists.count).to eq(1)
       end
       it "add wishlists with invalid params returns error code" do
-        post :set_wish_list, {:user_token => @user.authentication_token,  
-       :user_email => @user.email, :wish_list => {}}
+        post :set_wish_list, {:wish_list => {}}
         expect(response.status).to eq(400)
         expect(json["wish_list"]).to eq(@user.wish_lists.last)
       end
@@ -164,8 +161,7 @@ describe Api::V1::BooksController do
 
     describe "get_wish_list" do 
       it "gets the wishlist" do
-        get :get_wish_list, {:user_token => @user.authentication_token,  
-                              :user_email => @user.email}
+        get :get_wish_list, {}
       expect(response.status).to eq(200)
       response.body.should_not be_empty
       end

@@ -1,6 +1,6 @@
 class Api::V1::BooksController < Api::V1::BaseController
   before_action :authenticate_user!, only: [:create, :index, :edit, :update, :destroy, :new, 
-                :change_owner, :my_books, :add_wish_list]
+                :change_owner, :my_books, :set_wish_list]
  
   def index
     @books = current_user.books
