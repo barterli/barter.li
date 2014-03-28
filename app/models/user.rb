@@ -3,8 +3,7 @@ class User < ActiveRecord::Base
   include UniqueId
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  before_save :change_lowercase
-  before_save :ensure_authentication_token
+  before_save :change_lowercase, :ensure_authentication_token
   after_create :generate_share_token
   devise :database_authenticatable, :omniauthable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
