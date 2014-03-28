@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140312083026) do
+ActiveRecord::Schema.define(version: 20140328073034) do
 
   create_table "alerts", force: true do |t|
     t.integer  "user_id"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20140312083026) do
     t.string   "language_code"
     t.string   "barter_type"
     t.integer  "location_id"
+    t.string   "id_book"
   end
 
   create_table "books_tags", force: true do |t|
@@ -94,6 +95,18 @@ ActiveRecord::Schema.define(version: 20140312083026) do
     t.integer "tag_id"
   end
 
+  create_table "chat_groups", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "chat_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "chats", force: true do |t|
+    t.string   "msg_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "default_settings", force: true do |t|
     t.string   "name"
@@ -111,21 +124,46 @@ ActiveRecord::Schema.define(version: 20140312083026) do
     t.datetime "updated_at"
   end
 
+  create_table "groups", force: true do |t|
+    t.integer  "user_id"
+    t.string   "title"
+    t.text     "description"
+    t.boolean  "is_private",  default: false
+    t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "locations", force: true do |t|
     t.string   "country"
     t.string   "state"
     t.string   "city"
-    t.string   "address"
-    t.string   "postal_code"
     t.string   "locality"
     t.string   "name"
     t.string   "latitude"
     t.string   "longitude"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "address"
+    t.string   "id_location"
   end
 
+  create_table "members", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "status"
+  end
+
+  create_table "messages", force: true do |t|
+    t.text     "body"
+    t.integer  "msg_from"
+    t.integer  "msg_to"
+    t.string   "chat_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "notifications", force: true do |t|
     t.integer  "user_id"
@@ -213,21 +251,25 @@ ActiveRecord::Schema.define(version: 20140312083026) do
     t.string   "last_name"
     t.string   "middle_name"
     t.string   "gender"
-    t.string   "age"
+    t.integer  "age"
+    t.string   "birthday"
+    t.string   "anniversary"
+    t.string   "occupancy"
+    t.string   "marital_status"
     t.string   "mobile"
+    t.string   "region"
     t.string   "country"
-    t.string   "image"
     t.string   "state"
     t.string   "city"
     t.string   "street"
     t.string   "address"
-    t.string   "profile"
     t.string   "pincode"
     t.string   "latitude"
     t.string   "longitude"
     t.string   "accuracy"
     t.string   "altitude"
     t.boolean  "status",                 default: true
+    t.string   "payment_status"
     t.boolean  "is_admin",               default: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -244,9 +286,12 @@ ActiveRecord::Schema.define(version: 20140312083026) do
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
     t.string   "locality"
+    t.string   "place"
     t.string   "authentication_token"
     t.text     "description"
     t.string   "share_token"
+    t.string   "profile"
+    t.string   "id_user"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

@@ -1,5 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :email, :description, :first_name, :last_name, :location, :auth_token, :sign_in_count
+  attributes :id, :email, :description, :first_name, :last_name, :location, :auth_token, :sign_in_count, :id_user
   
   def location
     location = object.settings.find_by(:name => "location")

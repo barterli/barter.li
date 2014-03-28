@@ -1,5 +1,6 @@
 require 'digest/md5'
 class User < ActiveRecord::Base
+  include UniqueId
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   before_save :change_lowercase
@@ -15,6 +16,7 @@ class User < ActiveRecord::Base
   has_many :alerts
   has_many :authentications, :dependent => :destroy
   has_many :user_shares
+  has_many :user_book_visits
   mount_uploader :profile, ImageUploader
 
   def ensure_authentication_token

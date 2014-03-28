@@ -1,4 +1,5 @@
 class Location < ActiveRecord::Base
+  include UniqueId
   before_update :geocode_address
   has_many :books
   reverse_geocoded_by :latitude, :longitude

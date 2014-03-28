@@ -1,6 +1,6 @@
 class BookSerializer < ActiveModel::Serializer
   attributes :id, :title, :author, :publication_year, :publication_month, 
-             :image_url, :barter_type, :location, :tags
+             :image_url, :barter_type, :location, :tags, :id_book
   
   def location
     object.location.as_json(except: [:created_at, :updated_at])

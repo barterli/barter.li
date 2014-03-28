@@ -1,7 +1,9 @@
 class Book < ActiveRecord::Base
+  include UniqueId
   before_save :change_lowercase
   # after_create :save_book_cover_image
   attr_accessor :image_cache
+  after_create :generate_unique_id
   belongs_to :user
   belongs_to :location
   has_and_belongs_to_many :tags
