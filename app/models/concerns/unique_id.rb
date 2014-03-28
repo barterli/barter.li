@@ -6,14 +6,23 @@ module UniqueId
   
   extend ActiveSupport::Concern
    included do
-      after_create :model_generate_unique_id
+      after_create :model_set_unique_id
     end
    
    # generate unique string id for models
-   def model_generate_unique_id
-   	 uuid = self.id.to_s+"_"+SecureRandom.hex(5)
-     self.send("id_"+self.class.name.downcase+"=", uuid)
+   def model_set_unique_id
+   	 field_name = "id_"+self.class.name.downcase
+   	 guid = self.model_generate_unique_id(field_name)
+     self.send(field_name+"=", guid)
      self.save
    end
 
+   def model_generate_unique_id(field_name)
+     loop do
+        guid = SecureRandom.hex(8)
+        break guid unless User.where(:"#{field_name}" => id).first
+      end
+   end
+
 end
+

@@ -10,6 +10,7 @@ class ApplicationController < ActionController::API
   private
     def authenticate_user_from_token!
       user_token = token_and_options(request).presence
+      return if user_token.blank?
       user_email = user_token[1][:email].presence 
       user = user_email && User.find_by_email(user_email)
       if user && Devise.secure_compare(user.authentication_token, user_token[0])
