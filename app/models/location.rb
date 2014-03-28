@@ -50,8 +50,8 @@ class Location < ActiveRecord::Base
       hangouts[:venues].each do |hangout|
         address = hangout.location.address
         next unless address.present?
-        hangout.location.merge!(name: hangout.name)
-        venue << hangout.location
+        #hangout.location
+        venue << {address: address, country: hangout.location.country, name: hangout.name, latitude: hangout.location.lat, longitude: hangout.location.lng}
       end
     end
     return venue
