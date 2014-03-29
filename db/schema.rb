@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140328073034) do
+ActiveRecord::Schema.define(version: 20140329105740) do
 
   create_table "alerts", force: true do |t|
     t.integer  "user_id"
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 20140328073034) do
     t.string   "image"
     t.string   "publisher"
     t.string   "goodreads_id"
-    t.string   "image_url"
+    t.string   "ext_image_url"
     t.integer  "pages"
     t.string   "language_code"
     t.string   "barter_type"

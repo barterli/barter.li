@@ -38,6 +38,14 @@ class Api::V1::UsersController < Api::V1::BaseController
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
+  def set_profile_image
+    current_user.profile = params[:profile]
+    current_user.save!
+    render json: {image_url: image_url, status: :success}
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  end
+
   # POST /prefered_location
   def set_user_preferred_location
     location = current_user.set_preferred_location(params)
