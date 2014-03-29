@@ -3,7 +3,7 @@ class Book < ActiveRecord::Base
   before_save :change_lowercase
   # after_create :save_book_cover_image
   attr_accessor :image_cache
-  belongs_to :user
+  belongs_to :user, touch: true
   belongs_to :location
   has_and_belongs_to_many :tags
   has_many :user_book_visits
@@ -35,8 +35,8 @@ class Book < ActiveRecord::Base
    
   # increase book visit count
   def book_visit_count()
-    self.visits = self.visits.to_i + 1
-    self.save
+    # using update columns for cache reasons to disable updated_at change
+    self.update_columns(visits: self.visits.to_i + 1)
   end
 
   # convert title, author to lowercase

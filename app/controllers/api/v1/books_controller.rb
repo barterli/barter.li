@@ -4,7 +4,9 @@ class Api::V1::BooksController < Api::V1::BaseController
  
   def index
     @books = current_user.books
-    render :json => @books
+    if stale?(:etag => "index_books_"+current_user.id, :last_modified =>  @books.maximum(:updated_at), :public => true)
+      render :json => @books
+    end
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
@@ -17,7 +19,9 @@ class Api::V1::BooksController < Api::V1::BaseController
     if(current_user.present?)
       @book.book_visit_user(current_user.id)
     end
-    render json: @book 
+    if stale?(:etag => @book.id, :last_modified => @book.updated_at, :public => true)
+      render json: @book 
+    end
   rescue => e
     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end

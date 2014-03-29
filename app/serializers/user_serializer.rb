@@ -1,4 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
+  cached
   attributes :id, :email, :description, :first_name, :last_name, :location, :auth_token, :sign_in_count, :id_user
   
   def location
@@ -13,6 +14,11 @@ class UserSerializer < ActiveModel::Serializer
 
   def auth_token
     object.authentication_token
+  end
+
+    
+  def cache_key
+    [object, scope]
   end
 
 end
