@@ -7,9 +7,9 @@ class Api::V1::UsersController < Api::V1::BaseController
     user  = User.find(params[:id])
     setting = user.settings.find_by(name: "location")
     location = setting.present? ? Location.find(setting.value) : false 
-    if stale?(:etag => "user_profile_"+user.id, :last_modified => user.updated_at, :public => true)
+    # if stale?(:etag => "user_profile_"+user.id, :last_modified => user.updated_at, :public => true)
       render :json => {user: user, books: user.books}
-    end
+    # end
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
@@ -17,9 +17,9 @@ class Api::V1::UsersController < Api::V1::BaseController
   # GET '/current_user_profile'
   def show
     user  = current_user
-    if stale?(:etag => "current_user_profile_"+user.id, :last_modified => user.updated_at, :public => true)
+    # if stale?(:etag => "current_user_profile_"+user.id, :last_modified => user.updated_at, :public => true)
       render :json => {user: user, books: user.books}
-    end
+    # end
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end

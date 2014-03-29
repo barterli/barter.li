@@ -18,7 +18,6 @@ class BookSerializer < ActiveModel::Serializer
     "#{url[:protocol]}#{url[:host]}:#{url[:port]}#{object.image.url}"
   end
 
-
   def cache_key
     [object, scope]
   end

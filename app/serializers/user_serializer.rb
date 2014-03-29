@@ -15,7 +15,6 @@ class UserSerializer < ActiveModel::Serializer
   def auth_token
     object.authentication_token
   end
-
     
   def cache_key
     [object, scope]

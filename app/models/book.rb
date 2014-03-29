@@ -1,5 +1,6 @@
 class Book < ActiveRecord::Base
   include UniqueId
+  include HabtmTouchId
   before_save :change_lowercase
   # after_create :save_book_cover_image
   attr_accessor :image_cache

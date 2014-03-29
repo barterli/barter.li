@@ -4,9 +4,9 @@ class Api::V1::BooksController < Api::V1::BaseController
  
   def index
     @books = current_user.books
-    if stale?(:etag => "index_books_"+current_user.id, :last_modified =>  @books.maximum(:updated_at), :public => true)
+    # if stale?(:etag => "index_books_"+current_user.id, :last_modified =>  @books.maximum(:updated_at), :public => true)
       render :json => @books
-    end
+    # end
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
@@ -19,9 +19,9 @@ class Api::V1::BooksController < Api::V1::BaseController
     if(current_user.present?)
       @book.book_visit_user(current_user.id)
     end
-    if stale?(:etag => @book.id, :last_modified => @book.updated_at, :public => true)
+    # if stale?(:etag => @book.id, :last_modified => @book.updated_at, :public => true)
       render json: @book 
-    end
+    # end
   rescue => e
     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
@@ -73,6 +73,12 @@ class Api::V1::BooksController < Api::V1::BaseController
       else
         render json: {error_message: @book.errors, error_code: Code[:error_resource]}, status: Code[:status_error]
       end
+  end
+
+  def test
+    book = Book.find(11)
+    binding.pry
+    render json: {:book => book.tags}
   end
 
   # POST /change_owner
