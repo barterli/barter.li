@@ -26,7 +26,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def update
     user  = current_user
-    if(user.update_attributes(user_params))
+    if(user.update_attributes(user_profile_params))
       render json: user
     else
       render json: {error_code: Code[:error_resource], error_message: user.errors.full_messages},  status: Code[:status_error]
@@ -113,12 +113,12 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
  private
-    def user_params
-      params[:user] = JSON.parse(params[:user])
+    def user_profile_params
+      params[:user_profile] = JSON.parse(params[:user])
       if(params[:profile].present?)
-        params[:user][:profile] = params[:profile]
+        params[:user_profile][:profile] = params[:profile]
       end
-      params.require(:user).permit(:first_name, :last_name, :description, :email, :profile
+      params.require(:user_profile).permit(:first_name, :last_name, :description, :email, :profile
       )
     end
 end
