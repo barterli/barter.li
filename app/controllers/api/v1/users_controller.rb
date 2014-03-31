@@ -116,9 +116,9 @@ class Api::V1::UsersController < Api::V1::BaseController
     def user_profile_params
       params[:user_profile] = JSON.parse(params[:user])
       if(params[:profile].present?)
-        params[:user_profile][:profile] = params[:profile]
+        params[:user_profile][:user][:profile] = params[:profile]
       end
-      params.require(:user_profile).permit(:first_name, :last_name, :description, :email, :profile
+      params[:user_profile].require(:user).permit(:first_name, :last_name, :description, :email, :profile
       )
     end
 end
