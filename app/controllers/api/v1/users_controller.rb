@@ -27,9 +27,9 @@ class Api::V1::UsersController < Api::V1::BaseController
   def update
     user  = current_user
     if(user.update_attributes(user_params))
-      render json: {status: :success, user: user}
+      render json: user
     else
-      render json: {status: :error}
+      render json: {error_code: Code[:error_resource], error_message: user.errors.full_messages},  status: Code[:status_error]
     end
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
@@ -49,6 +49,30 @@ class Api::V1::UsersController < Api::V1::BaseController
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
+
+  def send_password_reset
+    user = User.find_by(email: params[:email])
+    if(user)
+      user.send_password_reset
+      render json: {}
+    else
+      render json: {error_code: Code[:error_resource], error_message: "no user found"}, status: Code[:status_error]
+    end
+  end
+ 
+  def reset_password
+    user = User.find_by(reset_password_token: params[:token], email: params[:email])
+    if(user.reset_password_sent_at > Time.now - 20.minutes)
+      user.password = params[:password]
+      user.save!
+      render json: {user: user}
+    else
+      render json: {error_code: Code[:error_resource], error_message: "token expired"}, status: Code[:status_error] 
+    end
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]  
+  end
+
 
   # POST /prefered_location
   def set_user_preferred_location
@@ -90,6 +114,10 @@ class Api::V1::UsersController < Api::V1::BaseController
 
  private
     def user_params
+      params[:user] = JSON.parse(params[:user])
+      if(params[:profile].present?)
+        params[:user][:profile] = params[:profile]
+      end
       params.require(:user).permit(:first_name, :last_name, :description, :email, :profile
       )
     end

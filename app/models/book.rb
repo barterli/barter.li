@@ -1,8 +1,6 @@
 class Book < ActiveRecord::Base
   include UniqueId
   include HabtmTouchId
-  before_save :change_lowercase
-  # after_create :save_book_cover_image
   attr_accessor :image_cache
   belongs_to :user, touch: true
   belongs_to :location
@@ -65,7 +63,7 @@ class Book < ActiveRecord::Base
       books = books.where("isbn_10 = ? or isbn_13 = ?", "#{params[:isbn]}","#{params[:isbn]}") if params[:isbn].present? 
       books = books.where("author like ?", "%#{params[:author]}%") if params[:author].present?
       books = books.where("author like ? or title like ?", "%#{params[:book_or_author]}%", "%#{params[:book_or_author]}%") if params[:book_or_author].present?
-      # books = books.joins(:location).merge(locations) if locations.present?
+      #books = books.joins(:location).merge(locations) if locations.present?
       books = books.where(:location_id => locations.map(&:id)) if locations.present?
     else
       books = Book.all.order("RAND()")

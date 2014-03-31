@@ -32,4 +32,10 @@ class Notifier < ActionMailer::Base
     mail to: @user.email, subject: "Barter.li request for book"
   end
 
+  def password_reset(user)
+    mail :to => user.email, :subject => "Password Reset",
+    content_type: "text/html", body: "<h1>Password reset token</h1><p>
+    #{user.reset_password_token}</p>"
+  end
+
 end

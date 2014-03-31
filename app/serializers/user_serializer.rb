@@ -1,7 +1,8 @@
 class UserSerializer < ActiveModel::Serializer
   cached
   attributes :id, :email, :description, :first_name, :last_name, :location, :auth_token, :sign_in_count, :id_user
-  
+  has_many :books
+ 
   def location
     location = object.settings.find_by(:name => "location")
     if(location.present?)

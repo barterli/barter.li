@@ -27,6 +27,8 @@ BarterLi::Application.routes.draw do
         get '/hangouts', to: 'locations#hangouts'
         post '/change_owner', to: 'books#change_owner'
         post '/wish_list', to: 'books#set_wish_list'
+        get '/password_reset', to: 'users#send_password_reset'
+        post '/password_reset', to: 'users#reset_password'
         get '/wish_list', to: 'books#get_wish_list'
         resources :books
     end

@@ -37,6 +37,7 @@ group :development do
    gem "binding_of_caller"
    gem 'pry'
    gem 'quiet_assets'
+   gem 'pry-debugger'
 end
 
 gem "github_api"

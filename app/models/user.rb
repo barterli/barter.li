@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   include UniqueId
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  before_save :change_lowercase, :ensure_authentication_token
+  before_save :ensure_authentication_token
   after_create :generate_share_token
   devise :database_authenticatable, :omniauthable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
@@ -137,6 +137,14 @@ class User < ActiveRecord::Base
     link_user = User.user_by_roken(token)
     link_user.user_shares.new(share_user_id: self.id)
     link_user.save
+  end
+
+
+  def send_password_reset
+    self.reset_password_token =  SecureRandom.random_number(88888888)
+    self.reset_password_sent_at = Time.zone.now
+    save!
+    Notifier.password_reset(self).deliver
   end
 
   def self.create_or_find_by_email_and_password(email, password)
