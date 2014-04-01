@@ -41,13 +41,13 @@ describe Api::V1::SearchController do
       expect(json['search'].count).to eq(1)
     end
 
-    # it "should give error response if something went wrong" do
-    #     Book.should_receive(:search).with(an_instance_of(Object)).and_return(false) 
-    #     get :search, {:latitude => 12.9667, :longitude => 77.5667 }
-    #     expect(response.status).to eq(400)
-    #     expect(json).to have_key('error_code')
-    #     expect(json).to have_key('error_message')
-    # end
+    it "should give error response if something went wrong" do
+        Book.should_receive(:search).and_throw(:error) 
+        get :search, {:latitude => 12.9667, :longitude => 77.5667 }
+        expect(response.status).to eq(400)
+        expect(json).to have_key('error_code')
+        expect(json).to have_key('error_message')
+    end
 
   end
 
