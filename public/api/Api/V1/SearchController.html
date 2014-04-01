@@ -54,8 +54,195 @@
 		<div class="service">
   <h1 class="noborder title">Barter.li API Documentation</h1>
     <a class="back" href="../../index.html" title="back to the overview">&laquo; back to overview</a>
-    <h2>SearchController</h2>
+    <h2>Search [1.0]</h2>
+    <div class="description">
+  
+<p>Search books</p>
+
+</div>
+
+
+  <div id="Services" class="method_details_list">
     
+		<div class="method">
+      <h3>search</h3>
+			<p class="method_desc">get books</p>
+
+      
+        <div class="resource_url even">
+          <h4>URL</h4>
+          <span class="action">GET</span>
+          <span class="url">/search</span>
+        </div>
+      
+
+      
+
+
+      
+
+  <div class="parameters odd">
+    
+      <h4>Optional Parameters</h4>
+    
+		<ul>
+  		
+				<li>
+					<span class="name">search</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>search string (can be isbn or author or title)</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">latitude</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Latitude coordinate</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">longitude</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Longitude coordinate</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">radius</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Radius of book to search</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">page</span>
+					<span class="type"><tt>Integer</tt></span>
+					<span class="text">
+<p>Page number</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">per</span>
+					<span class="type"><tt>Integer</tt></span>
+					<span class="text">
+<p>number of results to return</p>
+</span>
+				</li>
+  		
+	  </ul>
+	</div>
+
+
+      
+        
+
+
+      
+
+			
+				<div class="examples">
+					<h4>Examples</h4>
+					
+						<div class="example">
+							
+							
+							
+							<span class="description">
+								
+									
+										Let's search a book
+									
+								
+							</span>
+							<span class="hash request">
+								<strong class="type">Request</strong>
+								
+									
+										
+<p>“`json {</p>
+
+<pre class="code ruby"><code class="ruby">&quot;search&quot;: &quot;ra&quot;
+}</code></pre>
+
+<p>} “`</p>
+
+									
+								
+							</span>
+							<span class="hash response">
+								<strong class="type">Response</strong>
+								
+									
+										
+<p>“`json</p>
+
+<pre class="code ruby"><code class="ruby"> {
+    &quot;search&quot;: [
+        {
+            &quot;id&quot;: 6,
+            &quot;title&quot;: &quot;rails&quot;,
+            &quot;author&quot;: &quot;rails-to-trails&quot;,
+            &quot;publication_year&quot;: null,
+            &quot;publication_month&quot;: &quot;&quot;,
+            &quot;image_url&quot;: &quot;http://localhost:3000/fallback/1_default.png&quot;,
+            &quot;barter_type&quot;: null,
+            &quot;location&quot;: null,
+            &quot;tags&quot;: [],
+            &quot;id_book&quot;: null
+        },
+        {
+            &quot;id&quot;: 7,
+            &quot;title&quot;: &quot;rails&quot;,
+            &quot;author&quot;: &quot;rails-to-trails&quot;,
+            &quot;publication_year&quot;: null,
+            &quot;publication_month&quot;: &quot;&quot;,
+            &quot;image_url&quot;: &quot;http://localhost:3000/fallback/1_default.png&quot;,
+            &quot;barter_type&quot;: null,
+            &quot;location&quot;: null,
+            &quot;tags&quot;: [],
+            &quot;id_book&quot;: null
+        },
+        {
+            &quot;id&quot;: 8,
+            &quot;title&quot;: &quot;rails&quot;,
+            &quot;author&quot;: &quot;rails-to-trails&quot;,
+            &quot;publication_year&quot;: null,
+            &quot;publication_month&quot;: &quot;&quot;,
+            &quot;image_url&quot;: &quot;http://localhost:3000/fallback/1_default.png&quot;,
+            &quot;barter_type&quot;: null,
+            &quot;location&quot;: null,
+            &quot;tags&quot;: [],
+            &quot;id_book&quot;: null
+        },
+
+    ]
+}</code></pre>
+
+<p>} “`</p>
+
+									
+								
+							</span>
+							<span class="description">
+								
+									
+										returns search array object
+									
+								
+							</span>
+						</div>
+					
+				</div>
+			
+		</div>
+    
+  </div>
 
 
 </div>
@@ -64,7 +251,7 @@
 	</div>
 
     <div id="footer">
-  Generated on Wed Mar 26 21:29:17 2014 with ruby-2.0.0
+  Generated on Tue Apr  1 17:30:24 2014 with ruby-2.0.0
 </div>
 
   </body>

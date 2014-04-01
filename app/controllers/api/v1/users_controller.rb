@@ -6,13 +6,41 @@ class Api::V1::UsersController < Api::V1::BaseController
   before_action :authenticate_user!, only: [:update, :show, :get_share_token, :generate_share_token,
     :set_user_preferred_location, :user_preferred_location]
   
-  # GET '/user_profile'
+  
+
+  # @url /user_profile
+  # @action GET 
+  # 
+  # get profile of a user
+  #
+  # @required [Integer] id id of the user
+  # @example_request_description Let's send a id of a user
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #     id: 5
+  #     }
+  #    }
+  #    ```
+  # @example_response_description empty object with status 200
+  # @example_response
+  #    ```json
+  #    {
+  #      
+  #      "user": {
+  #      "email": "test@gmail.com",
+  #       "first_name": "test",
+  #      "last_name": "test"
+  #     }
+  #    }
+  #    ```
   def user_profile
     user  = User.find(params[:id])
     setting = user.settings.find_by(name: "location")
     location = setting.present? ? Location.find(setting.value) : false 
     # if stale?(:etag => "user_profile_"+user.id, :last_modified => user.updated_at, :public => true)
-      render :json => {user: user, books: user.books}
+      render :json => {user: user.as_json(only: [:first_name, :last_name, :email])}
     # end
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
@@ -61,6 +89,9 @@ class Api::V1::UsersController < Api::V1::BaseController
   # send password reset token
   #
   # @required [String] email Email to send reset password token
+  #
+  # @response [User] The user object
+  #
   # @example_request_description Let's send a password reset token
   # 
   # @example_request

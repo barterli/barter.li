@@ -1,6 +1,76 @@
+# @restful_api 1.0
+#
+# Search books
+#
 class Api::V1::SearchController < Api::V1::BaseController
  
-  # GET /search
+  # @url /search
+  # @action GET 
+  # 
+  # get books
+  #
+  # @optional [String] search search string (can be isbn or author or title)
+  # @optional [String] latitude Latitude coordinate
+  # @optional [String] longitude Longitude coordinate
+  # @optional [String] radius Radius of book to search
+  # @optional [Integer] page Page number
+  # @optional [Integer] per number of results to return
+  # @example_request_description Let's search a book
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #     "search": "ra"
+  #     }
+  #    }
+  #    ```
+  # @example_response_description returns search array object
+  # @example_response
+  #    ```json
+  #       {
+  #          "search": [
+  #              {
+  #                  "id": 6,
+  #                  "title": "rails",
+  #                  "author": "rails-to-trails",
+  #                  "publication_year": null,
+  #                  "publication_month": "",
+  #                  "image_url": "http://localhost:3000/fallback/1_default.png",
+  #                  "barter_type": null,
+  #                  "location": null,
+  #                  "tags": [],
+  #                  "id_book": null
+  #              },
+  #              {
+  #                  "id": 7,
+  #                  "title": "rails",
+  #                  "author": "rails-to-trails",
+  #                  "publication_year": null,
+  #                  "publication_month": "",
+  #                  "image_url": "http://localhost:3000/fallback/1_default.png",
+  #                  "barter_type": null,
+  #                  "location": null,
+  #                  "tags": [],
+  #                  "id_book": null
+  #              },
+  #              {
+  #                  "id": 8,
+  #                  "title": "rails",
+  #                  "author": "rails-to-trails",
+  #                  "publication_year": null,
+  #                  "publication_month": "",
+  #                  "image_url": "http://localhost:3000/fallback/1_default.png",
+  #                  "barter_type": null,
+  #                  "location": null,
+  #                  "tags": [],
+  #                  "id_book": null
+  #              },
+  #
+  #
+  #          ]
+  #      }
+  #    }
+  #    ```
   def search
     params[:radius] ||= 10
   	params[:search_filter] = {:latitude => params[:latitude], :longitude => params[:longitude]}

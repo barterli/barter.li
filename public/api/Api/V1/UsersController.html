@@ -65,6 +65,108 @@
   <div id="Services" class="method_details_list">
     
 		<div class="method">
+      <h3>user_profile</h3>
+			<p class="method_desc">get profile of a user</p>
+
+      
+        <div class="resource_url even">
+          <h4>URL</h4>
+          <span class="action">GET</span>
+          <span class="url">/user_profile</span>
+        </div>
+      
+
+      
+
+  <div class="parameters odd">
+    
+      <h4>Required Parameters</h4>
+    
+		<ul>
+  		
+				<li>
+					<span class="name">id</span>
+					<span class="type"><tt>Integer</tt></span>
+					<span class="text">
+<p>id of the user</p>
+</span>
+				</li>
+  		
+	  </ul>
+	</div>
+
+
+      
+
+
+      
+        
+
+
+      
+
+			
+				<div class="examples">
+					<h4>Examples</h4>
+					
+						<div class="example">
+							
+							
+							
+							<span class="description">
+								
+									
+										Let's send a id of a user
+									
+								
+							</span>
+							<span class="hash request">
+								<strong class="type">Request</strong>
+								
+									
+										
+<p>“`json {</p>
+
+<pre class="code ruby"><code class="ruby">id: 5
+}</code></pre>
+
+<p>} “`</p>
+
+									
+								
+							</span>
+							<span class="hash response">
+								<strong class="type">Response</strong>
+								
+									
+										
+<p>“`json {</p>
+
+<pre class="code ruby"><code class="ruby"> &quot;user&quot;: {
+ &quot;email&quot;: &quot;test@gmail.com&quot;,
+  &quot;first_name&quot;: &quot;test&quot;,
+ &quot;last_name&quot;: &quot;test&quot;
+}</code></pre>
+
+<p>} “`</p>
+
+									
+								
+							</span>
+							<span class="description">
+								
+									
+										empty object with status 200
+									
+								
+							</span>
+						</div>
+					
+				</div>
+			
+		</div>
+    
+		<div class="method">
       <h3>send_password_reset</h3>
 			<p class="method_desc">send password reset token</p>
 
@@ -100,9 +202,17 @@
 
 
       
-        
-
-
+        <div class="parameters even">
+          <h4>Response Object</h4>
+          <ul>
+            <li>
+              <span class="type"><tt><span class='object_link'>User</span></tt></span>
+              <span class="text">
+<p>The user object</p>
+</span>
+            </li>
+          </ul>
+        </div>
       
 
 			
@@ -167,7 +277,7 @@
 			<p class="method_desc">set password reset</p>
 
       
-        <div class="resource_url even">
+        <div class="resource_url odd">
           <h4>URL</h4>
           <span class="action">POST</span>
           <span class="url">/password_reset</span>
@@ -176,7 +286,7 @@
 
       
 
-  <div class="parameters odd">
+  <div class="parameters even">
     
       <h4>Required Parameters</h4>
     
@@ -306,7 +416,7 @@
 			<p class="method_desc">set user preferred location</p>
 
       
-        <div class="resource_url even">
+        <div class="resource_url odd">
           <h4>URL</h4>
           <span class="action">POST</span>
           <span class="url">/user_preferred_location</span>
@@ -315,7 +425,7 @@
 
       
 
-  <div class="parameters odd">
+  <div class="parameters even">
     
       <h4>Required Parameters</h4>
     
@@ -343,7 +453,7 @@
 
       
 
-  <div class="parameters even">
+  <div class="parameters odd">
     
       <h4>Optional Parameters</h4>
     
@@ -386,7 +496,7 @@
 
 
       
-        <div class="parameters odd">
+        <div class="parameters even">
           <h4>Response Object</h4>
           <ul>
             <li>
@@ -474,7 +584,7 @@
 	</div>
 
     <div id="footer">
-  Generated on Tue Apr  1 16:46:00 2014 with ruby-2.0.0
+  Generated on Tue Apr  1 17:30:24 2014 with ruby-2.0.0
 </div>
 
   </body>
