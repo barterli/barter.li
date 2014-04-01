@@ -2,12 +2,11 @@
 
 FactoryGirl.define do
   factory :location do
-    country "MyString"
-    state "MyString"
-    city "MyString"
-    locality "MyString"
+    country "India"
+    state "Karnataka"
+    city "Bangalore"
     name "MyString"
-    latitude "MyString"
-    longitude "MyString"
+    latitude "12.9667"
+    longitude "77.5667"
   end
 end
