@@ -50,6 +50,7 @@ class Api::V1::UsersController < Api::V1::BaseController
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
+  # GET /password_reset
   def send_password_reset
     user = User.find_by(email: params[:email])
     if(user)
@@ -60,6 +61,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     end
   end
  
+  # POST /password_reset
   def reset_password
     user = User.find_by(reset_password_token: params[:token], email: params[:email])
     if(user.reset_password_sent_at > Time.now - 20.minutes)

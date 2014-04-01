@@ -66,7 +66,8 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
   #             "address": 201, cross street
   #         },
   #         "auth_token": "TRU2uUh1DxfyTdi3tnEs",
-  #         "sign_in_count": 33
+  #         "sign_in_count": 33,
+  #         "books": []
   #      }
   #    }
   #    ```
