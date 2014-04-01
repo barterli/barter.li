@@ -3,7 +3,7 @@ class Location < ActiveRecord::Base
   before_update :geocode_address
   has_many :books
   reverse_geocoded_by :latitude, :longitude
-
+  validates :latitude, :longitude, :presence => true
   # geocode address only on update and fields have changed
   def geocode_address
     return unless city_changed? || country_changed? || locality_changed?
@@ -33,7 +33,7 @@ class Location < ActiveRecord::Base
   end
 
   def self.set_location(params)
-    location = Location.find_by(:latitude => params[:latitude], :longitude => params[:longitude])
+    location = Location.find_by(:latitude => params[:latitude], :longitude => params[:longitude], :name => params[:name])
     if(location.blank?)
       location = Location.create!(:latitude => params[:latitude], :longitude => params[:longitude], :country => params[:country], :city => params[:city], :address => params[:address], :name => params[:name])
     end

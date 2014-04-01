@@ -1,3 +1,7 @@
+# @restful_api 1.0
+#
+# user creation and getting user objects
+#
 class Api::V1::UsersController < Api::V1::BaseController
   before_action :authenticate_user!, only: [:update, :show, :get_share_token, :generate_share_token,
     :set_user_preferred_location, :user_preferred_location]
@@ -49,8 +53,30 @@ class Api::V1::UsersController < Api::V1::BaseController
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
+  
 
-  # GET /password_reset
+  # @url /password_reset
+  # @action GET 
+  # 
+  # send password reset token
+  #
+  # @required [String] email Email to send reset password token
+  # @example_request_description Let's send a password reset token
+  # 
+  # @example_request
+  #    ```json
+  #    {
+  #      "email": "test@example.com"
+  #    }
+  #    ```
+  # @example_response_description empty object with status 200
+  # @example_response
+  #    ```json
+  #       {
+  #      
+  #       }
+  #    }
+  #    ```
   def send_password_reset
     user = User.find_by(email: params[:email])
     if(user)
@@ -61,22 +87,108 @@ class Api::V1::UsersController < Api::V1::BaseController
     end
   end
  
-  # POST /password_reset
+  # @url /password_reset
+  # @action POST
+  # 
+  # set password reset 
+  #
+  # @required [String] email Email to set password
+  # @required [String] token Token send to your email
+  # @required [String] password New password to set
+  # @example_request_description Let's set a password 
+  # 
+  # @example_request
+  #    ```json
+  #    {
+  #      "email": "test@example.com",
+  #      "password": "12345678",
+  #      "token": "67059910"
+  #    }
+  #    ```
+  # @example_response_description gives user object
+  # @example_response
+  #    ```json
+  #      {
+  #          "user": {
+  #              "id": 9,
+  #              "email": "surendarft@gmail.com",
+  #              "description": null,
+  #              "first_name": "surendar",
+  #              "last_name": "ghgf",
+  #              "location": null,
+  #              "auth_token": "Qj2egLZTwe812gxSpDd8",
+  #              "sign_in_count": 1,
+  #              "id_user": null,
+  #             "books": [
+  #                  {
+  #                      "id": 21,
+  #                      "title": "rails",
+  #                      "author": "rails-to-trails",
+  #                      "publication_year": 2007,
+  #                      "publication_month": "January",
+  #                      "image_url": "http://localhost:3000/uploads/book/image/21/1662213-S.jpg",
+  #                      "barter_type": null,
+  #                      "location": null,
+  #                      "tags": [],
+  #                      "id_book": null
+  #                  }
+  #              ]
+  #          }
+  #      }
+  #      ```
   def reset_password
     user = User.find_by(reset_password_token: params[:token], email: params[:email])
     if(user.reset_password_sent_at > Time.now - 20.minutes)
       user.password = params[:password]
+      user.reset_password_token = ""
       user.save!
-      render json: {user: user}
+      render json: user
     else
       render json: {error_code: Code[:error_resource], error_message: "token expired"}, status: Code[:status_error] 
     end
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]  
   end
-
-
-  # POST /prefered_location
+  
+  # @url /user_preferred_location
+  # @action POST
+  #
+  # set user preferred location
+  #
+  # @required [String] latitude Latitude coordinate
+  # @required [String] longitude Longitude coordinate
+  # @optional [String] country Country
+  # @optional [String] state State
+  # @optional [String] city City
+  # @optional [String] name Name
+  #
+  # @response [Location] The created book
+  #
+  # @example_request_description Let's try to create a location
+  # @example_request
+  #    ```json
+  #    {
+  #      "latitude": "12.7777",
+  #      "longitude": "12.34546",
+  #    }
+  #    ```
+  # @example_response_description The location should be created correctly
+  # @example_response
+  #    ```json
+  #    {
+  #       "location": {
+  #        "id": 17,
+  #        "latitude": "12.7777",
+  #        "longitude": "12.34546",
+  #        "country": null,
+  #        "city": null,
+  #        "state": null,
+  #        "address": null,
+  #        "name": null,
+  #        "id_location": "804f2bbb36fd58ee"
+  #      }
+  #    }
+  #    ```
   def set_user_preferred_location
     location = current_user.set_preferred_location(params)
       if location

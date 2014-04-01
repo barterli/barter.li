@@ -99,7 +99,7 @@ class User < ActiveRecord::Base
   end
 
   def set_preferred_location(params)
-    location = Location.find_by(:latitude => params[:latitude], :longitude => params[:longitude])
+    location = Location.find_by(:latitude => params[:latitude], :longitude => params[:longitude], :name => params[:name])
     setting = self.settings.find_by(name: "location")
     setting.destroy if setting.present?
     if(location.present?)

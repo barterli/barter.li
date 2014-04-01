@@ -54,8 +54,404 @@
 		<div class="service">
   <h1 class="noborder title">Barter.li API Documentation</h1>
     <a class="back" href="../../index.html" title="back to the overview">&laquo; back to overview</a>
-    <h2>BooksController</h2>
+    <h2>Books [1.0]</h2>
+    <div class="description">
+  
+<p>book creation and getting book objects</p>
+
+</div>
+
+
+  <div id="Services" class="method_details_list">
     
+		<div class="method">
+      <h3>create</h3>
+			<p class="method_desc">create new book. requires token authentication headers</p>
+
+      
+        <div class="resource_url even">
+          <h4>URL</h4>
+          <span class="action">POST</span>
+          <span class="url">/books</span>
+        </div>
+      
+
+      
+
+  <div class="parameters odd">
+    
+      <h4>Required Parameters</h4>
+    
+		<ul>
+  		
+				<li>
+					<span class="name">title</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Title of the book</p>
+</span>
+				</li>
+  		
+	  </ul>
+	</div>
+
+
+      
+
+  <div class="parameters even">
+    
+      <h4>Optional Parameters</h4>
+    
+		<ul>
+  		
+				<li>
+					<span class="name">isbn_13</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Isbn 13 of the book</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">isbn_10</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Isbn 13 of the book</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">author</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Author of the book</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">edition</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Edition of the book</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">description</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Description of the book</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">value</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>price of the book</p>
+</span>
+				</li>
+  		
+	  </ul>
+	</div>
+
+
+      
+        <div class="parameters odd">
+          <h4>Response Object</h4>
+          <ul>
+            <li>
+              <span class="type"><tt><span class='object_link'>Book</span></tt></span>
+              <span class="text">
+<p>The created book</p>
+</span>
+            </li>
+          </ul>
+        </div>
+      
+
+			
+				<div class="examples">
+					<h4>Examples</h4>
+					
+						<div class="example">
+							
+							
+							
+							<span class="description">
+								
+									
+										Let's try to create a book
+									
+								
+							</span>
+							<span class="hash request">
+								<strong class="type">Request</strong>
+								
+									
+										
+<p>“`json</p>
+
+<pre class="code ruby"><code class="ruby"> {
+  &quot;book&quot;: {
+  &quot;title&quot;: &quot;test&quot;,
+  }
+}
+```</code></pre>
+
+									
+								
+							</span>
+							<span class="hash response">
+								<strong class="type">Response</strong>
+								
+									
+										
+<p>“`json</p>
+
+<pre class="code ruby"><code class="ruby">{
+  &quot;book&quot;: {
+  &quot;id&quot;: 14,
+  &quot;title&quot;: &quot;test&quot;,
+  &quot;author&quot;: null,
+  &quot;publication_year&quot;: null,
+  &quot;publication_month&quot;: null,
+  &quot;image_url&quot;: &quot;http://162.243.198.171:/fallback/1_default.png&quot;,
+  &quot;barter_type&quot;: null,
+  &quot;location&quot;: {
+     &quot;id&quot;: 17,
+      &quot;country&quot;: null,
+     &quot;state&quot;: null,
+      &quot;city&quot;: null,
+      &quot;address&quot;: null,
+      &quot;postal_code&quot;: null,
+      &quot;locality&quot;: null,
+      &quot;name&quot;: null,
+      &quot;latitude&quot;: &quot;12.7777&quot;,
+      &quot;longitude&quot;: &quot;12.34546&quot;,
+      &quot;id_location&quot;: &quot;804f2bbb36fd58ee&quot;
+  },
+  &quot;tags&quot;: [],
+  &quot;id_book&quot;: &quot;4bcbfd3bc31545ac&quot;
+}</code></pre>
+
+<p>} “`</p>
+
+									
+								
+							</span>
+							<span class="description">
+								
+									
+										The book should be created correctly
+									
+								
+							</span>
+						</div>
+					
+				</div>
+			
+		</div>
+    
+		<div class="method">
+      <h3>update</h3>
+			<p class="method_desc">create new book. requires token authentication headers
+example Authorization Token token="4Fqev-DxCSL1krsZvuAY", email="sssnn@gmail.com"</p>
+
+      
+        <div class="resource_url even">
+          <h4>URL</h4>
+          <span class="action">PUT</span>
+          <span class="url">/books</span>
+        </div>
+      
+
+      
+
+  <div class="parameters odd">
+    
+      <h4>Required Parameters</h4>
+    
+		<ul>
+  		
+				<li>
+					<span class="name">id</span>
+					<span class="type"><tt>Integer</tt></span>
+					<span class="text">
+<p>Id of the book</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">title</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Title of the book</p>
+</span>
+				</li>
+  		
+	  </ul>
+	</div>
+
+
+      
+
+  <div class="parameters even">
+    
+      <h4>Optional Parameters</h4>
+    
+		<ul>
+  		
+				<li>
+					<span class="name">isbn_13</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Isbn 13 of the book</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">isbn_10</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Isbn 13 of the book</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">author</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Author of the book</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">edition</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Edition of the book</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">description</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Description of the book</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">value</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>price of the book</p>
+</span>
+				</li>
+  		
+	  </ul>
+	</div>
+
+
+      
+        <div class="parameters odd">
+          <h4>Response Object</h4>
+          <ul>
+            <li>
+              <span class="type"><tt><span class='object_link'>Book</span></tt></span>
+              <span class="text">
+<p>The created book</p>
+</span>
+            </li>
+          </ul>
+        </div>
+      
+
+			
+				<div class="examples">
+					<h4>Examples</h4>
+					
+						<div class="example">
+							
+							
+							
+							<span class="description">
+								
+									
+										Let's try to create a book
+									
+								
+							</span>
+							<span class="hash request">
+								<strong class="type">Request</strong>
+								
+									
+										
+<p>“`json</p>
+
+<pre class="code ruby"><code class="ruby"> {
+  &quot;book&quot;: {
+  &quot;title&quot;: &quot;test&quot;,
+  }
+}
+```</code></pre>
+
+									
+								
+							</span>
+							<span class="hash response">
+								<strong class="type">Response</strong>
+								
+									
+										
+<p>“`json</p>
+
+<pre class="code ruby"><code class="ruby">{
+  &quot;book&quot;: {
+  &quot;id&quot;: 14,
+  &quot;title&quot;: &quot;test&quot;,
+  &quot;author&quot;: null,
+  &quot;publication_year&quot;: null,
+  &quot;publication_month&quot;: null,
+  &quot;image_url&quot;: &quot;http://162.243.198.171:/fallback/1_default.png&quot;,
+  &quot;barter_type&quot;: null,
+  &quot;location&quot;: {
+     &quot;id&quot;: 17,
+      &quot;country&quot;: null,
+     &quot;state&quot;: null,
+      &quot;city&quot;: null,
+      &quot;address&quot;: null,
+      &quot;postal_code&quot;: null,
+      &quot;locality&quot;: null,
+      &quot;name&quot;: null,
+      &quot;latitude&quot;: &quot;12.7777&quot;,
+      &quot;longitude&quot;: &quot;12.34546&quot;,
+      &quot;id_location&quot;: &quot;804f2bbb36fd58ee&quot;
+  },
+  &quot;tags&quot;: [],
+  &quot;id_book&quot;: &quot;4bcbfd3bc31545ac&quot;
+}</code></pre>
+
+<p>} “</p>
+
+									
+								
+							</span>
+							<span class="description">
+								
+									
+										The book should be created correctly
+									
+								
+							</span>
+						</div>
+					
+				</div>
+			
+		</div>
+    
+  </div>
 
 
 </div>
@@ -64,7 +460,7 @@
 	</div>
 
     <div id="footer">
-  Generated on Wed Mar 26 21:29:17 2014 with ruby-2.0.0
+  Generated on Tue Apr  1 16:45:59 2014 with ruby-2.0.0
 </div>
 
   </body>
