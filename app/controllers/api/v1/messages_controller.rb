@@ -1,6 +1,6 @@
 require 'digest/md5'
 class Api::V1::MessagesController < Api::V1::BaseController
-  before_action :authenticate_user!, only: [:create]
+  before_action :authenticate_user!, only: [:create, :ampq]
 
   def create
     raise "No user present" if User.find(params[:sender_id]).blank?
@@ -24,14 +24,28 @@ class Api::V1::MessagesController < Api::V1::BaseController
     render json: {status: :sent}
   end
 
-  
+  def set_message
+    @sender = User.find(params[:sender_id])
+    @receiver = User.find(params[:receiver_id])
+    @chat_hash =  Hash.new
+    @chat_hash = {"sender_id" => @sender.id, "receiver_id" => @receiver.id, "message" => params[:message], :time => Time.now}
+  end
+
+
   def ampq
+    chat_hash = {"sender_id" => "20", "receiver_id" => "30", "message" => "hello", :time => Time.now}
     connection = AMQP.connect(:host => '127.0.0.1', :user=>ENV["RABBITMQ_USERNAME"], :pass=>ENV["RABBITMQ_PASSWORD"] , :vhost => "/")
     channel  = AMQP::Channel.new(connection)
     exchange = channel.direct("node.barterli")
-    queue    = channel.queue("user1", :auto_delete => true).bind(exchange, :routing_key => "shared.key")
-    exchange.publish "Hello, world!", :routing_key => "shared.key"
-    render :nothing => true
+    receiver_queue    = channel.queue(@receiver.email, :auto_delete => true).bind(exchange, :routing_key => @receiver.id_user)
+    sender_queue    = channel.queue(@sender.email, :auto_delete => true).bind(exchange, :routing_key => @sender.id_user)
+    exchange.publish(@chat_hash, :routing_key => @receiver.id_user
+                  )
+    # queue.subscribe do |metadata, payload|
+    #   puts "Received a message: #{metadata.message_id},#{payload}. Disconnecting..."
+    # end
+     render :nothing => true
+
  end
 
 

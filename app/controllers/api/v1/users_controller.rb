@@ -40,7 +40,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     setting = user.settings.find_by(name: "location")
     location = setting.present? ? Location.find(setting.value) : false 
     # if stale?(:etag => "user_profile_"+user.id, :last_modified => user.updated_at, :public => true)
-      render :json => {user: user.as_json(only: [:first_name, :last_name, :email])}
+      render :json => {user: user.as_json(only: [:first_name, :last_name, :email, :profile])}
     # end
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]

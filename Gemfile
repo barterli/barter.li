@@ -68,7 +68,7 @@ gem 'goodreads'
 
 gem "amqp", "~> 1.3.0"
 
-gem 'thin'
+# gem 'thin'
 
 gem 'rails-api'
 

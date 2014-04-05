@@ -94,7 +94,7 @@ describe Api::V1::BooksController do
     end
   end
 
-  describe "Put update" do
+  describe "PUT update" do
     describe "with valid params" do
       it "updates the book" do
         put :update, valid_attributes.merge!(:id => @book.id)
@@ -132,21 +132,21 @@ describe Api::V1::BooksController do
   end
 
 
-    describe "Get book_info " do
+    describe "GET book_info " do
       it "gives a particular book details" do
         get :book_info, {:q => "rails", :format => 'json'}
         response.body.should_not be_empty
       end
     end
   
-   describe "Get book_suggestions" do
+   describe "GET book_suggestions" do
       it "gives book title suggestions " do
         get :book_suggestions, {:q => "rails", :format => 'json'}
         response.body.should_not be_empty
       end
     end
 
-    describe "Post add_wish_list" do
+    describe "POST add_wish_list" do
       it "add wishlists with valid params" do
         post :set_wish_list, {:wish_list => {:title => "rails"}}
         expect(response.status).to eq(200)
@@ -159,7 +159,7 @@ describe Api::V1::BooksController do
       end
     end
 
-    describe "get_wish_list" do 
+    describe "GET get_wish_list" do 
       it "gets the wishlist" do
         get :get_wish_list, {}
       expect(response.status).to eq(200)
