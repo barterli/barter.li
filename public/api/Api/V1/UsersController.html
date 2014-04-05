@@ -54,8 +54,528 @@
 		<div class="service">
   <h1 class="noborder title">Barter.li API Documentation</h1>
     <a class="back" href="../../index.html" title="back to the overview">&laquo; back to overview</a>
-    <h2>UsersController</h2>
+    <h2>Users [1.0]</h2>
+    <div class="description">
+  
+<p>user creation and getting user objects</p>
+
+</div>
+
+
+  <div id="Services" class="method_details_list">
     
+		<div class="method">
+      <h3>user_profile</h3>
+			<p class="method_desc">get profile of a user</p>
+
+      
+        <div class="resource_url even">
+          <h4>URL</h4>
+          <span class="action">GET</span>
+          <span class="url">/user_profile</span>
+        </div>
+      
+
+      
+
+  <div class="parameters odd">
+    
+      <h4>Required Parameters</h4>
+    
+		<ul>
+  		
+				<li>
+					<span class="name">id</span>
+					<span class="type"><tt>Integer</tt></span>
+					<span class="text">
+<p>id of the user</p>
+</span>
+				</li>
+  		
+	  </ul>
+	</div>
+
+
+      
+
+
+      
+        
+
+
+      
+
+			
+				<div class="examples">
+					<h4>Examples</h4>
+					
+						<div class="example">
+							
+							
+							
+							<span class="description">
+								
+									
+										Let's send a id of a user
+									
+								
+							</span>
+							<span class="hash request">
+								<strong class="type">Request</strong>
+								
+									
+										
+<p>“`json {</p>
+
+<pre class="code ruby"><code class="ruby">id: 5
+}</code></pre>
+
+<p>} “`</p>
+
+									
+								
+							</span>
+							<span class="hash response">
+								<strong class="type">Response</strong>
+								
+									
+										
+<p>“`json {</p>
+
+<pre class="code ruby"><code class="ruby"> &quot;user&quot;: {
+ &quot;email&quot;: &quot;test@gmail.com&quot;,
+  &quot;first_name&quot;: &quot;test&quot;,
+ &quot;last_name&quot;: &quot;test&quot;
+}</code></pre>
+
+<p>} “`</p>
+
+									
+								
+							</span>
+							<span class="description">
+								
+									
+										empty object with status 200
+									
+								
+							</span>
+						</div>
+					
+				</div>
+			
+		</div>
+    
+		<div class="method">
+      <h3>send_password_reset</h3>
+			<p class="method_desc">send password reset token</p>
+
+      
+        <div class="resource_url even">
+          <h4>URL</h4>
+          <span class="action">GET</span>
+          <span class="url">/password_reset</span>
+        </div>
+      
+
+      
+
+  <div class="parameters odd">
+    
+      <h4>Required Parameters</h4>
+    
+		<ul>
+  		
+				<li>
+					<span class="name">email</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Email to send reset password token</p>
+</span>
+				</li>
+  		
+	  </ul>
+	</div>
+
+
+      
+
+
+      
+        <div class="parameters even">
+          <h4>Response Object</h4>
+          <ul>
+            <li>
+              <span class="type"><tt><span class='object_link'>User</span></tt></span>
+              <span class="text">
+<p>The user object</p>
+</span>
+            </li>
+          </ul>
+        </div>
+      
+
+			
+				<div class="examples">
+					<h4>Examples</h4>
+					
+						<div class="example">
+							
+							
+							
+							<span class="description">
+								
+									
+										Let's send a password reset token
+									
+								
+							</span>
+							<span class="hash request">
+								<strong class="type">Request</strong>
+								
+									
+										
+<p>“`json 
+<pre class="code ruby"><code class="ruby">&quot;email&quot;: &quot;test@example.com&quot;</code></pre>
+
+<p> “`</p>
+
+									
+								
+							</span>
+							<span class="hash response">
+								<strong class="type">Response</strong>
+								
+									
+										
+<p>“`json</p>
+
+<pre class="code ruby"><code class="ruby"><span class='lbrace'>{</span>
+
+<span class='rbrace'>}</span></code></pre>
+
+<p>} “`</p>
+
+									
+								
+							</span>
+							<span class="description">
+								
+									
+										empty object with status 200
+									
+								
+							</span>
+						</div>
+					
+				</div>
+			
+		</div>
+    
+		<div class="method">
+      <h3>reset_password</h3>
+			<p class="method_desc">set password reset</p>
+
+      
+        <div class="resource_url odd">
+          <h4>URL</h4>
+          <span class="action">POST</span>
+          <span class="url">/password_reset</span>
+        </div>
+      
+
+      
+
+  <div class="parameters even">
+    
+      <h4>Required Parameters</h4>
+    
+		<ul>
+  		
+				<li>
+					<span class="name">email</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Email to set password</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">token</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Token send to your email</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">password</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>New password to set</p>
+</span>
+				</li>
+  		
+	  </ul>
+	</div>
+
+
+      
+
+
+      
+        
+
+
+      
+
+			
+				<div class="examples">
+					<h4>Examples</h4>
+					
+						<div class="example">
+							
+							
+							
+							<span class="description">
+								
+									
+										Let's set a password
+									
+								
+							</span>
+							<span class="hash request">
+								<strong class="type">Request</strong>
+								
+									
+										
+<p>“`json 
+<pre class="code ruby"><code class="ruby">&quot;email&quot;: &quot;test@example.com&quot;,
+&quot;password&quot;: &quot;12345678&quot;,
+&quot;token&quot;: &quot;67059910&quot;</code></pre>
+
+<p> “`</p>
+
+									
+								
+							</span>
+							<span class="hash response">
+								<strong class="type">Response</strong>
+								
+									
+										
+<p>“`json</p>
+
+<pre class="code ruby"><code class="ruby">{
+    &quot;user&quot;: {
+        &quot;id&quot;: 9,
+        &quot;email&quot;: &quot;surendarft@gmail.com&quot;,
+        &quot;description&quot;: null,
+        &quot;first_name&quot;: &quot;surendar&quot;,
+        &quot;last_name&quot;: &quot;ghgf&quot;,
+        &quot;location&quot;: null,
+        &quot;auth_token&quot;: &quot;Qj2egLZTwe812gxSpDd8&quot;,
+        &quot;sign_in_count&quot;: 1,
+        &quot;id_user&quot;: null,
+       &quot;books&quot;: [
+            {
+                &quot;id&quot;: 21,
+                &quot;title&quot;: &quot;rails&quot;,
+                &quot;author&quot;: &quot;rails-to-trails&quot;,
+                &quot;publication_year&quot;: 2007,
+                &quot;publication_month&quot;: &quot;January&quot;,
+                &quot;image_url&quot;: &quot;http://localhost:3000/uploads/book/image/21/1662213-S.jpg&quot;,
+                &quot;barter_type&quot;: null,
+                &quot;location&quot;: null,
+                &quot;tags&quot;: [],
+                &quot;id_book&quot;: null
+            }
+        ]
+    }
+}
+```</code></pre>
+
+									
+								
+							</span>
+							<span class="description">
+								
+									
+										gives user object
+									
+								
+							</span>
+						</div>
+					
+				</div>
+			
+		</div>
+    
+		<div class="method">
+      <h3>set_user_preferred_location</h3>
+			<p class="method_desc">set user preferred location</p>
+
+      
+        <div class="resource_url odd">
+          <h4>URL</h4>
+          <span class="action">POST</span>
+          <span class="url">/user_preferred_location</span>
+        </div>
+      
+
+      
+
+  <div class="parameters even">
+    
+      <h4>Required Parameters</h4>
+    
+		<ul>
+  		
+				<li>
+					<span class="name">latitude</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Latitude coordinate</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">longitude</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Longitude coordinate</p>
+</span>
+				</li>
+  		
+	  </ul>
+	</div>
+
+
+      
+
+  <div class="parameters odd">
+    
+      <h4>Optional Parameters</h4>
+    
+		<ul>
+  		
+				<li>
+					<span class="name">country</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Country</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">state</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>State</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">city</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>City</p>
+</span>
+				</li>
+  		
+				<li>
+					<span class="name">name</span>
+					<span class="type"><tt>String</tt></span>
+					<span class="text">
+<p>Name</p>
+</span>
+				</li>
+  		
+	  </ul>
+	</div>
+
+
+      
+        <div class="parameters even">
+          <h4>Response Object</h4>
+          <ul>
+            <li>
+              <span class="type"><tt><span class='object_link'>Location</span></tt></span>
+              <span class="text">
+<p>The created book</p>
+</span>
+            </li>
+          </ul>
+        </div>
+      
+
+			
+				<div class="examples">
+					<h4>Examples</h4>
+					
+						<div class="example">
+							
+							
+							
+							<span class="description">
+								
+									
+										Let's try to create a location
+									
+								
+							</span>
+							<span class="hash request">
+								<strong class="type">Request</strong>
+								
+									
+										
+<p>“`json 
+<pre class="code ruby"><code class="ruby">&quot;latitude&quot;: &quot;12.7777&quot;,
+&quot;longitude&quot;: &quot;12.34546&quot;,</code></pre>
+
+<p> “`</p>
+
+									
+								
+							</span>
+							<span class="hash response">
+								<strong class="type">Response</strong>
+								
+									
+										
+<p>“`json {</p>
+
+<pre class="code ruby"><code class="ruby"> &quot;location&quot;: {
+  &quot;id&quot;: 17,
+  &quot;latitude&quot;: &quot;12.7777&quot;,
+  &quot;longitude&quot;: &quot;12.34546&quot;,
+  &quot;country&quot;: null,
+  &quot;city&quot;: null,
+  &quot;state&quot;: null,
+  &quot;address&quot;: null,
+  &quot;name&quot;: null,
+  &quot;id_location&quot;: &quot;804f2bbb36fd58ee&quot;
+}</code></pre>
+
+<p>} “`</p>
+
+									
+								
+							</span>
+							<span class="description">
+								
+									
+										The location should be created correctly
+									
+								
+							</span>
+						</div>
+					
+				</div>
+			
+		</div>
+    
+  </div>
 
 
 </div>
@@ -64,7 +584,7 @@
 	</div>
 
     <div id="footer">
-  Generated on Wed Mar 26 21:29:17 2014 with ruby-2.0.0
+  Generated on Tue Apr  1 17:30:24 2014 with ruby-2.0.0
 </div>
 
   </body>

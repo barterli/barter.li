@@ -1,4 +1,5 @@
 class BookSerializer < ActiveModel::Serializer
+  cached 
   attributes :id, :title, :author, :publication_year, :publication_month, 
              :image_url, :barter_type, :location, :tags, :id_book
   
@@ -13,8 +14,12 @@ class BookSerializer < ActiveModel::Serializer
   def image_url
   	url = @options[:url_options]
   	#return  ActionController::Base.helpers.asset_url(object.image.url)if object.image_url.present?
-    #return object.image_url if object.image_url.present?
+    return object.ext_image_url unless object.image.url.present?
     "#{url[:protocol]}#{url[:host]}:#{url[:port]}#{object.image.url}"
+  end
+
+  def cache_key
+    [object, scope]
   end
 
 end

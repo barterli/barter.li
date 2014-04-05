@@ -8,6 +8,7 @@ BarterLi::Application.routes.draw do
         get '/share_token', to: 'users#get_share_token'
         get '/tags', to: 'books#get_tags'
         get '/profile_image', to: 'users#get_profile_image'
+        post '/profile_image', to: 'users#set_profile_image'
         post '/auth_token', to: 'authentications#get_auth_token'
         post '/create_user', to: 'authentications#create_user'
         get '/user_preferred_location', to: 'users#get_user_preferred_location'
@@ -15,9 +16,10 @@ BarterLi::Application.routes.draw do
         get '/search', to: "search#search"
         post '/barter_notification', to: "barters#send_barter_notification"
         get '/user_profile', to: "users#user_profile"
-        post '/current_user_profile', to: "users#show"
+        get '/current_user_profile', to: "users#show"
         post '/register', to: 'public#register'
-        patch '/user_update', to: "users#update"
+        post '/update_user', to: 'users#update'
+        put '/user_update', to: "users#update"
         post '/feedback', to: "tracker#create_feedback"
         get '/ampq', to: "messages#ampq"
         get '/book_info', to: 'books#book_info'
@@ -25,6 +27,8 @@ BarterLi::Application.routes.draw do
         get '/hangouts', to: 'locations#hangouts'
         post '/change_owner', to: 'books#change_owner'
         post '/wish_list', to: 'books#set_wish_list'
+        get '/password_reset', to: 'users#send_password_reset'
+        post '/password_reset', to: 'users#reset_password'
         get '/wish_list', to: 'books#get_wish_list'
         resources :books
     end

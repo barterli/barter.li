@@ -66,7 +66,8 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
   #             "address": 201, cross street
   #         },
   #         "auth_token": "TRU2uUh1DxfyTdi3tnEs",
-  #         "sign_in_count": 33
+  #         "sign_in_count": 33,
+  #         "books": []
   #      }
   #    }
   #    ```
@@ -147,7 +148,7 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
       register_shares(user)
       render json: user
     else
-      render json: {error_code: Code[:error_email_taken], error_message: "email already taken"}, status: Code[:status_error]
+      render json: {error_code: Code[:error_email_taken], error_message: "incorrect credentials"}, status: Code[:status_error]
     end
   # rescue => e
   #     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]

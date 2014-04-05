@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140328073034) do
+ActiveRecord::Schema.define(version: 20140405144324) do
 
   create_table "alerts", force: true do |t|
     t.integer  "user_id"
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 20140328073034) do
     t.string   "image"
     t.string   "publisher"
     t.string   "goodreads_id"
-    t.string   "image_url"
+    t.string   "ext_image_url"
     t.integer  "pages"
     t.string   "language_code"
     t.string   "barter_type"
@@ -93,6 +93,13 @@ ActiveRecord::Schema.define(version: 20140328073034) do
   create_table "books_tags_associations", force: true do |t|
     t.integer "book_id"
     t.integer "tag_id"
+  end
+
+  create_table "chat_filters", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "block_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "chat_groups", force: true do |t|
@@ -194,6 +201,7 @@ ActiveRecord::Schema.define(version: 20140328073034) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "register_type"
+    t.text     "body"
   end
 
   create_table "settings", force: true do |t|

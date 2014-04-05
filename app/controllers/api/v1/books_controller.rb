@@ -1,10 +1,16 @@
+# @restful_api 1.0
+#
+# book creation and getting book objects
+#
 class Api::V1::BooksController < Api::V1::BaseController
   before_action :authenticate_user!, only: [:create, :index, :edit, :update, :destroy, :new, 
                 :change_owner, :my_books, :set_wish_list]
  
   def index
     @books = current_user.books
-    render :json => @books
+    # if stale?(:etag => "index_books_"+current_user.id, :last_modified =>  @books.maximum(:updated_at), :public => true)
+      render :json => @books
+    # end
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
@@ -17,13 +23,67 @@ class Api::V1::BooksController < Api::V1::BaseController
     if(current_user.present?)
       @book.book_visit_user(current_user.id)
     end
-    render json: @book 
+    # if stale?(:etag => @book.id, :last_modified => @book.updated_at, :public => true)
+      render json: @book 
+    # end
   rescue => e
     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
-  # POST /books
-  # POST /books.json
+  # @url /books
+  # @action POST
+  #
+  # create new book. requires token authentication headers
+  #
+  # @required [String] title Title of the book
+  # @optional [String] isbn_13 Isbn 13 of the book
+  # @optional [String] isbn_10 Isbn 13 of the book
+  # @optional [String] author Author of the book
+  # @optional [String] edition Edition of the book
+  # @optional [String] description Description of the book
+  # @optional [String] value price of the book
+  #
+  # @response [Book] The created book
+  #
+  # @example_request_description Let's try to create a book
+  # @example_request
+  #    ```json
+  #      {
+  #       "book": {
+  #       "title": "test",
+  #       }
+  #     }
+  #     ```
+  # @example_response_description The book should be created correctly
+  # @example_response
+  #    ```json
+  #      {
+  #        "book": {
+  #        "id": 14,
+  #        "title": "test",
+  #        "author": null,
+  #        "publication_year": null,
+  #        "publication_month": null,
+  #        "image_url": "http://162.243.198.171:/fallback/1_default.png",
+  #        "barter_type": null,
+  #        "location": {
+  #           "id": 17,
+  #            "country": null,
+  #           "state": null,
+  #            "city": null,
+  #            "address": null,
+  #            "postal_code": null,
+  #            "locality": null,
+  #            "name": null,
+  #            "latitude": "12.7777",
+  #            "longitude": "12.34546",
+  #            "id_location": "804f2bbb36fd58ee"
+  #        },
+  #        "tags": [],
+  #        "id_book": "4bcbfd3bc31545ac"
+  #      }
+  #    }
+  #    ```
   def create
     tag_ids = get_tag_ids
     @book = current_user.books.new(book_params.merge(location_id: book_location, tag_ids: tag_ids))
@@ -60,8 +120,62 @@ class Api::V1::BooksController < Api::V1::BaseController
     render json: Tag.all, status: Code[:status_success] 
   end
   
-  # PATCH/PUT /books/1
-  # PATCH/PUT /books/1.json
+  # @url /books
+  # @action PUT
+  #
+  # create new book. requires token authentication headers
+  # example Authorization Token token="4Fqev-DxCSL1krsZvuAY", email="sssnn@gmail.com"
+  #
+  # @required [Integer] id Id of the book
+  # @required [String] title Title of the book
+  # @optional [String] isbn_13 Isbn 13 of the book
+  # @optional [String] isbn_10 Isbn 13 of the book
+  # @optional [String] author Author of the book
+  # @optional [String] edition Edition of the book
+  # @optional [String] description Description of the book
+  # @optional [String] value price of the book
+  #
+  # @response [Book] The created book
+  #
+  # @example_request_description Let's try to create a book
+  # @example_request
+  #    ```json
+  #      {
+  #       "book": {
+  #       "title": "test",
+  #       }
+  #     }
+  #     ```
+  # @example_response_description The book should be created correctly
+  # @example_response
+  #    ```json
+  #      {
+  #        "book": {
+  #        "id": 14,
+  #        "title": "test",
+  #        "author": null,
+  #        "publication_year": null,
+  #        "publication_month": null,
+  #        "image_url": "http://162.243.198.171:/fallback/1_default.png",
+  #        "barter_type": null,
+  #        "location": {
+  #           "id": 17,
+  #            "country": null,
+  #           "state": null,
+  #            "city": null,
+  #            "address": null,
+  #            "postal_code": null,
+  #            "locality": null,
+  #            "name": null,
+  #            "latitude": "12.7777",
+  #            "longitude": "12.34546",
+  #            "id_location": "804f2bbb36fd58ee"
+  #        },
+  #        "tags": [],
+  #        "id_book": "4bcbfd3bc31545ac"
+  #      }
+  #    }
+  #    ``
   def update
     @book = current_user.books.find(params[:id])
       if @book.update(book_params)
@@ -69,6 +183,12 @@ class Api::V1::BooksController < Api::V1::BaseController
       else
         render json: {error_message: @book.errors, error_code: Code[:error_resource]}, status: Code[:status_error]
       end
+  end
+
+  def test
+    book = Book.find(11)
+    binding.pry
+    render json: {:book => book.tags}
   end
 
   # POST /change_owner
