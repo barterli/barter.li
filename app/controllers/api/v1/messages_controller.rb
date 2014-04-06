@@ -38,8 +38,8 @@ class Api::V1::MessagesController < Api::V1::BaseController
 
   def ampq
     set_message
-    connection = AMQP.connect(:host => '127.0.0.1', :user=>ENV["RABBITMQ_USERNAME"], :pass=>ENV["RABBITMQ_PASSWORD"] , :vhost => "/")
-    channel  = AMQP::Channel.new(connection)
+    AMQP.channel ||= AMQP::Channel.new(AMQP.connect(:host => '127.0.0.1', :user=>ENV["RABBITMQ_USERNAME"], :pass => ENV["RABBITMQ_PASSWORD"], :vhost => "/"))
+    channel  = AMQP.channel
     exchange = channel.direct("node.barterli")
     receiver_queue    = channel.queue(@receiver.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @receiver.id_user)
     sender_queue    = channel.queue(@sender.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @sender.id_user)
