@@ -69,6 +69,14 @@ class User < ActiveRecord::Base
   def mail_duration(time_date)
     duration_difference = Time.now.to_i - time_date.to_i
   end
+
+  def profile_image
+    return  self.profile.url
+  end
+
+  def attributes
+    super.merge({'profile_image' => profile_image})
+  end
   
   # attributes
   # month :an integer representation of month ex: 1 or 01

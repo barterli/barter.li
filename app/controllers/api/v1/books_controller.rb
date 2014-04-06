@@ -185,16 +185,12 @@ class Api::V1::BooksController < Api::V1::BaseController
       end
   end
 
-  def test
-    book = Book.find(11)
-    binding.pry
-    render json: {:book => book.tags}
-  end
 
   # POST /change_owner
   def change_owner
     @book = current_user.books.find(params[:book_id])
-    @book.user_id = params[:user_id]
+    @user = User.find_by(id_user: params[:user_id])
+    @book.user_id = @user.id
     @book.tags.destroy
     @book.tag_ids = [Tag.find_by(name:'private').id]
     @book.save

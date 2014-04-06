@@ -25,20 +25,23 @@ class Api::V1::MessagesController < Api::V1::BaseController
   end
 
   def set_message
-    @sender = User.find(params[:sender_id])
-    @receiver = User.find(params[:receiver_id])
-    @chat_hash =  Hash.new
-    @chat_hash = {"sender_id" => @sender.id, "receiver_id" => @receiver.id, "message" => params[:message], :time => Time.now}
+    @sender = User.find_by(:id_user => params[:sender_id])
+    @receiver = User.find_by(:id_user => params[:receiver_id])
+    sender_hash = {"id_user" => @sender.id_user, "first_name" => @sender.first_name, 
+                  "last_name" => @sender.last_name, "profile_image" => request.original_url+"/"+@sender.profile_image }
+    receiver_hash = {"id_user" => @receiver.id_user, "first_name" => @receiver.first_name, 
+                    "last_name" => @receiver.last_name, "profile_image" => request.original_url+"/"+@receiver.profile_image }
+    @chat_hash = {"sender" => sender_hash, "receiver" =>receiver_hash,
+      "message" => params[:message], :time => Time.now}
   end
 
 
   def ampq
-    chat_hash = {"sender_id" => "20", "receiver_id" => "30", "message" => "hello", :time => Time.now}
     connection = AMQP.connect(:host => '127.0.0.1', :user=>ENV["RABBITMQ_USERNAME"], :pass=>ENV["RABBITMQ_PASSWORD"] , :vhost => "/")
     channel  = AMQP::Channel.new(connection)
     exchange = channel.direct("node.barterli")
-    receiver_queue    = channel.queue(@receiver.email, :auto_delete => true).bind(exchange, :routing_key => @receiver.id_user)
-    sender_queue    = channel.queue(@sender.email, :auto_delete => true).bind(exchange, :routing_key => @sender.id_user)
+    receiver_queue    = channel.queue(@receiver.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @receiver.id_user)
+    sender_queue    = channel.queue(@sender.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @sender.id_user)
     exchange.publish(@chat_hash, :routing_key => @receiver.id_user
                   )
     # queue.subscribe do |metadata, payload|

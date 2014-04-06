@@ -36,11 +36,63 @@ class Api::V1::UsersController < Api::V1::BaseController
   #    }
   #    ```
   def user_profile
-    user  = User.find(params[:id])
+    user  = User.find_by(id_user: params[:id])
     setting = user.settings.find_by(name: "location")
     location = setting.present? ? Location.find(setting.value) : false 
     # if stale?(:etag => "user_profile_"+user.id, :last_modified => user.updated_at, :public => true)
-      render :json => {user: user.as_json(only: [:first_name, :last_name, :email, :profile])}
+    render json: @users, serializer: UserProfileSerializer
+    # end
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  end
+
+  # @url /user_profiles
+  # @action GET 
+  # 
+  # get profile of a user
+  #
+  # @required [Integer] id id of the user
+  # @example_request_description Let's send a id of a user
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #     ids: 5
+  #     }
+  #    }
+  #    ```
+  # @example_response_description empty object with status 200
+  # @example_response
+  #    ```json
+  #        {
+  #            "users": [
+  #                {
+  #                    "id": 25,
+  #                    "first_name": "test",
+  #                    "last_name": "M",
+  #                    "id_user": 988jkbkjgjgjhg,
+  #                    "profile_image": "http://localhost:3000/fallback/1_default.png",
+  #                    "location": {
+  #                        "id": 6,
+  #                        "country": "34535",
+  #                        "state": null,
+  #                        "city": null,
+  #                        "locality": null,
+  #                        "name": null,
+  #                        "latitude": "12.334",
+  #                        "longitude": "12.445",
+  #                        "address": null,
+  #                        "id_location": null
+  #                    }
+  #                }
+  #            ]
+  #        }
+  #    }
+  #    ```
+  def user_profiles
+    users  = User.where(id_user: params[:ids].split(","))
+    # if stale?(:etag => "user_profile_"+user.id, :last_modified => user.updated_at, :public => true)
+    render json: users, each_serializer: UserProfileSerializer
     # end
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
@@ -67,12 +119,6 @@ class Api::V1::UsersController < Api::V1::BaseController
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
-  def get_profile_image
-    image_url = User.find(params[:id]).image.url
-    render json: {image_url: image_url, status: :success}
-  rescue => e
-     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
-  end
 
   def set_profile_image
     current_user.profile = params[:profile]

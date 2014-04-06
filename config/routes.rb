@@ -15,6 +15,7 @@ BarterLi::Application.routes.draw do
         post '/user_preferred_location', to: 'users#set_user_preferred_location'
         get '/search', to: "search#search"
         post '/barter_notification', to: "barters#send_barter_notification"
+        get '/user_profiles', to: "users#user_profiles"
         get '/user_profile', to: "users#user_profile"
         get '/current_user_profile', to: "users#show"
         post '/register', to: 'public#register'
