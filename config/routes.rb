@@ -22,7 +22,7 @@ BarterLi::Application.routes.draw do
         post '/update_user', to: 'users#update'
         put '/user_update', to: "users#update"
         post '/feedback', to: "tracker#create_feedback"
-        get '/ampq', to: "messages#ampq"
+        post '/ampq', to: "messages#ampq"
         get '/book_info', to: 'books#book_info'
         get '/book_suggestions', to: 'books#book_suggestions'
         get '/hangouts', to: 'locations#hangouts'

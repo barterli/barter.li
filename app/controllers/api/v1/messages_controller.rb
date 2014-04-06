@@ -31,24 +31,24 @@ class Api::V1::MessagesController < Api::V1::BaseController
                   "last_name" => @sender.last_name, "profile_image" => request.original_url+"/"+@sender.profile_image }
     receiver_hash = {"id_user" => @receiver.id_user, "first_name" => @receiver.first_name, 
                     "last_name" => @receiver.last_name, "profile_image" => request.original_url+"/"+@receiver.profile_image }
-    @chat_hash = {"sender" => sender_hash, "receiver" =>receiver_hash,
-      "message" => params[:message], :time => Time.now}
+    @chat_hash = {"sender" => sender_hash, "receiver" => receiver_hash,
+      "message" => params[:message], "time" => Time.now}
   end
 
 
   def ampq
+    set_message
     connection = AMQP.connect(:host => '127.0.0.1', :user=>ENV["RABBITMQ_USERNAME"], :pass=>ENV["RABBITMQ_PASSWORD"] , :vhost => "/")
     channel  = AMQP::Channel.new(connection)
     exchange = channel.direct("node.barterli")
     receiver_queue    = channel.queue(@receiver.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @receiver.id_user)
     sender_queue    = channel.queue(@sender.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @sender.id_user)
-    exchange.publish(@chat_hash, :routing_key => @receiver.id_user
-                  )
-    # queue.subscribe do |metadata, payload|
+    exchange.publish(@chat_hash.to_json, :routing_key => @receiver.id_user)
+    exchange.publish(@chat_hash.to_json, :routing_key => @sender.id_user)
+    # receiver_queue.subscribe do |metadata, payload|
     #   puts "Received a message: #{metadata.message_id},#{payload}. Disconnecting..."
     # end
-     render :nothing => true
-
+     render json: {}
  end
 
 
