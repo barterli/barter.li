@@ -101,7 +101,7 @@ class Api::V1::BooksController < Api::V1::BaseController
     return [] if params[:tag_names].blank?
     ids = Array.new
     params[:tag_names].each do |name|
-      tag = Tag.find_by(name: name.downcase)
+      tag = Tag.where(name: name.downcase).first_or_create
       ids << tag.id if tag.present?
     end
     return ids
