@@ -86,8 +86,11 @@ class Api::V1::BooksController < Api::V1::BaseController
   #    ```
   def create
     tag_ids = get_tag_ids
-    @book = current_user.books.new(book_params.merge(location_id: book_location, tag_ids: tag_ids))
+    @book = current_user.books.new(book_params.merge(location_id: book_location))
     if @book.save
+      # needed because of overriding tag_ids after initialize in module habtm_touch_id
+      @book.reload
+      @book.tag_ids = tag_ids
       WishListWorker.perform_async(@book.id)  # for background wishlist processing
       render json: @book 
     else
