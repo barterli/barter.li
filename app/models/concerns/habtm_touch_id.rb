@@ -1,6 +1,6 @@
 # include this module in models where has_and_belongs_to_many asscociation
 # changes touches the updated_at column of included model.
-# note this wont work on Object.new. you need to reload object after save 
+# note this wont work on Object.new. you need to reload object after creating new 
 module HabtmTouchId
   
   extend ActiveSupport::Concern
@@ -9,6 +9,7 @@ module HabtmTouchId
   end
   
    def create_touch_true_has_and_belongs_to_many
+     return unless self.persisted?
      association = self.class.name.constantize.reflect_on_all_associations(:has_and_belongs_to_many)
      association.each do |assoc|
        next if assoc.plural_name.blank?
