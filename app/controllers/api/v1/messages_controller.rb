@@ -37,6 +37,7 @@ class Api::V1::MessagesController < Api::V1::BaseController
 
 
   def ampq
+    EM.next_tick {
     set_message
     AMQP.channel ||= AMQP::Channel.new(AMQP.connect(:host => '127.0.0.1', :user=>ENV["RABBITMQ_USERNAME"], :pass => ENV["RABBITMQ_PASSWORD"], :vhost => "/"))
     channel  = AMQP.channel
@@ -49,6 +50,7 @@ class Api::V1::MessagesController < Api::V1::BaseController
     #   puts "Received a message: #{metadata.message_id},#{payload}. Disconnecting..."
     # end
      render json: {}
+   }
  end
 
 

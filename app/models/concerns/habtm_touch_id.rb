@@ -1,6 +1,6 @@
 # include this module in models where has_and_belongs_to_many asscociation
 # changes touches the updated_at column of included model.
-# note this wont work on Object.new. you need to reload object after creating new 
+# no overide if object is not persisted 
 module HabtmTouchId
   
   extend ActiveSupport::Concern
