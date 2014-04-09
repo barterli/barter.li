@@ -1,3 +1,3 @@
 class Static < ActiveRecord::Base
-  serialize :body
+  serialize :body, Hash
 end

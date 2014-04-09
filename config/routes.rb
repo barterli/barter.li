@@ -32,6 +32,8 @@ BarterLi::Application.routes.draw do
         get '/password_reset', to: 'users#send_password_reset'
         post '/password_reset', to: 'users#reset_password'
         get '/wish_list', to: 'books#get_wish_list'
+        get '/tribute', to: 'public#tribute'
+        get '/team', to: 'public#team'
         resources :books
     end
   end
