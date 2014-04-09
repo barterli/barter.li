@@ -2,9 +2,8 @@
 
 FactoryGirl.define do
   factory :static do
-    title "MyString"
-    body "MyText"
-    status false
     page_name "MyString"
+    body "MyText"
+    title "MyString"
   end
 end

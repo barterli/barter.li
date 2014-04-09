@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140405144324) do
+ActiveRecord::Schema.define(version: 20140409102447) do
 
   create_table "alerts", force: true do |t|
     t.integer  "user_id"
@@ -213,10 +213,9 @@ ActiveRecord::Schema.define(version: 20140405144324) do
   end
 
   create_table "statics", force: true do |t|
-    t.string   "title"
-    t.text     "body"
-    t.boolean  "status"
     t.string   "page_name"
+    t.text     "body"
+    t.string   "title"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
