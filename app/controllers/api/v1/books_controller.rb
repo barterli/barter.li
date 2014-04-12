@@ -99,9 +99,9 @@ class Api::V1::BooksController < Api::V1::BaseController
   end
 
   def get_tag_ids
-    return [] if params[:tag_names].blank?
+    return [] if params[:book][:tag_names].blank?
     ids = Array.new
-    params[:tag_names].each do |name|
+    params[:book][:tag_names].each do |name|
       tag = Tag.where(name: name.downcase).first_or_create
       ids << tag.id if tag.present?
     end

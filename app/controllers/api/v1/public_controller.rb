@@ -29,9 +29,9 @@ class Api::V1::PublicController < Api::V1::BaseController
 
   def tribute
     tribute = Static.find_by(page_name: "tribute")
-    if stale?(:etag => 'tribute page', :last_modified => tribute.updated_at , :public => true)
+#    if stale?(:etag => 'tribute page', :last_modified => tribute.updated_at , :public => true)
       render json: {tribute: tribute.body}
-    end
+    # end
   rescue => e
     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
