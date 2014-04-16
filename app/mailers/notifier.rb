@@ -38,4 +38,10 @@ class Notifier < ActionMailer::Base
     #{user.reset_password_token}</p>"
   end
 
+  def issue_tracker(user,link)
+    mail :to => user.email, :subject => "Barter.li feature and bug tracker",
+    content_type: "text/html", body: "<h1>Hi, track your feature suggestions or 
+    bugs from the below link</h1><p>#{link}</p>"
+  end
+
 end
