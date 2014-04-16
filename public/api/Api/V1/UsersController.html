@@ -167,6 +167,126 @@
 		</div>
     
 		<div class="method">
+      <h3>user_profiles</h3>
+			<p class="method_desc">get profile of a user</p>
+
+      
+        <div class="resource_url even">
+          <h4>URL</h4>
+          <span class="action">GET</span>
+          <span class="url">/user_profiles</span>
+        </div>
+      
+
+      
+
+  <div class="parameters odd">
+    
+      <h4>Required Parameters</h4>
+    
+		<ul>
+  		
+				<li>
+					<span class="name">id</span>
+					<span class="type"><tt>Integer</tt></span>
+					<span class="text">
+<p>id of the user</p>
+</span>
+				</li>
+  		
+	  </ul>
+	</div>
+
+
+      
+
+
+      
+        
+
+
+      
+
+			
+				<div class="examples">
+					<h4>Examples</h4>
+					
+						<div class="example">
+							
+							
+							
+							<span class="description">
+								
+									
+										Let's send a id of a user
+									
+								
+							</span>
+							<span class="hash request">
+								<strong class="type">Request</strong>
+								
+									
+										
+<p>“`json {</p>
+
+<pre class="code ruby"><code class="ruby">ids: 5
+}</code></pre>
+
+<p>} “`</p>
+
+									
+								
+							</span>
+							<span class="hash response">
+								<strong class="type">Response</strong>
+								
+									
+										
+<p>“`json</p>
+
+<pre class="code ruby"><code class="ruby">{
+    &quot;users&quot;: [
+        {
+            &quot;id&quot;: 25,
+            &quot;first_name&quot;: &quot;test&quot;,
+            &quot;last_name&quot;: &quot;M&quot;,
+            &quot;id_user&quot;: 988jkbkjgjgjhg,
+            &quot;profile_image&quot;: &quot;http://localhost:3000/fallback/1_default.png&quot;,
+            &quot;location&quot;: {
+                &quot;id&quot;: 6,
+                &quot;country&quot;: &quot;34535&quot;,
+                &quot;state&quot;: null,
+                &quot;city&quot;: null,
+                &quot;locality&quot;: null,
+                &quot;name&quot;: null,
+                &quot;latitude&quot;: &quot;12.334&quot;,
+                &quot;longitude&quot;: &quot;12.445&quot;,
+                &quot;address&quot;: null,
+                &quot;id_location&quot;: null
+            }
+        }
+    ]
+}</code></pre>
+
+<p>} “`</p>
+
+									
+								
+							</span>
+							<span class="description">
+								
+									
+										empty object with status 200
+									
+								
+							</span>
+						</div>
+					
+				</div>
+			
+		</div>
+    
+		<div class="method">
       <h3>send_password_reset</h3>
 			<p class="method_desc">send password reset token</p>
 
@@ -584,7 +704,7 @@
 	</div>
 
     <div id="footer">
-  Generated on Tue Apr  1 17:30:24 2014 with ruby-2.0.0
+  Generated on Wed Apr 16 13:29:57 2014 with ruby-2.0.0
 </div>
 
   </body>

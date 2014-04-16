@@ -39,7 +39,7 @@ class Api::V1::PublicController < Api::V1::BaseController
   def team
     team_page = Static.where(page_name: "team")
     team = team_page.map{|t| t.body}
-    if stale?(:etag => 'team page', :last_modified => team_page.maximum(:updated_at) , :public => true)
+    if stale?(:etag => 'team page member', :last_modified => team_page.maximum(:updated_at) , :public => true)
       render json: {team: team}
     end
   rescue => e

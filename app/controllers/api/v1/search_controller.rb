@@ -21,6 +21,8 @@ class Api::V1::SearchController < Api::V1::BaseController
   #    ```json
   #    {  
   #     "search": "ra"
+  #       "page": 1
+  #        "per": 10
   #     }
   #    }
   #    ```
