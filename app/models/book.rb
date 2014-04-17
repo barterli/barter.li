@@ -57,6 +57,7 @@ class Book < ActiveRecord::Base
   def self.search(params)
     if params.present?
       books = Book.where(nil)
+      #Location.where(latitude: params[:latitude], longitude: params[:longitude]).first_or_create
       locations = Location.near([params[:latitude], params[:longitude]], params[:radius], :units => :km) if params[:latitude].present? && params[:longitude].present? && params[:radius].present?
       books = books.where.not(user_id: params[:user_id]) if params[:user_id].present?
       books = books.where("title like ?", "%#{params[:title]}%") if params[:title].present? 
@@ -64,7 +65,7 @@ class Book < ActiveRecord::Base
       books = books.where("author like ?", "%#{params[:author]}%") if params[:author].present?
       books = books.where("author like ? or title like ?", "%#{params[:book_or_author]}%", "%#{params[:book_or_author]}%") if params[:book_or_author].present?
       #books = books.joins(:location).merge(locations) if locations.present?
-      books = books.where(:location_id => locations.map(&:id)) if locations.present?
+      books = books.where(:location_id => locations.map(&:id)) 
     else
       books = Book.all.order("RAND()")
     end
