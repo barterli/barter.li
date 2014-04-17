@@ -65,6 +65,7 @@ class Book < ActiveRecord::Base
       books = books.where("author like ?", "%#{params[:author]}%") if params[:author].present?
       books = books.where("author like ? or title like ?", "%#{params[:book_or_author]}%", "%#{params[:book_or_author]}%") if params[:book_or_author].present?
       #books = books.joins(:location).merge(locations) if locations.present?
+      locations = [] if locations.blank?
       books = books.where(:location_id => locations.map(&:id)) 
     else
       books = Book.all.order("RAND()")
