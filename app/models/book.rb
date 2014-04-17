@@ -15,7 +15,7 @@ class Book < ActiveRecord::Base
   mount_uploader :image, ImageUploader
 
   # kaminari pagination per page display
-  paginates_per 100
+  paginates_per 10
 
 
   # record the book visits by user
