@@ -1,7 +1,7 @@
 class UserSerializer < ActiveModel::Serializer
-  cached
+  #cached
   attributes :id, :email, :description, :first_name, :last_name, :location, 
-  :auth_token, :sign_in_count, :id_user
+  :auth_token, :sign_in_count, :id_user, :image_url
   has_many :books
  
   def location
@@ -16,6 +16,14 @@ class UserSerializer < ActiveModel::Serializer
 
   def auth_token
     object.authentication_token
+  end
+
+  def image_url
+    url = @options[:url_options]
+    #return  ActionController::Base.helpers.asset_url(object.image.url)if object.image_url.present?
+    port = url[:port].present? ?  ":"+url[:port].to_s: ""
+    image_path = ActionController::Base.helpers.asset_path(object.profile.url)
+    "#{url[:protocol]}#{url[:host]}#{port}#{image_path}"
   end
     
   def cache_key
