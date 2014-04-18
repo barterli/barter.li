@@ -1,6 +1,6 @@
 app/models/tag.rb eae36102ae623474f29fe86b03ff0a0918552aae
 app/models/code.rb 28df3deb4cb7cb8127812ecddea1048d833bb347
-app/models/book.rb 3fa501c0cf37e64295ef8fedc751fd4722ead508
+app/models/book.rb a720d8e0cb82089586fde44c339749f6dfd9147c
 app/models/user.rb 92a912b9513c0fd24b78a94d99179be37728169d
 app/models/alert.rb 30375d21e010c9e3dc1e4fd9221624a9e9a37df6
 app/models/static.rb 744d43cfbe07012e40ce69870b2d7725facd232f
@@ -23,12 +23,12 @@ app/models/concerns/habtm_touch_id.rb 25d0e4665a13e158550ee8f762064248f099e027
 app/controllers/application_controller.rb c3a8f10d606049e3e5afce572a1806a6e9041e4c
 app/controllers/api/v1/base_controller.rb f71e7cb9bb6828d7847cca0f68475963252b6c0c
 app/controllers/api/v1/books_controller.rb b4ca27b158a7828cf389cd7ab8d683da5831679d
-app/controllers/api/v1/users_controller.rb 115150f651445bfbbceb8d25cdf97e810a66235e
+app/controllers/api/v1/users_controller.rb 608809ac35ad8c726ca43b9bd782b244928af7a0
 app/controllers/api/v1/public_controller.rb ed45000d2f49aeafdec8c38ce3e7efcfbf9e7404
 app/controllers/api/v1/search_controller.rb b2f32f1f1784d3b5e3ffcd7e67a9c5025803aefe
-app/controllers/api/v1/tracker_controller.rb 6a292ac6d7b3bc61dd9ef8216959fd610580716f
+app/controllers/api/v1/tracker_controller.rb e86b25b1e178cb0cb3e0c7a1c924b559a23e94c7
 app/controllers/api/v1/barters_controller.rb 4083a17d721b40ff27f739bcd0e6c010759bb5fc
-app/controllers/api/v1/messages_controller.rb 65d828341aeba452056191e0ed5096fb87cb4530
+app/controllers/api/v1/messages_controller.rb 7d4a41980619e0eb332ec07e56f1f6bd4a5278b3
 app/controllers/api/v1/locations_controller.rb 34270bb6f8ad887d385aa4bb868a395f135660dc
 app/controllers/api/v1/notifications_controller.rb de441bf92b12f344df2d2c1cde7f4c3e060b4704
 app/controllers/api/v1/authentications_controller.rb e941b66ba1ebaf18ceac3830fe2cf82bb52b3b60

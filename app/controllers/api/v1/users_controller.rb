@@ -43,7 +43,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     render json: @users, serializer: UserProfileSerializer
     # end
   rescue => e
-     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+    render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
   # @url /user_profiles

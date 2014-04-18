@@ -4,9 +4,8 @@ class Api::V1::TrackerController < Api::V1::BaseController
   
   def create_feedback
 	result = @client.create_issue('barterli/barter.li', params[:title], params[:body], {:labels => params[:label] })
-	if(current_user.present?)
-    link = "https://github.com/barterli/barter.li/issues?state=open"
-    Notifier.issue_tracker(current_user, link).deliver
+  if(current_user.present?)
+    Notifier.issue_tracker(current_user, result.url).deliver
   end
   render json: {status: :success}
   rescue
