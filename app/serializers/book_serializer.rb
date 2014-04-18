@@ -1,5 +1,5 @@
 class BookSerializer < ActiveModel::Serializer
-  cached 
+  #cached 
   attributes :id, :title, :author, :publication_year, :publication_month, 
              :image_url, :barter_type, :location, :tags, :id_book, :description, :isbn_10, :isbn_13, :id_user
   
@@ -20,7 +20,8 @@ class BookSerializer < ActiveModel::Serializer
   	#return  ActionController::Base.helpers.asset_url(object.image.url)if object.image_url.present?
     return object.ext_image_url unless object.image.url.present?
     port = url[:port].present? ?  ":"+url[:port].to_s: ""
-    "#{url[:protocol]}#{url[:host]}#{port}#{object.image.url}"
+    image_path = ActionController::Base.helpers.asset_path(object.image.url)
+    "#{url[:protocol]}#{url[:host]}#{port}#{image_path}"
   end
 
   def cache_key
