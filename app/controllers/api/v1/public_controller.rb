@@ -27,6 +27,10 @@ class Api::V1::PublicController < Api::V1::BaseController
     end 
   end
 
+  def default
+    render json: {error: "no route matches"}
+  end
+
   def tribute
     tribute = Static.find_by(page_name: "tribute")
 #    if stale?(:etag => 'tribute page', :last_modified => tribute.updated_at , :public => true)

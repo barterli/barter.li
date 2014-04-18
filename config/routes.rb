@@ -35,8 +35,10 @@ BarterLi::Application.routes.draw do
         get '/wish_list', to: 'books#get_wish_list'
         get '/tribute', to: 'public#tribute'
         get '/team', to: 'public#team'
+        get '/default', to:'public#default'
         resources :books
     end
+     match '*path' => redirect('api/v1/default'), via: :get
   end
    
   # The priority is based upon order of creation: first created -> highest priority.
