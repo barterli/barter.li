@@ -19,6 +19,7 @@ class UserSerializer < ActiveModel::Serializer
   end
 
   def image_url
+    return object.ext_image if object.ext_image.present?
     url = @options[:url_options]
     #return  ActionController::Base.helpers.asset_url(object.image.url)if object.image_url.present?
     port = url[:port].present? ?  ":"+url[:port].to_s: ""
