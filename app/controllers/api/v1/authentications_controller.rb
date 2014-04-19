@@ -3,7 +3,6 @@
 # user creation and getting user objects
 #
 class Api::V1::AuthenticationsController < Api::V1::BaseController
- FB = OmniAuth::Strategies::Facebook.new("", "") 
  GOOGLE = OmniAuth::Strategies::GoogleOauth2.new("", "") 
  
   def get_auth_token
@@ -85,28 +84,28 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
   end
 
   def facebook
-    client = OAuth2::Client.new("", "", FB.options.client_options) 
-    token = OAuth2::AccessToken.new(client, params[:access_token], FB.options.access_token_options)
-    FB.access_token = token
-    authentication = Authentication.where(:uid => FB.auth_hash["uid"], :provider => "facebook").first
+    fbuser = FbGraph::User.me(params[:access_token]).fetch
+    uid = fbuser.raw_attributes[:id]
+    authentication = Authentication.where(:uid => uid, :provider => "facebook").first
     user = authentication.present? ? User.find(authentication.user_id) : false
     if(!user.present?)
-      user = User.find_by(email: FB.auth_hash["extra"]["raw_info"]["email"]) 
+      user = User.find_by(email: fbuser.email) 
       user = user.present? ? user : User.new
       unless user.persisted?
-        user.email = FB.auth_hash["extra"]["raw_info"]["email"]
-        user.first_name = FB.auth_hash["extra"]["raw_info"]["first_name"]
-        user.last_name = FB.auth_hash["extra"]["raw_info"]["last_name"]
+        user.email = fbuser.email
+        user.first_name = fbuser.first_name
+        user.last_name = fbuser.last_name
+        user.ext_image = fbuser.picture
         user.password = Devise.friendly_token.first(8)
         user.confirmed_at = Time.now
         user.save!
       end
       register_shares(user)
-      user.authentications.create!(:provider => "facebook", :uid => FB.auth_hash["uid"], :token => params[:access_token])
+      user.authentications.create!(:provider => "facebook", :uid => uid, :token => params[:access_token])
     end
       render json: user  
-  #rescue => e
-      #render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error] 
+  rescue => e
+      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error] 
   end
    
 
@@ -154,3 +153,8 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
   #     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 end
+
+
+
+
+

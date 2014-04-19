@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140418073500) do
+ActiveRecord::Schema.define(version: 20140419163914) do
 
   create_table "alerts", force: true do |t|
     t.integer  "user_id"
@@ -310,6 +310,7 @@ ActiveRecord::Schema.define(version: 20140418073500) do
     t.string   "share_token"
     t.string   "profile"
     t.string   "id_user"
+    t.string   "ext_image"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
