@@ -41,7 +41,14 @@ class User < ActiveRecord::Base
       save_email_track(Code[:wish_list_book])
     end
   end
-  
+
+  # profile image
+  def absolute_profile_image(host)
+    return self.ext_image if self.ext_image.present?
+    image_path = ActionController::Base.helpers.asset_path(self.profile.url)
+    return "http://#{host}#{image_path}"
+  end  
+ 
   # checks whether email can be sent based on user settings 
   # for no of emails and duration
   def can_send_mail
