@@ -113,7 +113,6 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
     client = OAuth2::Client.new("", "", GOOGLE.options.client_options) 
     token = OAuth2::AccessToken.new(client, params[:access_token], FB.options.access_token_options)
     GOOGLE.access_token = token
-    binding.pry
     authentication = Authentication.where(:uid => GOOGLE.auth_hash["uid"], :provider => "google").first
     user = authentication.present? ? User.find(authentication.user_id) : false
     if(!user.present?)

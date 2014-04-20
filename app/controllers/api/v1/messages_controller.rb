@@ -28,9 +28,9 @@ class Api::V1::MessagesController < Api::V1::BaseController
     @sender = User.find_by(:id_user => params[:sender_id])
     @receiver = User.find_by(:id_user => params[:receiver_id])
     sender_hash = {"id_user" => @sender.id_user, "first_name" => @sender.first_name, 
-                  "last_name" => @sender.last_name, "profile_image" => request.original_url+"/"+@sender.profile_image }
+                  "last_name" => @sender.last_name, "profile_image" => "http://"+request.host_with_port+"/"+@sender.profile_image }
     receiver_hash = {"id_user" => @receiver.id_user, "first_name" => @receiver.first_name, 
-                    "last_name" => @receiver.last_name, "profile_image" => request.original_url+"/"+@receiver.profile_image }
+                    "last_name" => @receiver.last_name, "profile_image" => "http://"+request.host_with_port+"/"+@receiver.profile_image }
     @chat_hash = {"sender" => sender_hash, "receiver" => receiver_hash,
       "message" => params[:message], "time" => Time.now}
   end
