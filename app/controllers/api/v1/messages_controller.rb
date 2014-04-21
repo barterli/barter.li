@@ -36,7 +36,7 @@ class Api::V1::MessagesController < Api::V1::BaseController
   end
 
 
-  def ampq
+  def ampq1
     EM.next_tick {
     set_message
     AMQP.channel ||= AMQP::Channel.new(AMQP.connect(:host => '127.0.0.1', :user=>ENV["RABBITMQ_USERNAME"], :pass => ENV["RABBITMQ_PASSWORD"], :vhost => "/"))
@@ -57,7 +57,7 @@ class Api::V1::MessagesController < Api::V1::BaseController
     Rails.logger.info "error! #{e}"
  end
 
-  def ampq1
+  def ampq
     EventMachine.run do
       set_message
       AMQP.channel ||= AMQP::Channel.new(AMQP.connect(:host => '127.0.0.1', :user=>ENV["RABBITMQ_USERNAME"], :pass => ENV["RABBITMQ_PASSWORD"], :vhost => "/"))
