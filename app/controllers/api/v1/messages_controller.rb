@@ -68,9 +68,23 @@ class Api::V1::MessagesController < Api::V1::BaseController
     exchange.publish(@chat_hash.to_json, :routing_key => @sender.id_user)
     EventMachine::error_handler { |e| puts "error! in eventmachine #{e}" }
     # disconnect & exit after 2 seconds
+
+    connection.on_error do |conn, connection_close|
+      puts <<-ERR
+      Handling a connection-level exception.
+
+      AMQP class id : #{connection_close.class_id},
+      AMQP method id: #{connection_close.method_id},
+      Status code   : #{connection_close.reply_code}
+      Error message : #{connection_close.reply_text}
+      ERR
+
+     conn.periodically_reconnect(30)
+
+    end
+
     EventMachine.add_timer(2) do
       exchange.delete
-      connection.close { EventMachine.stop }
       end
     end
   end
