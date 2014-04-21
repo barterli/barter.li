@@ -36,7 +36,7 @@ class Api::V1::MessagesController < Api::V1::BaseController
   end
 
 
-  def ampq1
+  def ampq
     EM.next_tick {
     set_message
     AMQP.channel ||= AMQP::Channel.new(AMQP.connect(:host => '127.0.0.1', :user=>ENV["RABBITMQ_USERNAME"], :pass => ENV["RABBITMQ_PASSWORD"], :vhost => "/"))
@@ -57,22 +57,8 @@ class Api::V1::MessagesController < Api::V1::BaseController
     Rails.logger.info "error! #{e}"
  end
 
-  def ampq
-    EventMachine.run do
-      set_message
-      AMQP.channel ||= AMQP::Channel.new(AMQP.connect(:host => '127.0.0.1', :user=>ENV["RABBITMQ_USERNAME"], :pass => ENV["RABBITMQ_PASSWORD"], :vhost => "/"))
-      channel  = AMQP.channel
-      exchange = channel.direct("node.barterli")
-      receiver_queue    = channel.queue(@receiver.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @receiver.id_user)
-      sender_queue    = channel.queue(@sender.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @sender.id_user)
-      exchange.publish(@chat_hash.to_json, :routing_key => @receiver.id_user)
-      exchange.publish(@chat_hash.to_json, :routing_key => @sender.id_user)
-      # receiver_queue.subscribe do |metadata, payload|
-      #   puts "Received a message: #{metadata.message_id},#{payload}. Disconnecting..."
-      # end
-      EventMachine::error_handler { |e| puts "error! in eventmachine" }
-        render json: {}
-    end
-  end
+
 
 end
+
+
