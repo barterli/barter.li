@@ -36,10 +36,11 @@ class Api::V1::MessagesController < Api::V1::BaseController
   end
 
 
-  def ampq1
+  def ampq
     EM.next_tick {
     set_message
-    AMQP.channel ||= AMQP::Channel.new(AMQP.connect(:host => '127.0.0.1', :user=>ENV["RABBITMQ_USERNAME"], :pass => ENV["RABBITMQ_PASSWORD"], :vhost => "/"))
+    connection = AMQP.connect(:host => '127.0.0.1', :user=>ENV["RABBITMQ_USERNAME"], :pass => ENV["RABBITMQ_PASSWORD"], :vhost => "/")
+    AMQP.channel ||= AMQP::Channel.new(connection)
     channel  = AMQP.channel
     exchange = channel.direct("node.barterli")
     receiver_queue    = channel.queue(@receiver.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @receiver.id_user)
@@ -49,7 +50,17 @@ class Api::V1::MessagesController < Api::V1::BaseController
     # receiver_queue.subscribe do |metadata, payload|
     #   puts "Received a message: #{metadata.message_id},#{payload}. Disconnecting..."
     # end
-    EventMachine::error_handler { |e| puts "error! in eventmachine" }
+    connection.on_error do |conn, connection_close|
+      puts <<-ERR
+      Handling a connection-level exception.
+      AMQP class id : #{connection_close.class_id},
+      AMQP method id: #{connection_close.method_id},
+      Status code   : #{connection_close.reply_code}
+      Error message : #{connection_close.reply_text}
+      ERR
+     conn.periodically_reconnect(30)
+    end
+    EventMachine::error_handler { |e| puts "error! in eventmachine #{e}" }
      render json: {}
 
    }
@@ -57,7 +68,7 @@ class Api::V1::MessagesController < Api::V1::BaseController
     Rails.logger.info "error! #{e}"
  end
 
-  def ampq
+  def ampq1
     AMQP.start("amqp://#{ENV["RABBITMQ_USERNAME"]}:#{ENV["RABBITMQ_PASSWORD"]}@127.0.0.1") do |connection|
     set_message
     channel  = AMQP::Channel.new(connection)
@@ -68,19 +79,15 @@ class Api::V1::MessagesController < Api::V1::BaseController
     exchange.publish(@chat_hash.to_json, :routing_key => @sender.id_user)
     EventMachine::error_handler { |e| puts "error! in eventmachine #{e}" }
     # disconnect & exit after 2 seconds
-
     connection.on_error do |conn, connection_close|
       puts <<-ERR
       Handling a connection-level exception.
-
       AMQP class id : #{connection_close.class_id},
       AMQP method id: #{connection_close.method_id},
       Status code   : #{connection_close.reply_code}
       Error message : #{connection_close.reply_text}
       ERR
-
      conn.periodically_reconnect(30)
-
     end
 
     EventMachine.add_timer(2) do

@@ -32,7 +32,9 @@ class Api::V1::PublicController < Api::V1::BaseController
   end
 
   def tribute
-    tribute = Static.find_by(page_name: "tribute")
+    tribute_page = Static.find_by(page_name: "tribute")
+    tribute = tribute_page.body
+    tribute.merge(image_url: request.host_with_port+tribute_page.image.url) if tribute_page.image.present?
 #    if stale?(:etag => 'tribute page', :last_modified => tribute.updated_at , :public => true)
       render json: {tribute: tribute.body}
     # end
@@ -42,10 +44,10 @@ class Api::V1::PublicController < Api::V1::BaseController
 
   def team
     team_page = Static.where(page_name: "team")
-    team = team_page.map{|t| t.body}
-    if stale?(:etag => 'team page member', :last_modified => team_page.maximum(:updated_at) , :public => true)
+    team = team_page.map{|t| t.image.present? ? t.body.merge(image_url: request.host_with_port+ActionController::Base.helpers.asset_path(t.image.url)) : t.body}
+    # if stale?(:etag => 'team page member', :last_modified => team_page.maximum(:updated_at) , :public => true)
       render json: {team: team}
-    end
+    # end
   rescue => e
     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end

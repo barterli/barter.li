@@ -1,8 +1,9 @@
 BarterLi::Application.routes.draw do
+    devise_for :users
+
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
-  devise_for :users
   namespace :api do
     namespace :v1, defaults:{format: 'json'} do
         get "/facebook", to: 'authentications#facebook'
