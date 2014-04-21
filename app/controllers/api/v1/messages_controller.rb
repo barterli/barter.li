@@ -44,15 +44,16 @@ class Api::V1::MessagesController < Api::V1::BaseController
     exchange = channel.direct("node.barterli")
     receiver_queue    = channel.queue(@receiver.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @receiver.id_user)
     sender_queue    = channel.queue(@sender.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @sender.id_user)
-    exchange.publish(@chat_hash.to_json, :routing_key => @receiver.id_user, :immediate => true)
-    exchange.publish(@chat_hash.to_json, :routing_key => @sender.id_user, :immediate => true)
+    exchange.publish(@chat_hash.to_json, :routing_key => @receiver.id_user)
+    exchange.publish(@chat_hash.to_json, :routing_key => @sender.id_user)
     # receiver_queue.subscribe do |metadata, payload|
     #   puts "Received a message: #{metadata.message_id},#{payload}. Disconnecting..."
     # end
-    exchange.on_return do |basic_return, metadata, payload|
-      puts "#{payload} was returned! reply_code = #{basic_return.reply_code}, reply_text = #{basic_return.reply_text}"
+    EventMachine.add_timer(1) do
+      exchange.delete
+      connection.close { EventMachine.stop }
     end
-    channel.close()
+
     EventMachine::error_handler { |e| puts "error! in eventmachine" }
      render json: {}
 
