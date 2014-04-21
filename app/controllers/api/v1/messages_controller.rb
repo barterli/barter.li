@@ -58,21 +58,20 @@ class Api::V1::MessagesController < Api::V1::BaseController
  end
 
   def ampq
-      AMQP.start("amqp://#{ENV["RABBITMQ_USERNAME"]}:#{ENV["RABBITMQ_PASSWORD"]}@127.0.0.1") do |connection|
-        channel  = AMQP::Channel.new(connection)
-       exchange = channel.direct("node.barterli")
-       receiver_queue    = channel.queue(@receiver.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @receiver.id_user)
-       sender_queue    = channel.queue(@sender.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @sender.id_user)
-       exchange.publish(@chat_hash.to_json, :routing_key => @receiver.id_user)
-       exchange.publish(@chat_hash.to_json, :routing_key => @sender.id_user)
-
-        # disconnect & exit after 2 seconds
-        EventMachine.add_timer(2) do
-          exchange.delete
-
-          connection.close { EventMachine.stop }
-        end
+    AMQP.start("amqp://#{ENV["RABBITMQ_USERNAME"]}:#{ENV["RABBITMQ_PASSWORD"]}@127.0.0.1") do |connection|
+    channel  = AMQP::Channel.new(connection)
+    exchange = channel.direct("node.barterli")
+    receiver_queue    = channel.queue(@receiver.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @receiver.id_user)
+    sender_queue    = channel.queue(@sender.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @sender.id_user)
+    exchange.publish(@chat_hash.to_json, :routing_key => @receiver.id_user)
+    exchange.publish(@chat_hash.to_json, :routing_key => @sender.id_user)
+    EventMachine::error_handler { |e| puts "error! in eventmachine #{e}" }
+    # disconnect & exit after 2 seconds
+    EventMachine.add_timer(2) do
+      exchange.delete
+      connection.close { EventMachine.stop }
       end
+    end
   end
 
 
