@@ -35,8 +35,63 @@ class Api::V1::MessagesController < Api::V1::BaseController
       "message" => params[:message], "time" => Time.now}
   end
 
-
+ 
   def ampq
+    EM.next_tick {
+    begin
+      set_message
+    rescue => e
+      Rails.logger.info "error! #{e}"
+      render json: {error: "message not send"}
+      return
+    end
+    connection = AMQP.connect(:host => '127.0.0.1', :user=>ENV["RABBITMQ_USERNAME"], :pass => ENV["RABBITMQ_PASSWORD"], :vhost => "/")
+    AMQP.channel ||= AMQP::Channel.new(connection)
+    channel  = AMQP.channel
+    channel.auto_recovery = true
+    exchange = channel.fanout(params[:exchange])
+    receiver_queue    = channel.queue(@receiver.id_user+"queue", :auto_delete => true).bind(exchange)
+    sender_queue    = channel.queue(@sender.id_user+"queue", :auto_delete => true).bind(exchange)
+    exchange.publish(@chat_hash.to_json)
+    exchange.publish(@chat_hash.to_json)
+    receiver_queue.status do |number_of_messages, number_of_consumers|
+      puts
+      puts "(receiver queue)# of messages in the queue  = #{number_of_messages}"
+      puts
+    end
+    sender_queue.status do |number_of_messages, number_of_consumers|
+      puts
+      puts "(sender queue)# of messages in the queue  = #{number_of_messages}"
+      puts
+    end
+    Rails.logger.info "enterd event loop"
+    EventMachine.add_timer(2) do
+      exchange.delete
+    end
+    connection.on_tcp_connection_loss do |connection, settings|
+      # reconnect in 10 seconds, without enforcement
+      connection.reconnect(false, 10)
+    end
+    connection.on_error do |conn, connection_close|
+      puts <<-ERR
+      Handling a connection-level exception.
+      AMQP class id : #{connection_close.class_id},
+      AMQP method id: #{connection_close.method_id},
+      Status code   : #{connection_close.reply_code}
+      Error message : #{connection_close.reply_text}
+      ERR
+     conn.periodically_reconnect(30)
+    end
+    EventMachine::error_handler { |e| puts "error! in eventmachine #{e}" }
+     render json: {}
+
+    }
+ 
+  end
+  
+
+
+  def ampq2
     EM.next_tick {
     begin
       set_message
