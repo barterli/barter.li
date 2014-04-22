@@ -54,12 +54,21 @@ class Api::V1::MessagesController < Api::V1::BaseController
     sender_queue    = channel.queue(@sender.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @sender.id_user)
     exchange.publish(@chat_hash.to_json, :routing_key => @receiver.id_user)
     exchange.publish(@chat_hash.to_json, :routing_key => @sender.id_user)
-
+    receiver_queue.status do |number_of_messages, number_of_consumers|
+      puts
+      puts "(receiver queue)# of messages in the queue #{queue.name} = #{number_of_messages}"
+      puts
+    end
+    sender_queue.status do |number_of_messages, number_of_consumers|
+      puts
+      puts "(sender queue)# of messages in the queue #{queue.name} = #{number_of_messages}"
+      puts
+    end
+    Rails.logger.info "enterd event loop"
     connection.on_tcp_connection_loss do |connection, settings|
       # reconnect in 10 seconds, without enforcement
       connection.reconnect(false, 10)
     end
-    
     connection.on_error do |conn, connection_close|
       puts <<-ERR
       Handling a connection-level exception.
