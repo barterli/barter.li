@@ -111,27 +111,28 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
 
   def google
     client = OAuth2::Client.new("", "", GOOGLE.options.client_options) 
-    token = OAuth2::AccessToken.new(client, params[:access_token], GOOGLE.options.access_token_options)
+    token = OAuth2::AccessToken.new(client, params[:access_token], GOOGLE.options.token_options)
     GOOGLE.access_token = token
-    authentication = Authentication.where(:uid => GOOGLE.auth_hash["uid"], :provider => "google").first
+    authentication = Authentication.where(:uid =>  GOOGLE.raw_info["id"], :provider => "google").first
     user = authentication.present? ? User.find(authentication.user_id) : false
     if(!user.present?)
-      user = User.find_by(email: GOOGLE.auth_hash["extra"]["raw_info"]["email"]) 
+      user = User.find_by(email: GOOGLE.info[:email]) 
       user = user.present? ? user : User.new
       unless user.persisted?
-        user.email = GOOGLE.auth_hash["extra"]["raw_info"]["email"]
-        user.first_name = GOOGLE.auth_hash["extra"]["raw_info"]["first_name"]
-        user.last_name = GOOGLE.auth_hash["extra"]["raw_info"]["last_name"]
+        user.email = GOOGLE.info[:email]
+        user.first_name = GOOGLE.info[:first_name]
+        user.last_name = GOOGLE.info[:last_name]
         user.password = Devise.friendly_token.first(8)
+        user.ext_image = GOOGLE.info[:image]
         user.confirmed_at = Time.now
         user.save!
       end
       register_shares(user)
-      user.authentications.create!(:provider => "facebook", :uid => FB.auth_hash["uid"], :token => params[:access_token])
+      user.authentications.create!(:provider => "facebook", :uid =>  GOOGLE.raw_info["id"], :token => params[:access_token])
     end
       render json: user 
-  rescue => e
-      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  # rescue => e
+  #     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
   def register_shares(user)

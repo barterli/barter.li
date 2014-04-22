@@ -394,6 +394,7 @@ DEPENDENCIES
   kaminari
   mini_magick
   mysql2
+  oauth2
   octokit (~> 2.0)
   omniauth-facebook
   omniauth-google-oauth2

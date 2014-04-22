@@ -81,6 +81,8 @@ gem 'omniauth-facebook'
 
 gem "omniauth-google-oauth2"
 
+gem "oauth2"
+
 gem 'foursquare2'
 
 gem 'openlibrary'
