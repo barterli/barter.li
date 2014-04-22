@@ -38,18 +38,28 @@ class Api::V1::MessagesController < Api::V1::BaseController
 
   def ampq
     EM.next_tick {
-    set_message
+    begin
+      set_message
+    rescue => e
+      Rails.logger.info "error! #{e}"
+      render json: {error: "message not send"}
+      return
+    end
     connection = AMQP.connect(:host => '127.0.0.1', :user=>ENV["RABBITMQ_USERNAME"], :pass => ENV["RABBITMQ_PASSWORD"], :vhost => "/")
     AMQP.channel ||= AMQP::Channel.new(connection)
     channel  = AMQP.channel
+    channel.auto_recovery = true
     exchange = channel.direct("node.barterli")
     receiver_queue    = channel.queue(@receiver.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @receiver.id_user)
     sender_queue    = channel.queue(@sender.id_user+"queue", :auto_delete => true).bind(exchange, :routing_key => @sender.id_user)
     exchange.publish(@chat_hash.to_json, :routing_key => @receiver.id_user)
     exchange.publish(@chat_hash.to_json, :routing_key => @sender.id_user)
-    # receiver_queue.subscribe do |metadata, payload|
-    #   puts "Received a message: #{metadata.message_id},#{payload}. Disconnecting..."
-    # end
+
+    connection.on_tcp_connection_loss do |connection, settings|
+      # reconnect in 10 seconds, without enforcement
+      connection.reconnect(false, 10)
+    end
+    
     connection.on_error do |conn, connection_close|
       puts <<-ERR
       Handling a connection-level exception.
@@ -64,8 +74,7 @@ class Api::V1::MessagesController < Api::V1::BaseController
      render json: {}
 
    }
-  rescue => e
-    Rails.logger.info "error! #{e}"
+ 
  end
 
   def ampq1
