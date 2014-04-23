@@ -4,7 +4,7 @@
 #
 class Api::V1::UsersController < Api::V1::BaseController
   before_action :authenticate_user!, only: [:update, :show, :get_share_token, :generate_share_token,
-    :set_user_preferred_location, :user_preferred_location]
+    :set_user_preferred_location, :user_preferred_location, :chat_block]
   
   
 
@@ -94,6 +94,30 @@ class Api::V1::UsersController < Api::V1::BaseController
     # if stale?(:etag => "user_profile_"+user.id, :last_modified => user.updated_at, :public => true)
     render json: users, each_serializer: UserProfileSerializer
     # end
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  end
+
+  # POST /chat_block
+  # params user_id
+  def chat_block
+    is_blocked = current_user.chat_filters.where(user_id: params[:user_id]).first
+    if(is_blocked.blank?)
+      current_user.chat_block(params[:user_id])
+      render :json => {}
+    end
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  end
+
+  # POST /chat_unblock
+  # params user_id
+  def chat_unblock
+    is_blocked = current_user.chat_filters.where(user_id: params[:user_id]).first
+    if(is_blocked.present?)
+      is_blocked.delete
+      render :json => {}
+    end
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end

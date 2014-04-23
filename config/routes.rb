@@ -37,6 +37,8 @@ BarterLi::Application.routes.draw do
         get '/tribute', to: 'public#tribute'
         get '/team', to: 'public#team'
         get '/default', to:'public#default'
+        post '/chat_block', to: 'users#chat_block'
+        post '/chat_block', to: 'users#chat_unblock'
         resources :books
     end
      match '*path' => redirect('api/v1/default'), via: :get

@@ -8,15 +8,16 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :omniauthable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
-  has_many :books
-  has_many :settings
-  has_many :email_tracks
-  has_many :wish_lists
-  has_many :alerts
+  has_many :books, :dependent => :destroy
+  has_many :settings, :dependent => :destroy
+  has_many :email_tracks, :dependent => :destroy
+  has_many :wish_lists, :dependent => :destroy
+  has_many :alerts, :dependent => :destroy
   has_many :authentications, :dependent => :destroy
-  has_many :user_shares
-  has_many :user_book_visits
-  has_many :user_feedbacks
+  has_many :user_shares, :dependent => :destroy
+  has_many :user_book_visits, :dependent => :destroy
+  has_many :user_feedbacks, :dependent => :destroy
+  has_many :chat_filters, :dependent => :destroy
   mount_uploader :profile, ImageUploader
 
   def ensure_authentication_token
@@ -59,6 +60,20 @@ class User < ActiveRecord::Base
       (mail_duration(last_email_sent) >= self.setting_email_duration) ? true : false
     else
       false
+    end
+  end
+
+  def chat_block(user_id)
+    self.chat_filters.create!(block_id: user_id)
+  end
+
+
+  def is_chat_blocked(user_id)
+    is_blocked = self.chat_filters.where(block_id: user_id).first
+    if(is_blocked.present?)
+      return true
+    else
+      return false
     end
   end
 

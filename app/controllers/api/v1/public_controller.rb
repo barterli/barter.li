@@ -31,6 +31,9 @@ class Api::V1::PublicController < Api::V1::BaseController
     render json: {error: "no route matches"}
   end
 
+  # GET /tribute
+  # params: body (hash {message: "", image_url:""})
+  # params: page_name (should be tribute)
   def tribute
     tribute_page = Static.find_by(page_name: "tribute")
     tribute = tribute_page.body
@@ -42,6 +45,11 @@ class Api::V1::PublicController < Api::V1::BaseController
     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
+
+
+  # GET /team
+  # params: body (hash {name: "", image_url:"", email:"", description:""})
+  # params: page_name (should be team)
   def team
     team_page = Static.where(page_name: "team")
     team = team_page.map{|t| t.image.present? ? t.body.merge(image_url: "http://"+request.host_with_port+ActionController::Base.helpers.asset_path(t.image.url)) : t.body}
