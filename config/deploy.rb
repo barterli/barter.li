@@ -20,6 +20,12 @@ set :deploy_to, '/home/deploy/barter.li'
 
 namespace :deploy do
 
+  before "deploy:restart", :symlink_directories
+  task :symlink_directories do
+  execute :mkdir, "#{shared_path}/uploads" unless File.exists?("#{shared_path}/uploads")
+  run "ln -nfs #{shared_path}/uploads #{release_path}/public/uploads"
+  end
+
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
@@ -38,6 +44,6 @@ namespace :deploy do
     end
   end
 
-  after :finishing, 'deploy:cleanup'
+  #after :finishing, 'deploy:cleanup'
 
 end
