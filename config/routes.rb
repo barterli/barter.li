@@ -41,9 +41,9 @@ BarterLi::Application.routes.draw do
         post '/chat_block', to: 'users#chat_unblock'
         resources :books
     end
-     match '*path' => redirect('api/v1/default'), via: :get
   end
-   
+  match '*path' => redirect('api/v1/default'), via: :get
+  root to: "api/v1/public#default"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
