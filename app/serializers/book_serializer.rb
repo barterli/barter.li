@@ -17,8 +17,7 @@ class BookSerializer < ActiveModel::Serializer
 
   def image_url
   	url = @options[:url_options]
-    return object.ext_image_url if object.image.url.index("default") && object.ext_image_url.present? 
-                                         &&  !object.ext_image_url.index("nocover")
+    return object.ext_image_url if object.image.url.index("default") && object.ext_image_url.present? &&  !object.ext_image_url.index("nocover")
     port = url[:port].present? ?  ":"+url[:port].to_s: ""
     image_path = ActionController::Base.helpers.asset_path(object.image.url)
     "#{url[:protocol]}#{url[:host]}#{port}#{image_path}"
