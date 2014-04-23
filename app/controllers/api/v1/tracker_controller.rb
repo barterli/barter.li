@@ -1,7 +1,37 @@
+# @restful_api 1.0
+#
+# Issue or Feature Tracker
+#
 class Api::V1::TrackerController < Api::V1::BaseController
-  #before_action :authenticate_user!
+  before_action :authenticate_user!
   before_action :set_github, :create_feedback
-  
+
+  # @url /feedback
+  # @action POST
+  # 
+  # bugs/feature report directly added to github issues
+  #
+  # @required [String] title title of bug/feature
+  # @required [String] body body of bug/feature
+  # @required [String] label label bug or feature
+  # @example_request_description Let's create a feature suggestion
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #     title: "add book likes"
+  #     body: "it would be better if u add book likes"
+  #     label: "bug"
+  #     }
+  #    }
+  #    ```
+  # @example_response_description empty object with status 200
+  # @example_response
+  #    ```json
+  #        {
+  #         
+  #    }
+  #    ```
   def create_feedback
 	@result = @client.create_issue('barterli/barter.li', params[:title], params[:body], {:labels => params[:label] })
     save_feedback    

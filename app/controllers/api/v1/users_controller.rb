@@ -13,49 +13,13 @@ class Api::V1::UsersController < Api::V1::BaseController
   # 
   # get profile of a user
   #
-  # @required [Integer] id id of the user
+  # @required [Integer] id id array of the user
   # @example_request_description Let's send a id of a user
   # 
   # @example_request
   #    ```json
   #    {  
   #     id: 5
-  #     }
-  #    }
-  #    ```
-  # @example_response_description empty object with status 200
-  # @example_response
-  #    ```json
-  #    {
-  #      
-  #      "user": {
-  #      "email": "test@gmail.com",
-  #       "first_name": "test",
-  #      "last_name": "test"
-  #     }
-  #    }
-  #    ```
-  def user_profile
-    user  = User.find_by(id_user: params[:id])
-    # if stale?(:etag => "user_profile_"+user.id, :last_modified => user.updated_at, :public => true)
-    render json: user, serializer: UserProfileSerializer
-    # end
-  rescue => e
-    render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
-  end
-
-  # @url /user_profiles
-  # @action GET 
-  # 
-  # get profile of a user
-  #
-  # @required [Integer] id id of the user
-  # @example_request_description Let's send a id of a user
-  # 
-  # @example_request
-  #    ```json
-  #    {  
-  #     ids: 5
   #     }
   #    }
   #    ```
@@ -70,7 +34,8 @@ class Api::V1::UsersController < Api::V1::BaseController
   #                    "last_name": "M",
   #                    "id_user": 988jkbkjgjgjhg,
   #                    "profile_image": "http://localhost:3000/fallback/1_default.png",
-  #                    "location": {
+  #                     "description":"description here"
+  #                       "location": {
   #                        "id": 6,
   #                        "country": "34535",
   #                        "state": null,
@@ -80,7 +45,122 @@ class Api::V1::UsersController < Api::V1::BaseController
   #                        "latitude": "12.334",
   #                        "longitude": "12.445",
   #                        "address": null,
-  #                        "id_location": null
+  #                        "id_location": null,
+  #                         "books": [
+  #                                  {
+  #                                      "id": 36,
+  #                                      "title": "Quiet Quadrangles And Ivory Towers",
+  #                                      "author": "Pauline Curtis",
+  #                                      "publication_year": null,
+  #                                      "publication_month": null,
+  #                                      "value": null,
+  #                                      "image_url": "http://162.243.198.171/assets/fallback/1_default-1613a70d06a262fc7635652906de7eb9.png",
+  #                                      "barter_type": null,
+  #                                      "location": {
+  #                                          "id": 1,
+  #                                          "country": null,
+  #                                          "state": null,
+  #                                          "city": null,
+  #                                          "locality": null,
+  #                                          "name": "Coffee On Canvas",
+  #                                          "latitude": "12.93516201597191",
+  #                                          "longitude": "77.63097871416265",
+  #                                          "address": "#84, S.T.Bed Layout, 4th Block Koramangala",
+  #                                          "id_location": "0bfb1f41ee40128d"
+  #                                      },
+  #                                      "tags": [
+  #                                          "barter"
+  #                                      ],
+  #                                      "id_book": "8abbb9fe63bca9dc",
+  #                                      "description": "",
+  #                                      "isbn_10": null,
+  #                                      "isbn_13": "9780955716300",
+  #                                      "id_user": "df1435f617d4063a"
+  #                                  }]
+  #                    }
+  #                }
+  #            ]
+  #        }
+  #    }
+  #    ```
+  def user_profile
+    user  = User.find_by(id_user: params[:id])
+    # if stale?(:etag => "user_profile_"+user.id, :last_modified => user.updated_at, :public => true)
+    render json: user, serializer: UserProfileSerializer
+    # end
+  rescue => e
+    render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  end
+
+  # @url /user_profiles
+  # @action GET 
+  # 
+  # get profiles of a users
+  #
+  # @required [Integer] ids id array of the user
+  # @example_request_description Let's send a id of a user
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #     ids: [5]
+  #     }
+  #    }
+  #    ```
+  # @example_response_description empty object with status 200
+  # @example_response
+  #    ```json
+  #        {
+  #            "users": [
+  #                {
+  #                    "id": 25,
+  #                    "first_name": "test",
+  #                    "last_name": "M",
+  #                    "id_user": 988jkbkjgjgjhg,
+  #                    "profile_image": "http://localhost:3000/fallback/1_default.png",
+  #                     "description":"description here"
+  #                       "location": {
+  #                        "id": 6,
+  #                        "country": "34535",
+  #                        "state": null,
+  #                        "city": null,
+  #                        "locality": null,
+  #                        "name": null,
+  #                        "latitude": "12.334",
+  #                        "longitude": "12.445",
+  #                        "address": null,
+  #                        "id_location": null,
+  #                         "books": [
+  #                                  {
+  #                                      "id": 36,
+  #                                      "title": "Quiet Quadrangles And Ivory Towers",
+  #                                      "author": "Pauline Curtis",
+  #                                      "publication_year": null,
+  #                                      "publication_month": null,
+  #                                      "value": null,
+  #                                      "image_url": "http://162.243.198.171/assets/fallback/1_default-1613a70d06a262fc7635652906de7eb9.png",
+  #                                      "barter_type": null,
+  #                                      "location": {
+  #                                          "id": 1,
+  #                                          "country": null,
+  #                                          "state": null,
+  #                                          "city": null,
+  #                                          "locality": null,
+  #                                          "name": "Coffee On Canvas",
+  #                                          "latitude": "12.93516201597191",
+  #                                          "longitude": "77.63097871416265",
+  #                                          "address": "#84, S.T.Bed Layout, 4th Block Koramangala",
+  #                                          "id_location": "0bfb1f41ee40128d"
+  #                                      },
+  #                                      "tags": [
+  #                                          "barter"
+  #                                      ],
+  #                                      "id_book": "8abbb9fe63bca9dc",
+  #                                      "description": "",
+  #                                      "isbn_10": null,
+  #                                      "isbn_13": "9780955716300",
+  #                                      "id_user": "df1435f617d4063a"
+  #                                  }]
   #                    }
   #                }
   #            ]
@@ -96,8 +176,28 @@ class Api::V1::UsersController < Api::V1::BaseController
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
-  # POST /chat_block
-  # params user_id
+  # @url /chat_block
+  # @action POST
+  # 
+  # block users in chat
+  #
+  # @required [Integer] user_id guid of the user
+  # @example_request_description Let's send a user_id of a user
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #     user_id: hjghj67565
+  #     }
+  #    }
+  #    ```
+  # @example_response_description empty object with status 200
+  # @example_response
+  #    ```json
+  #        {
+  #         
+  #    }
+  #    ```
   def chat_block
     is_blocked = current_user.chat_filters.where(user_id: params[:user_id]).first
     if(is_blocked.blank?)
@@ -108,8 +208,28 @@ class Api::V1::UsersController < Api::V1::BaseController
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
-  # POST /chat_unblock
-  # params user_id
+  # @url /chat_unblock
+  # @action POST
+  # 
+  # unblock users in chat
+  #
+  # @required [Integer] user_id guid of the user
+  # @example_request_description Let's send a user_id of a user
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #     user_id: hjghj67565
+  #     }
+  #    }
+  #    ```
+  # @example_response_description empty object with status 200
+  # @example_response
+  #    ```json
+  #        {
+  #         
+  #    }
+  #    ```
   def chat_unblock
     is_blocked = current_user.chat_filters.where(user_id: params[:user_id]).first
     if(is_blocked.present?)
