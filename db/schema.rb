@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140421180905) do
+ActiveRecord::Schema.define(version: 20140423103304) do
 
   create_table "alerts", force: true do |t|
     t.integer  "user_id"
@@ -85,6 +85,9 @@ ActiveRecord::Schema.define(version: 20140421180905) do
     t.string   "id_book"
   end
 
+  add_index "books", ["location_id"], name: "book_location_id_ix", using: :btree
+  add_index "books", ["user_id"], name: "book_user_id_ix", using: :btree
+
   create_table "books_tags", force: true do |t|
     t.integer "book_id"
     t.integer "tag_id"
@@ -155,6 +158,8 @@ ActiveRecord::Schema.define(version: 20140421180905) do
     t.string   "id_location"
   end
 
+  add_index "locations", ["latitude", "longitude"], name: "index_locations_on_latitude_and_longitude", using: :btree
+
   create_table "members", force: true do |t|
     t.integer  "user_id"
     t.integer  "group_id"
@@ -211,6 +216,8 @@ ActiveRecord::Schema.define(version: 20140421180905) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "settings", ["user_id"], name: "setting_user_id_ix", using: :btree
 
   create_table "statics", force: true do |t|
     t.string   "page_name"

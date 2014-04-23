@@ -37,10 +37,8 @@ class Api::V1::UsersController < Api::V1::BaseController
   #    ```
   def user_profile
     user  = User.find_by(id_user: params[:id])
-    setting = user.settings.find_by(name: "location")
-    location = setting.present? ? Location.find(setting.value) : false 
     # if stale?(:etag => "user_profile_"+user.id, :last_modified => user.updated_at, :public => true)
-    render json: @users, serializer: UserProfileSerializer
+    render json: @user, serializer: UserProfileSerializer
     # end
   rescue => e
     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
