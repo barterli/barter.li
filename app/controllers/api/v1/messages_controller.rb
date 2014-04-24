@@ -61,12 +61,12 @@ class Api::V1::MessagesController < Api::V1::BaseController
       
       receiver_queue.status do |number_of_messages, number_of_consumers|
         puts
-        puts "(receiver queue)# of messages in the queue  = #{number_of_messages}"
+        puts "(receiver queue)# of consumers in the queue  = #{number_of_consumers}"
         puts
       end
       sender_queue.status do |number_of_messages, number_of_consumers|
         puts
-        puts "(sender queue)# of messages in the queue  = #{number_of_messages}"
+        puts "(sender queue)# of consumers in the queue  = #{number_of_consumers}"
         puts
       end
       Rails.logger.info "enterd event loop"
