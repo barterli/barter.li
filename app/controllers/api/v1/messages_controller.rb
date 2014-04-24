@@ -53,22 +53,22 @@ class Api::V1::MessagesController < Api::V1::BaseController
       receiver_exchange = channel.fanout(@receiver.id_user+"exchange")
       sender_exchange = channel.fanout(@sender.id_user+"exchange") 
       
-      receiver_queue    = channel.queue(@receiver.id_user+"queue", :auto_delete => true).bind(receiver_exchange)
-      sender_queue    = channel.queue(@sender.id_user+"queue", :auto_delete => true).bind(sender_exchange)
+      # receiver_queue    = channel.queue(@receiver.id_user+"queue", :auto_delete => true).bind(receiver_exchange)
+      # sender_queue    = channel.queue(@sender.id_user+"queue", :auto_delete => true).bind(sender_exchange)
       
       sender_exchange.publish(@chat_hash.to_json)
       receiver_exchange.publish(@chat_hash.to_json)
       
-      receiver_queue.status do |number_of_messages, number_of_consumers|
-        puts
-        puts "(receiver queue)# of consumers in the queue  = #{number_of_consumers}"
-        puts
-      end
-      sender_queue.status do |number_of_messages, number_of_consumers|
-        puts
-        puts "(sender queue)# of consumers in the queue  = #{number_of_consumers}"
-        puts
-      end
+      # receiver_queue.status do |number_of_messages, number_of_consumers|
+      #   puts
+      #   puts "(receiver queue)# of consumers in the queue  = #{number_of_consumers}"
+      #   puts
+      # end
+      # sender_queue.status do |number_of_messages, number_of_consumers|
+      #   puts
+      #   puts "(sender queue)# of consumers in the queue  = #{number_of_consumers}"
+      #   puts
+      # end
       Rails.logger.info "enterd event loop"
       # EventMachine.add_timer(2) do
         # receiver_exchange.delete
