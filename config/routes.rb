@@ -1,6 +1,5 @@
 BarterLi::Application.routes.draw do
-    devise_for :users
-
+  devise_for :users
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
@@ -28,6 +27,7 @@ BarterLi::Application.routes.draw do
         post '/ampq1', to: "messages#ampq1"
         get '/book_info', to: 'books#book_info'
         get '/book_suggestions', to: 'books#book_suggestions'
+        get '/author_details', to: "books#author_details"
         get '/hangouts', to: 'locations#hangouts'
         post '/change_owner', to: 'books#change_owner'
         post '/wish_list', to: 'books#set_wish_list'
@@ -37,8 +37,13 @@ BarterLi::Application.routes.draw do
         get '/tribute', to: 'public#tribute'
         get '/team', to: 'public#team'
         get '/default', to:'public#default'
+        post '/like_book', to: 'books#like_book' 
+        post '/user_reviews', to: 'users#set_user_review'
+        get '/user_review', to: 'users#get_user_review'
+        delete '/unlike_book', to: 'books#unlike_book'
+        get '/is_book_liked', to: 'books#is_book_liked'
         post '/chat_block', to: 'users#chat_block'
-        post '/chat_block', to: 'users#chat_unblock'
+        post '/chat_unblock', to: 'users#chat_unblock'
         resources :books
     end
   end

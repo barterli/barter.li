@@ -4,7 +4,7 @@
 #
 class Api::V1::BooksController < Api::V1::BaseController
   before_action :authenticate_user!, only: [:create, :index, :edit, :update, :destroy, :new, 
-                :change_owner, :my_books, :set_wish_list]
+                :change_owner, :my_books, :set_wish_list, :like_book, :unlike_book]
  
   def index
     @books = current_user.books
@@ -207,10 +207,107 @@ class Api::V1::BooksController < Api::V1::BaseController
     @book.destroy
     render json { head :no_content }
   end
- 
-  # GET /book_info
+
+  # @url /book_info
+  # @action GET
+  # 
+  # suggest book details
+  #
+  # @required [String] q title or isbn  of the book to get details 
+  # @example_request_description Let's send a isbn string of a book
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #     q: 9780977616602
+  #     }
+  #    ```
+  # @example_response_description array of book titles matching query
+  # @example_response
+  #    ```json
+  #        {
+  #            {
+  #                "id": "519",
+  #                "title": "Rails Recipes (Pragmatic Programmers)",
+  #                "isbn": "0977616606",
+  #                "isbn13": "9780977616602",
+  #                "asin": "",
+  #                "image_url": "http://www.goodreads.com/assets/nocover/111x148.png",
+  #                "small_image_url": "http://www.goodreads.com/assets/nocover/60x80.png",
+  #                "publication_year": null,
+  #                "publication_month": null,
+  #                "publication_day": null,
+  #                "publisher": null,
+  #                "language_code": null,
+  #               "is_ebook": "false",
+  #                "description": null,
+  #                "work": {
+  #                    "best_book_id": 519,
+  #                    "books_count": 2,
+  #                    "default_chaptering_book_id": null,
+  #                    "default_description_language_code": null,
+  #                    "desc_user_id": null,
+  #                    "id": 4781,
+  #                    "media_type": null,
+  #                    "original_language_id": null,
+  #                    "original_publication_day": null,
+  #                    "original_publication_month": null,
+  #                    "original_publication_year": null,
+  #                    "original_title": "Rails Recipes (Pragmatic Programmers)",
+  #                    "rating_dist": "4:46|3:56|2:11|5:19|total:132",
+  #                    "ratings_count": 193,
+  #                    "ratings_sum": 688,
+  #                    "reviews_count": 412,
+  #                    "text_reviews_count": 7
+  #                },
+  #                "average_rating": "3.56",
+  #                "num_pages": "",
+  #                "format": "",
+  #                "edition_information": "",
+  #                "ratings_count": "181",
+  #                "text_reviews_count": "4",
+  #                "url": "http://www.goodreads.com/book/show/519.Rails_Recipes",
+  #                "link": "http://www.goodreads.com/book/show/519.Rails_Recipes",
+  #                "authors": {
+  #                    "author": {
+  #                        "id": "302",
+  #                        "name": "Chad Fowler",
+  #                        "image_url": "http://d202m5krfqbpi5.cloudfront.net/authors/1215370168p5/302.jpg",
+  #                        "small_image_url": "http://d202m5krfqbpi5.cloudfront.net/authors/1215370168p2/302.jpg",
+  #                        "link": "http://www.goodreads.com/author/show/302.Chad_Fowler",
+  #                        "average_rating": "3.95",
+  #                        "ratings_count": "2242",
+  #                        "text_reviews_count": "169"
+  #                    }
+  #                },......
+  #    }
+  #    ```
   def book_info
     results = book_info_goodreads_library
+    render json: results
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  end
+
+
+  def like_book
+    is_like_present = UserLike.where(user_id: current_user.id, book_id: params[:book_id]).first
+    like = UserLike.create!(user_id: current_user.id, book_id: params[:book_id]) if is_like_present.blank?
+    render json: like
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  end
+
+  def unlike_book
+    like = UserLike.where(user_id: current_user.id, book_id: params[:book_id]).first
+    like.destroy! if like.present?
+    render json: {}
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  end
+
+  def author_details
+    results = author_details_goodreads_library
     render json: results
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
@@ -222,6 +319,13 @@ class Api::V1::BooksController < Api::V1::BaseController
     results = client.search(params[:q])
   end
 
+
+   # call to goodreads library to get author details
+  def author_details_goodreads_library
+    client = Goodreads::Client.new(Goodreads.configuration)
+    results = client.author_by_name(params[:q]) 
+    return results
+  end
 
  # call to goodreads library to get book info
   def book_info_goodreads_library
@@ -249,8 +353,47 @@ class Api::V1::BooksController < Api::V1::BaseController
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
+  
 
- # GET /book_suggestions
+  # @url /book_suggestions
+  # @action GET
+  # 
+  # suggest book titles
+  #
+  # @required [String] q title or isbn  of the book
+  # @example_request_description Let's send a title string of a book
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #     q: rails
+  #     }
+  #    ```
+  # @example_response_description array of book titles matching query
+  # @example_response
+  #    ```json
+  #        {
+  #         {
+  #            "books": [
+  #                "Rails Recipes (Pragmatic Programmers)",
+  #                "North to the Rails",
+  #                "Rails",
+  #                "The Rails Way",
+  #                "The Rails 3 Way",
+  #                "Agile Web Development with Rails: A Pragmatic Guide",
+  #                "Off The Rails",
+  #                "Bryant & May Off the Rails (Bryant & May, #8)",
+  #                "Objects on Rails",
+  #                "Advanced Rails",
+  #                "Advanced Rails Recipes",
+  #                "Enterprise Rails",
+  #                "Tupelo Rides the Rails",
+  #                "Ruby on Rails 3 Tutorial: Learn Rails by Example (Addison-Wesley Professional Ruby Series)",
+  #                "Rails Antipatterns: Best Practice Ruby on Rails Refactoring"
+  #            ]
+  #        }
+  #    }
+  #    ```
   def book_suggestions
     book_titles = Array.new()
     book_titles << goodreads_titles 

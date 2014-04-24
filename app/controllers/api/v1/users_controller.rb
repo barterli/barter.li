@@ -4,7 +4,7 @@
 #
 class Api::V1::UsersController < Api::V1::BaseController
   before_action :authenticate_user!, only: [:update, :show, :get_share_token, :generate_share_token,
-    :set_user_preferred_location, :user_preferred_location, :chat_block]
+    :set_user_preferred_location, :user_preferred_location, :chat_block, :chat_unblock, :set_user_review]
   
   
 
@@ -430,6 +430,26 @@ class Api::V1::UsersController < Api::V1::BaseController
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
+
+  # POST /user_reviews
+  def set_user_review
+    user_review = current_user.user_reviews.new(user_review_params)
+    if(user_review.save)
+      render json: user_review
+    else
+      render json: user_review.errors, status: Code[:status_error]
+    end
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  end
+
+  # GET /user_reviews
+  def get_user_review
+    user_reviews = UserReview.where(review_user_id: params[:id_user])
+    render json: user_reviews
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  end
  
   def generate_share_token
     token = current_user.generate_share_token
@@ -453,5 +473,9 @@ class Api::V1::UsersController < Api::V1::BaseController
       end
       params[:user_profile].require(:user).permit(:first_name, :last_name, :description, :email, :profile
       )
+    end
+
+    def user_review_params
+      params.require(:user_review).permit(:body, :review_user_id)
     end
 end
