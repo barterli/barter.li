@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   has_many :user_book_visits, :dependent => :destroy
   has_many :user_feedbacks, :dependent => :destroy
   has_many :chat_filters, :dependent => :destroy
+  has_many :user_reviews
   mount_uploader :profile, ImageUploader
 
   def ensure_authentication_token

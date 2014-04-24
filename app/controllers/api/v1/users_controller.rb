@@ -189,7 +189,6 @@ class Api::V1::UsersController < Api::V1::BaseController
   #    {  
   #     user_id: hjghj67565
   #     }
-  #    }
   #    ```
   # @example_response_description empty object with status 200
   # @example_response
@@ -221,7 +220,6 @@ class Api::V1::UsersController < Api::V1::BaseController
   #    {  
   #     user_id: hjghj67565
   #     }
-  #    }
   #    ```
   # @example_response_description empty object with status 200
   # @example_response
@@ -431,11 +429,42 @@ class Api::V1::UsersController < Api::V1::BaseController
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
-  # POST /user_reviews
+
+  # @url /user_reviews
+  # @action POST
+  # 
+  # post a review to the user
+  #
+  # @required [Integer] review_user_id review user id of users
+  # @required [String] body review text
+  # @example_request_description Let's create a user review
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #     review_user_id: hjghj67565
+  #     body: "This user is good" 
+  #     }
+  #    ```
+  # @example_response_description user_review_object
+  # @example_response
+  #    ```json
+  #          {
+  #            {
+  #              "user_review": {
+  #                  "review_user_id": "0cb8d9b007fb0f42",
+  #                  "body": "this user is good",
+  #                  "user_id": "e4afb1231b613376"
+  #              }
+  #          }
+  #    }
+  #    ```
   def set_user_review
-    user_review = current_user.user_reviews.new(user_review_params)
+    user_review = current_user.user_reviews.new
+    user_review.review_user_id = User.find_by(id_user: params[:review_user_id]).id
+    user_review.body = params[:body]
     if(user_review.save)
-      render json: user_review
+      render json: user_review, root: "user_reviews"
     else
       render json: user_review.errors, status: Code[:status_error]
     end
@@ -443,10 +472,44 @@ class Api::V1::UsersController < Api::V1::BaseController
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
-  # GET /user_reviews
+  # @url /user_reviews
+  # @action GET
+  # 
+  # post a review to the user
+  #
+  # @required [String] user_id user_id guid of users
+  # @example_request_description Let's get reviews of user
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #     user_id: hjghj67565    
+  #     }
+  #    ```
+  # @example_response_description user_review_object
+  # @example_response
+  #    ```json
+  #          {
+  #            {
+  #              {
+  #                  "user_reviews": [
+  #                      {
+  #                          "review_user_id": "0cb8d9b007fb0f42",
+  #                          "body": "this user is good",
+  #                          "user_id": "e4afb1231b613376"
+  #                      },
+  #                          "review_user_id": "0cb8d9b007fb0f42",
+  #                          "body": "this user is good",
+  #                          "user_id": "e4afb1231b613376"
+  #                      }
+  #                  ]
+  #              }
+  #          }
+  #    }
+  #    ```
   def get_user_review
-    user_reviews = UserReview.where(review_user_id: params[:id_user])
-    render json: user_reviews
+    user_reviews = UserReview.where(review_user_id: User.find_by(id_user: params[:user_id]))
+    render json: user_reviews, root: "user_reviews"
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
@@ -475,7 +538,4 @@ class Api::V1::UsersController < Api::V1::BaseController
       )
     end
 
-    def user_review_params
-      params.require(:user_review).permit(:body, :review_user_id)
-    end
 end

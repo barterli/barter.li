@@ -39,7 +39,7 @@ BarterLi::Application.routes.draw do
         get '/default', to:'public#default'
         post '/like_book', to: 'books#like_book' 
         post '/user_reviews', to: 'users#set_user_review'
-        get '/user_review', to: 'users#get_user_review'
+        get '/user_reviews', to: 'users#get_user_review'
         delete '/unlike_book', to: 'books#unlike_book'
         get '/is_book_liked', to: 'books#is_book_liked'
         post '/chat_block', to: 'users#chat_block'

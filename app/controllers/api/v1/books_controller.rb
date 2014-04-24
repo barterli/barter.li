@@ -288,20 +288,99 @@ class Api::V1::BooksController < Api::V1::BaseController
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
-
-
+  
+  # @url /like_book
+  # @action POST
+  # 
+  # current user like a book
+  #
+  # @required [Integer] book_id  book_id to like
+  # @example_request_description Let's send a book_id to like
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #     book_id: 1
+  #     }
+  #    ```
+  # @example_response_description a userlike object
+  # @example_response
+  #    ```json
+  #        {
+  #            {
+  #              "id": 1,
+  #              "book_id": 3,
+  #              "user_id": 4,
+  #              "created_at": "2014-04-24T09:29:52.000Z",
+  #              "updated_at": "2014-04-24T09:29:52.000Z"
+  #          }   
+  #    }
+  #    ```
   def like_book
-    is_like_present = UserLike.where(user_id: current_user.id, book_id: params[:book_id]).first
-    like = UserLike.create!(user_id: current_user.id, book_id: params[:book_id]) if is_like_present.blank?
+    like = UserLike.where(user_id: current_user.id, book_id: params[:book_id]).first
+    like = UserLike.create!(user_id: current_user.id, book_id: params[:book_id]) if like.blank?
     render json: like
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
+  # @url /unlike_book
+  # @action DELETE
+  # 
+  # current user unlike a book
+  #
+  # @required [Integer] book_id  book_id to unlike
+  # @example_request_description Let's send a book_id to unlike
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #     book_id: 1
+  #     }
+  #    ```
+  # @example_response_description a sucess 200 ok code
+  # @example_response
+  #    ```json
+  #        {
+  #            {
+  #          }   
+  #    }
+  #    ```
   def unlike_book
     like = UserLike.where(user_id: current_user.id, book_id: params[:book_id]).first
     like.destroy! if like.present?
     render json: {}
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  end
+
+  # @url /is_book_liked
+  # @action GET
+  # 
+  # get the user like status of book
+  #
+  # @required [Integer] book_id  book_id to get like status
+  # @example_request_description Let's send a book_id to get status
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #     book_id: 3
+  #     }
+  #    ```
+  # @example_response_description true or false 
+  # @example_response
+  #    ```json
+  #        {
+  #            {
+  #              like: true
+  #          }   
+  #    }
+  #    ```
+  def is_book_liked
+    user_like = UserLike.where(user_id: current_user.id, book_id: params[:book_id]).first
+    is_liked = user_like.present? ? true : false 
+    render json: {like: is_liked}
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
@@ -335,9 +414,40 @@ class Api::V1::BooksController < Api::V1::BaseController
     return results
   end
 
-  # POST '/wish_list'
+  # @url /wish_list
+  # @action POST
+  # 
+  # set wishlist for book title
+  #
+  # @required [String] title  title of book
+  # @example_request_description Let's send a title for wish list
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #      "title": "rails"
+  #     }
+  #    ```
+  # @example_response_description wish_list object
+  # @example_response
+  #    ```json
+  #        {
+  #            {
+  #              {
+  #                  "id": 1,
+  #                  "user_id": 4,
+  #                  "title": "rails",
+  #                  "author": null,
+  #                  "in_locality": false,
+  #                  "in_city": true,
+  #                  "created_at": "2014-04-24T09:49:52.434Z",
+  #                  "updated_at": "2014-04-24T09:49:52.434Z"
+  #              }
+  #          }   
+  #    }
+  #    ```
   def set_wish_list
-    @wish_list = current_user.wish_lists.new(wish_list_params)
+    @wish_list = current_user.wish_lists.where(title: params[:title]).first_or_initialize
     if(@wish_list.save)
       render json: @wish_list
     else
@@ -347,6 +457,40 @@ class Api::V1::BooksController < Api::V1::BaseController
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
+  # @url /wish_list
+  # @action GET
+  # 
+  # get wishlist for current user
+  #
+  # 
+  # @example_request_description Let's send a title for wish list
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #      
+  #     }
+  #    ```
+  # @example_response_description wish_list object
+  # @example_response
+  #    ```json
+  #          {
+  #              "books": [
+  #                  {
+  #                      "books": {
+  #                          "id": 1,
+  #                          "user_id": 4,
+  #                          "title": "rails",
+  #                          "author": null,
+  #                          "in_locality": false,
+  #                          "in_city": true,
+  #                          "created_at": "2014-04-24T09:49:52.000Z",
+  #                          "updated_at": "2014-04-24T09:49:52.000Z"
+  #                      }
+  #                  }
+  #              ]
+  #          }
+  #    ```
   def get_wish_list
     @wish_lists = current_user.wish_lists
     render json: @wish_lists
@@ -432,8 +576,5 @@ class Api::V1::BooksController < Api::V1::BaseController
         :user_id, :location_id, :prefered_place, {:tag_ids => []}, :prefered_time, :image, :image_cache, :goodreads_id, :publisher, :language_code, :pages, :image_url, :ext_image_url)
     end
 
-    def wish_list_params
-      params.require(:wish_list).permit(:title, :author)
-    end 
 
 end

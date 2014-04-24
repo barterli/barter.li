@@ -1,6 +1,6 @@
 class UserProfileSerializer < ActiveModel::Serializer
   # cached
-  attributes :id, :first_name, :last_name, :id_user, :location, :image_url, :description
+  attributes :first_name, :last_name, :id_user, :location, :image_url, :description
   has_many :books
 
   def profile_image
