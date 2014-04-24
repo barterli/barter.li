@@ -461,7 +461,9 @@ class Api::V1::UsersController < Api::V1::BaseController
   #    ```
   def set_user_review
     user_review = current_user.user_reviews.new
-    user_review.review_user_id = User.find_by(id_user: params[:review_user_id]).id
+    review_user = User.find_by(id_user: params[:review_user_id])
+    raise "Review user not present" if review_user.blank?
+    user_review.review_user_id = review_user.id
     user_review.body = params[:body]
     if(user_review.save)
       render json: user_review, root: "user_reviews"
