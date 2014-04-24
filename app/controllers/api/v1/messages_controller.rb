@@ -49,11 +49,16 @@ class Api::V1::MessagesController < Api::V1::BaseController
       AMQP.channel ||= AMQP::Channel.new(connection)
       channel  = AMQP.channel
       channel.auto_recovery = true
-      exchange = channel.fanout(params[:exchange])
-      receiver_queue    = channel.queue(@receiver.id_user+"queue", :auto_delete => true).bind(exchange)
-      sender_queue    = channel.queue(@sender.id_user+"queue", :auto_delete => true).bind(exchange)
-      exchange.publish(@chat_hash.to_json)
-      exchange.publish(@chat_hash.to_json)
+      
+      receiver_exchange = channel.fanout(@receiver.id_user+"exchange")
+      sender_exchange = channel.fanout(@sender.id_user+"exchange") 
+      
+      receiver_queue    = channel.queue(@receiver.id_user+"queue", :auto_delete => true).bind(receiver_exchange)
+      sender_queue    = channel.queue(@sender.id_user+"queue", :auto_delete => true).bind(sender_exchange)
+      
+      sender_exchange.publish(@chat_hash.to_json)
+      receiver_exchange.publish(@chat_hash.to_json)
+      
       receiver_queue.status do |number_of_messages, number_of_consumers|
         puts
         puts "(receiver queue)# of messages in the queue  = #{number_of_messages}"
@@ -65,9 +70,10 @@ class Api::V1::MessagesController < Api::V1::BaseController
         puts
       end
       Rails.logger.info "enterd event loop"
-      EventMachine.add_timer(2) do
-        exchange.delete
-      end
+      # EventMachine.add_timer(2) do
+        # receiver_exchange.delete
+        # sender_exchange.delete
+      # end
       connection.on_tcp_connection_loss do |connection, settings|
         # reconnect in 10 seconds, without enforcement
         connection.reconnect(false, 10)
