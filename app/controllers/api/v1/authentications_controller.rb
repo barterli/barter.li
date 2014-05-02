@@ -3,7 +3,6 @@
 # user creation and getting user objects
 #
 class Api::V1::AuthenticationsController < Api::V1::BaseController
- GOOGLE = OmniAuth::Strategies::GoogleOauth2.new("", "") 
  
   def get_auth_token
     authentication = Authentication.find_by(:provider => params[:provider], :uid => params[:uid])
@@ -110,26 +109,28 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
    
 
   def google
-    client = OAuth2::Client.new("", "", GOOGLE.options.client_options) 
+    google = OmniAuth::Strategies::GoogleOauth2.new("", "") 
+    client = OAuth2::Client.new("", "", google.options.client_options) 
     token = OAuth2::AccessToken.new(client, params[:access_token], GOOGLE.options.token_options)
-    GOOGLE.access_token = token
-    authentication = Authentication.where(:uid =>  GOOGLE.raw_info["id"], :provider => "google").first
+    google.access_token = token
+    authentication = Authentication.where(:uid =>  google.raw_info["id"], :provider => "google").first
     user = authentication.present? ? User.find(authentication.user_id) : false
     if(!user.present?)
-      user = User.find_by(email: GOOGLE.info[:email]) 
+      user = User.find_by(email: google.info[:email]) 
       user = user.present? ? user : User.new
       unless user.persisted?
-        user.email = GOOGLE.info[:email]
-        user.first_name = GOOGLE.info[:first_name]
-        user.last_name = GOOGLE.info[:last_name]
+        user.email = google.info[:email]
+        user.first_name = google.info[:first_name]
+        user.last_name = google.info[:last_name]
         user.password = Devise.friendly_token.first(8)
-        user.ext_image = GOOGLE.info[:image]
+        user.ext_image = google.info[:image]
         user.confirmed_at = Time.now
         user.save!
       end
       register_shares(user)
-      user.authentications.create!(:provider => "google", :uid =>  GOOGLE.raw_info["id"], :token => params[:access_token])
+      user.authentications.create!(:provider => "google", :uid =>  google.raw_info["id"], :token => params[:access_token])
     end
+       # binding.pry
       Rails.logger.info "#{user}"
       render json: user 
   rescue => e
