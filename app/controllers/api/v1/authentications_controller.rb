@@ -111,7 +111,7 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
   def google
     google = OmniAuth::Strategies::GoogleOauth2.new("", "") 
     client = OAuth2::Client.new("", "", google.options.client_options) 
-    token = OAuth2::AccessToken.new(client, params[:access_token], GOOGLE.options.token_options)
+    token = OAuth2::AccessToken.new(client, params[:access_token], google.options.token_options)
     google.access_token = token
     authentication = Authentication.where(:uid =>  google.raw_info["id"], :provider => "google").first
     user = authentication.present? ? User.find(authentication.user_id) : false
@@ -130,7 +130,6 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
       register_shares(user)
       user.authentications.create!(:provider => "google", :uid =>  google.raw_info["id"], :token => params[:access_token])
     end
-       # binding.pry
       Rails.logger.info "#{user}"
       render json: user 
   rescue => e
