@@ -128,11 +128,12 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
         user.save!
       end
       register_shares(user)
-      user.authentications.create!(:provider => "facebook", :uid =>  GOOGLE.raw_info["id"], :token => params[:access_token])
+      user.authentications.create!(:provider => "google", :uid =>  GOOGLE.raw_info["id"], :token => params[:access_token])
     end
+      Rails.logger.info "#{user}"
       render json: user 
-  # rescue => e
-  #     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  rescue => e
+       render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
   def register_shares(user)
