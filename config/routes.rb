@@ -44,6 +44,7 @@ BarterLi::Application.routes.draw do
         get '/is_book_liked', to: 'books#is_book_liked'
         post '/chat_block', to: 'users#chat_block'
         post '/chat_unblock', to: 'users#chat_unblock'
+        put '/books', to: 'books#update'
         resources :books
     end
   end
