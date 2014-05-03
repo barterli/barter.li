@@ -44,6 +44,17 @@ namespace :deploy do
     end
   end
 
+  desc "Hot-reload God configuration for the thin"
+    deploy.task :reload_god_config do
+      sudo "god stop thin"
+      sudo "god load #{File.join deploy_to, 'current', 'config', 'thin.god'}"
+      sudo "god start thin"
+  end
+ 
+  after 'deploy:update_code', 'deploy:update_shared_symlinks'
+  after 'deploy:update_code', :install_gems
+  after :deploy, 'deploy:reload_god_config'
+
   after :finishing, 'deploy:cleanup'
 
 end
