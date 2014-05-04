@@ -205,7 +205,7 @@ class Api::V1::BooksController < Api::V1::BaseController
   def destroy
     @book = current_user.books.find(params[:id])
     @book.destroy
-    render json { head :no_content }
+    render json: { head :no_content }
   end
 
   # @url /book_info

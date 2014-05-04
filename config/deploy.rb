@@ -44,17 +44,22 @@ namespace :deploy do
     end
   end
 
-  desc "Hot-reload God configuration for the thin"
-    deploy.task :reload_god_config do
-      sudo "god stop thin"
-      sudo "god load #{File.join deploy_to, 'current', 'config', 'thin.god'}"
-      sudo "god start thin"
-  end
+  # desc "Hot-reload God configuration for the thin"
+  #   task :reload_god_config do
+  #     god_config_path = File.join(release_path, 'config', 'thin.god')
+  #     run "cd #{release_path}; bundle exec god stop && bundle exec god terminate &&  RAILS_ROOT=#{release_path} bundle exec god -c #{god_config_path}"
+  #     # execute "god stop thin"
+  #     # execute "god load #{File.join deploy_to, 'current', 'config', 'thin.god'}"
+  #     # execute "god start thin"
+  # end
  
-  after 'deploy:update_code', 'deploy:update_shared_symlinks'
-  after 'deploy:update_code', :install_gems
-  after :deploy, 'deploy:reload_god_config'
+
+  # after :deploy, 'deploy:reload_god_config'
 
   after :finishing, 'deploy:cleanup'
 
 end
+
+
+
+

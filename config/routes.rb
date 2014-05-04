@@ -45,6 +45,7 @@ BarterLi::Application.routes.draw do
         post '/chat_block', to: 'users#chat_block'
         post '/chat_unblock', to: 'users#chat_unblock'
         put '/books', to: 'books#update'
+        delete "/books", to: 'books#destroy'
         resources :books
     end
   end
