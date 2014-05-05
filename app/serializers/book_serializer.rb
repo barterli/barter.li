@@ -1,7 +1,8 @@
 class BookSerializer < ActiveModel::Serializer
   #cached 
   attributes :id, :title, :author, :publication_year, :publication_month, :value,
-             :image_url, :barter_type, :location, :tags, :id_book, :description, :isbn_10, :isbn_13, :id_user
+             :image_url, :barter_type, :location, :tags, :id_book, :description, :isbn_10, :isbn_13, :id_user,
+             :owner_name
   
   def location
     object.location.as_json(except: [:created_at, :updated_at])
@@ -13,6 +14,10 @@ class BookSerializer < ActiveModel::Serializer
 
   def id_user
     object.user.id_user
+  end
+
+  def owner_name
+    object.user.first_name + " " + object.user.last_name
   end
 
   def image_url
