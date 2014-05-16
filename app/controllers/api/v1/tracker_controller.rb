@@ -42,7 +42,7 @@ class Api::V1::TrackerController < Api::V1::BaseController
   end
 
   def check_param_fields
-    raise "Label cant be other than bug or features" unless params[:labels] == "bug" ||  params[:labels] == "features"
+    raise "Label cant be other than bug or features" unless params[:label] == "bug" ||  params[:label] == "feature"
     raise "Body cant be blank" if params[:body].blank?
   end
 

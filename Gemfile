@@ -113,6 +113,8 @@ gem 'yard-restful'
 
 gem 'rails_admin', '0.6.2'
 
+gem 'newrelic_rpm'
+
 
 
 
