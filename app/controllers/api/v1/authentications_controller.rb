@@ -150,9 +150,10 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
     else
       render json: {error_code: Code[:error_email_taken], error_message: "incorrect credentials"}, status: Code[:status_error]
     end
-  # rescue => e
-  #     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  rescue => e
+    render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
+
 end
 
 

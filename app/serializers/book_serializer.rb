@@ -2,7 +2,7 @@ class BookSerializer < ActiveModel::Serializer
   cached 
   attributes :id, :title, :author, :publication_year, :publication_month, :value,
              :image_url, :barter_type, :location, :tags, :id_book, :description, :isbn_10, :isbn_13, :id_user,
-             :owner_name
+             :owner_name, :owner_image_url
   
   def location
     object.location.as_json(except: [:created_at, :updated_at])
@@ -13,11 +13,19 @@ class BookSerializer < ActiveModel::Serializer
   end
 
   def id_user
-    object.user.id_user
+    @user ||= user
+    @user.id_user
   end
 
   def owner_name
-    object.user.first_name + " " + object.user.last_name
+    @user ||= user
+    @user.first_name.to_s + " " + @user.last_name.to_s
+  end
+
+  def owner_image_url
+    @user ||= user
+    url = @options[:url_options]
+    "#{url[:protocol]}#{url[:host]}:#{url[:port]}#{@user.profile_image}"
   end
 
   def image_url
@@ -30,6 +38,10 @@ class BookSerializer < ActiveModel::Serializer
 
   def cache_key
     [object, scope]
+  end
+
+  def user
+    @user = object.user
   end
 
 end
