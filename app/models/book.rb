@@ -59,6 +59,7 @@ class Book < ActiveRecord::Base
     if params.present?
       books = Book.where(nil)
       #Location.where(latitude: params[:latitude], longitude: params[:longitude]).first_or_create
+      params[:radius] = 50 unless params[:radius].present?
       locations = Location.near([params[:latitude], params[:longitude]], params[:radius], :units => :km) if params[:latitude].present? && params[:longitude].present? && params[:radius].present?
       books = books.where.not(user_id: params[:user_id]) if params[:user_id].present?
       books = books.where("title like ?", "%#{params[:title]}%") if params[:title].present? 
