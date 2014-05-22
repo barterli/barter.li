@@ -25,4 +25,8 @@ class UserProfileSerializer < ActiveModel::Serializer
     end  
   end
 
+  def cache_key
+    [object, scope]
+  end
+
 end

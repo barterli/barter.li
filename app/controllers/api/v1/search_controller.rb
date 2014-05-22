@@ -9,7 +9,7 @@ class Api::V1::SearchController < Api::V1::BaseController
   # 
   # get books
   #
-  # @optional [String] search search string (can be isbn or author or title)
+  # @optional [String] search search string (title only)
   # @optional [String] latitude Latitude coordinate
   # @optional [String] longitude Longitude coordinate
   # @optional [String] radius Radius of book to search
@@ -74,14 +74,15 @@ class Api::V1::SearchController < Api::V1::BaseController
   #    }
   #    ```
   def search
-    params[:radius] ||= 10
+    params[:radius] ||= 50
   	params[:search_filter] = {:latitude => params[:latitude], :longitude => params[:longitude]}
     params[:search_filter][:radius] = params[:radius]
-  	if(params[:search].to_s =~ /^[0-9]{10}$|^[0-9]{13}$/ )
-  	  params[:search_filter][:isbn] = params[:search]
-  	else
-  	  params[:search_filter][:book_or_author] = params[:search]
-  	end
+    params[:search_filter][:title] = params[:search]
+  	# if(params[:search].to_s =~ /^[0-9]{10}$|^[0-9]{13}$/ )
+  	#   params[:search_filter][:isbn] = params[:search]
+  	# else
+  	#   params[:search_filter][:book_or_author] = params[:search]
+  	# end
     @books = Book.search(params[:search_filter]).page(params[:page]).per(params[:per])
     render json: @books
   rescue => e

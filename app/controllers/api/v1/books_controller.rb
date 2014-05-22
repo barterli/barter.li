@@ -89,7 +89,7 @@ class Api::V1::BooksController < Api::V1::BaseController
     @book = current_user.books.new(book_params.merge(location_id: book_location))
     if @book.save
       @book.tag_ids = tag_ids
-      WishListWorker.perform_async(@book.id)  # for background wishlist processing
+      # WishListWorker.perform_async(@book.id)  # for background wishlist processing
       render json: @book 
     else
       render json: {error_message: @book.errors, error_code: Code[:error_resource]}, status: Code[:status_error]
