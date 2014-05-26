@@ -69,7 +69,7 @@ module Searchable
 
          if(query[:title].present?)
             @search_definition[:query] = {
-              prefix:  { title: query[:title].downcase! } 
+              prefix:  { title: query[:title].downcase } 
             }
         else
           @search_definition[:query] = { match_all: {} }
