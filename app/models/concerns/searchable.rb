@@ -62,7 +62,6 @@ module Searchable
                   loc: {
                     lon: query[:longitude].to_f,
                     lat: query[:latitude].to_f
-                      
                       }
                   }
             }
@@ -72,6 +71,8 @@ module Searchable
             @search_definition[:query] = {
               prefix:  { title: query[:title] } 
             }
+        else
+          @search_definition[:query] = { match_all: {} }
         end
         __elasticsearch__.search(@search_definition)
      end

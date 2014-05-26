@@ -2,7 +2,7 @@
 #
 # Run me with:
 #
-#     $ bundle exec sidekiq --queue elasticsearch --verbose
+#     $ bundle exec sidekiq --queue barterli_elasticsearch --verbose
 #
 class Indexer
   include Sidekiq::Worker
