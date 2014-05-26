@@ -1,6 +1,10 @@
 class Book < ActiveRecord::Base
   include UniqueId
   include HabtmTouchId
+
+  # for elasticsearch 
+  include Searchable
+
   attr_accessor :image_cache
   belongs_to :user, touch: true
   belongs_to :location
@@ -53,9 +57,14 @@ class Book < ActiveRecord::Base
   def self.read_locations_by_city(city)
     # pending
   end
+
  
+  def location_coor
+    { :lat => self.location.latitude.to_s, :lon => self.location.longitude.to_s}
+  end
+
   # normal sql search
-  def self.search(params)
+  def self.db_search(params)
     if params.present?
       books = Book.where(nil)
       locations = Location.near([params[:latitude], params[:longitude]], params[:radius], :units => :km) if params[:latitude].present? && params[:longitude].present? && params[:radius].present?

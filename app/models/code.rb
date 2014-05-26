@@ -2,6 +2,7 @@ class Code
   class << self
     def [](k)
   	  code = {
+         :host_url => Code.host_url,
          :wish_list_book => 'WB',
          :error_rescue => '103',
          :error_no_resource => '104',
@@ -31,4 +32,12 @@ class Code
       end
     end
    end
+
+  def self.host_url
+    if Rails.env.production?
+      return ENV["PRODUCTION_HOST"]
+    else
+      return ENV["DEVELOPMENT_HOST"]
+    end
+  end
 end

@@ -83,7 +83,7 @@ class Api::V1::SearchController < Api::V1::BaseController
   	# else
   	#   params[:search_filter][:book_or_author] = params[:search]
   	# end
-    @books = Book.search(params[:search_filter]).page(params[:page]).per(params[:per])
+    @books = Book.search(params[:search_filter]).page(params[:page]).records
     render json: @books
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
