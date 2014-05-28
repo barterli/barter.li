@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   before_save :ensure_authentication_token
   after_create :generate_share_token
+  after_update :book_update_time
   devise :database_authenticatable, :omniauthable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
@@ -188,6 +189,11 @@ class User < ActiveRecord::Base
       user = User.create!(email: email, password: password)
       return user
     end
+  end
+
+  # for elastic search book re-indexing
+  def book_update_time
+   self.books.update_all(updated_at: Time.now)
   end
 
   private

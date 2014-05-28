@@ -1,0 +1,10 @@
+# Sample configuration file for Sidekiq.
+# Options here can still be overridden by cmd line args.
+#   sidekiq -C config.yml
+---
+:verbose: false
+:concurrency:  25
+:pidfile: ./tmp/pids/sidekiq.pid
+:queues:
+  - [barterli_elasticsearch, 7]
+  - [default, 5]
