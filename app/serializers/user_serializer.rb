@@ -1,7 +1,7 @@
 class UserSerializer < ActiveModel::Serializer
   cached
   attributes :email, :description, :first_name, :last_name, :location, 
-  :auth_token, :sign_in_count, :id_user, :image_url
+  :auth_token, :sign_in_count, :id_user, :image_url, :share_token
   has_many :books
  
   def location

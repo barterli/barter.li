@@ -191,6 +191,13 @@ class User < ActiveRecord::Base
     end
   end
 
+  
+  def self.register_referral(share_token, referral_id)
+    user = self.find_by(share_token: share_token)
+    raise "no user found for given share token"  unless user.present?
+    UserReferral.where(user_id: user.id, referral_id: referral_id).first_or_create!
+  end 
+
   # for elastic search book re-indexing
   def book_update_time
    self.books.update_all(updated_at: Time.now)

@@ -513,21 +513,29 @@ class Api::V1::UsersController < Api::V1::BaseController
     user_reviews = UserReview.where(review_user_id: User.find_by(id_user: params[:user_id]))
     render json: user_reviews, root: "user_reviews"
   rescue => e
-     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+    render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  end
+
+  # POST /referral
+  def register_referral
+    User.register_referral(params[:share_token], params[:referral_id])
+    render json: {}
+  rescue => e
+    render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
  
   def generate_share_token
     token = current_user.generate_share_token
     render :json => {share_token: token}
   rescue => e
-     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+    render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
   def get_share_token
     token = current_user.share_token 
     render :json => {share_token: token}
   rescue => e
-     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+    render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
  private
