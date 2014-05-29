@@ -1,18 +1,8 @@
 class Location < ActiveRecord::Base
   include UniqueId
-  before_update :geocode_address
   has_many :books
-  reverse_geocoded_by :latitude, :longitude
   validates :latitude, :longitude, :presence => true
-  # geocode address only on update and fields have changed
-  def geocode_address
-    return unless city_changed? || country_changed? || locality_changed?
-    coords = Geocoder.coordinates(self.locality.to_s+','+self.city.to_s+','+self.country.to_s)
-    if coords.kind_of?(Array)
-      self.latitude = coords[0];
-      self.longitude = coords[1];
-    end
-  end
+
 
   # address to display on maps
   def map_address
