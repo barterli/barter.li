@@ -10,7 +10,7 @@ class Api::V1::MessagesController < Api::V1::BaseController
     receiver_hash = {"id_user" => @receiver.id_user, "first_name" => @receiver.first_name, 
                     "last_name" => @receiver.last_name, "profile_image" => @receiver.absolute_profile_image(request.host_with_port) }
     @chat_hash = {"sender" => sender_hash, "receiver" => receiver_hash,
-      "message" => params[:message], "time" => Time.now}
+      "message" => params[:message], "sent_at" => params[:sent_at], :time => Time.now}
   end
 
   def ampq
