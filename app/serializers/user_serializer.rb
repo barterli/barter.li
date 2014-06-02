@@ -19,9 +19,9 @@ class UserSerializer < ActiveModel::Serializer
   end
 
   def image_url
-    return object.ext_image if object.ext_image.present?
-    url = @options[:url_options]
-    port = url[:port].present? ?  ":"+url[:port].to_s: ""
+    # return object.ext_image if object.ext_image.present?
+    # url = @options[:url_options]
+    # port = url[:port].present? ?  ":"+url[:port].to_s: ""
     object.absolute_profile_image("#{url[:host]}#{port}")
   end
     

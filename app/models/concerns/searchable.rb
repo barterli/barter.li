@@ -18,6 +18,12 @@ module Searchable
         #   indexes :tokenized, analyzer: 'simple'
         # end
            indexes :loc, type: 'geo_point'
+
+        # # for multifield title
+        #   indexes :title, type: 'multi_field' do
+        #     indexes :title,     analyzer: 'standard'
+        #     indexes :original,   index: 'not_analyzed'
+        # end
       end
     end
 
@@ -94,7 +100,7 @@ module Searchable
     end
 
     def owner_image_url
-      "#{Code.host_url}#{user_obj.profile_image}"
+      object.absolute_profile_image(Code.host_url)
     end
 
     def image_url
