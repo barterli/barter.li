@@ -25,7 +25,8 @@ class BookSerializer < ActiveModel::Serializer
   def owner_image_url
     @user ||= user
     url = @options[:url_options]
-    "#{url[:protocol]}#{url[:host]}:#{url[:port]}#{@user.profile_image}"
+    port = url[:port].present? ?  ":"+url[:port].to_s: ""
+    @user.absolute_profile_image("#{url[:host]}#{port}")
   end
 
   def image_url
