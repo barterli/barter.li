@@ -100,7 +100,7 @@ module Searchable
     end
 
     def owner_image_url
-      object.absolute_profile_image(Code.host_url)
+      user_obj.absolute_profile_image(Code.host_url)
     end
 
     def image_url
