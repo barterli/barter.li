@@ -75,6 +75,7 @@ class Api::V1::SearchController < Api::V1::BaseController
   #    ```
   def search
     params[:radius] ||= 50
+    params[:per] ||= 18
   	params[:search_filter] = {:latitude => params[:latitude], :longitude => params[:longitude]}
     params[:search_filter][:radius] = params[:radius]
     params[:search_filter][:title] = params[:search]
@@ -83,7 +84,7 @@ class Api::V1::SearchController < Api::V1::BaseController
   	# else
   	#   params[:search_filter][:book_or_author] = params[:search]
   	# end
-    @books = Book.search(params[:search_filter]).page(params[:page]).records
+    @books = Book.search(params[:search_filter]).page(params[:page]).per(params[:per]).records
     render json: @books, serializer: nil 
   rescue => e
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
