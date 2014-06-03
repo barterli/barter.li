@@ -2,8 +2,7 @@ class BookSerializer < ActiveModel::Serializer
   cached 
   attributes :id, :title, :author, :publication_year, :publication_month, :value,
              :image_url, :barter_type, :location, :tags, :id_book, :description, :isbn_10, :isbn_13, :id_user,
-             :owner_name, :owner_image_url
-  
+             :owner_name, :owner_image_url, :image_present
   def location
     object.location.as_json(except: [:created_at, :updated_at])
   end
@@ -20,6 +19,14 @@ class BookSerializer < ActiveModel::Serializer
   def owner_name
     @user ||= user
     @user.first_name.to_s + " " + @user.last_name.to_s
+  end
+
+  def image_present
+    if object.ext_image_url.present? &&  !object.ext_image_url.index("nocover")
+      return true
+    else
+      return false
+    end
   end
 
   def owner_image_url
