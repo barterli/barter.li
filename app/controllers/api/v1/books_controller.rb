@@ -178,8 +178,10 @@ class Api::V1::BooksController < Api::V1::BaseController
   #    }
   #    ``
   def update
+    tag_ids = get_tag_ids
     @book = current_user.books.find(params[:id])
-      if @book.update(book_params)
+      if @book.update_attributes(book_params)
+        @book.tag_ids = tag_ids
         render json: @book  
       else
         render json: {error_message: @book.errors, error_code: Code[:error_resource]}, status: Code[:status_error]
