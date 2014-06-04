@@ -60,7 +60,7 @@ class Book < ActiveRecord::Base
 
  
   def location_coor
-    { :lat => self.location.latitude.to_s, :lon => self.location.longitude.to_s}
+    {:lat => self.location.latitude.to_s, :lon => self.location.longitude.to_s}
   end
 
   # normal sql search
