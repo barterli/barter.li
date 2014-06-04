@@ -13,6 +13,7 @@ class Book < ActiveRecord::Base
   has_many :user_book_visits
   validates :title, :presence => true
   validates :location_id, :presence => true
+  after_create :get_google_books_image
   #validates :print, numericality: { only_integer: true }, allow_blank: true
   #validates :publication_year, numericality: { only_integer: true }, allow_blank: true
   #validates :edition, numericality: { only_integer: true }, allow_blank: true
@@ -53,14 +54,23 @@ class Book < ActiveRecord::Base
     Code[:barter_categories]
   end
 
+  def get_google_books_image
+    isbn = self.isbn_10.present? ? self.isbn_10 : self.isbn_13
+    return false if isbn.blank?
+    book = GoogleBooks.search("isbn:#{isbn}", {:api_key => ENV['GOOGLE_BOOKS']}).first
+    image_link = book.image_link(:zoom => 3)
+    if(image_link.present?)
+      self.ext_image_link = image_link
+      self.save
+    end
+  end
 
   def self.read_locations_by_city(city)
     # pending
   end
-
  
   def location_coor
-    { :lat => self.location.latitude.to_s, :lon => self.location.longitude.to_s}
+    {:lat => self.location.latitude.to_s, :lon => self.location.longitude.to_s}
   end
 
   # normal sql search

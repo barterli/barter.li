@@ -83,9 +83,9 @@ gem "omniauth-google-oauth2"
 
 gem "oauth2"
 
-gem 'foursquare2'
+# gem 'foursquare2'
 
-gem 'openlibrary'
+# gem 'openlibrary'
 
 gem 'fb_graph'
 
@@ -122,6 +122,8 @@ gem "elasticsearch-model", git: "git://github.com/elasticsearch/elasticsearch-ra
 gem "elasticsearch-rails", git: "git://github.com/elasticsearch/elasticsearch-rails.git"
 
 gem "oj"
+
+gem "googlebooks"
 
 
 
