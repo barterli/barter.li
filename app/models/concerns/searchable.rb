@@ -14,16 +14,16 @@ module Searchable
     settings index: { number_of_shards: 1, number_of_replicas: 0 } do
       mapping do
         # indexes :title, type: 'multi_field' do
-          indexes :title, analyzer: 'standard'
+        # indexes :title, analyzer: 'standard'
         #   indexes :tokenized, analyzer: 'simple'
         # end
            indexes :loc, type: 'geo_point'
 
         # # for multifield title
-        #   indexes :title, type: 'multi_field' do
-        #     indexes :title,     analyzer: 'standard'
-        #     indexes :original,   index: 'not_analyzed'
-        # end
+          indexes :title, type: 'multi_field' do
+            indexes :title,     analyzer: 'standard'
+            indexes :original,   index: 'not_analyzed'
+        end
       end
     end
 
@@ -75,8 +75,13 @@ module Searchable
 
          if(query[:title].present?)
             @search_definition[:query] = {
-              prefix:  { title: query[:title].downcase } 
+            multi_match: {
+              query: query[:title],
+              fields: ['title', 'title.original'],
+              type: "phrase_prefix",
+              operator: "or"
             }
+          }
         else
           @search_definition[:query] = { match_all: {} }
         end
@@ -117,3 +122,4 @@ end
 
 
 
+  
