@@ -192,10 +192,10 @@ class User < ActiveRecord::Base
   end
 
   
-  def self.register_referral(share_token, referral_id)
-    user = self.find_by(share_token: share_token)
+  def self.register_referral(referral_id, device_id)
+    user = self.find_by(share_token: referral_id)
     raise "no user found for given share token"  unless user.present?
-    UserReferral.where(user_id: user.id, referral_id: referral_id).first_or_create!
+    UserReferral.where(user_id: user.id, device_id: device_id).first_or_create!
   end 
 
   # for elastic search book re-indexing

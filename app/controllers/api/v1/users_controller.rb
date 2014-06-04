@@ -518,7 +518,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   # POST /referral
   def register_referral
-    User.register_referral(params[:share_token], params[:referral_id])
+    User.register_referral(params[:referral_id], params[:device_id])
     render json: {}
   rescue => e
     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
