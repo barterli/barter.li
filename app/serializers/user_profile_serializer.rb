@@ -1,6 +1,7 @@
 class UserProfileSerializer < ActiveModel::Serializer
   cached
-  attributes :first_name, :last_name, :id_user, :location, :image_url, :description
+  attributes :first_name, :last_name, :id_user, :location, :image_url, 
+  :description, :referral_count
   has_many :books
 
 
@@ -19,6 +20,10 @@ class UserProfileSerializer < ActiveModel::Serializer
     else
       return location = nil
     end  
+  end
+
+  def referral_count
+    object.user_referrals.count
   end
 
   def cache_key

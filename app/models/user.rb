@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   has_many :wish_lists, :dependent => :destroy
   has_many :alerts, :dependent => :destroy
   has_many :authentications, :dependent => :destroy
-  has_many :user_shares, :dependent => :destroy
+  has_many :user_referrals
   has_many :user_book_visits, :dependent => :destroy
   has_many :user_feedbacks, :dependent => :destroy
   has_many :chat_filters, :dependent => :destroy

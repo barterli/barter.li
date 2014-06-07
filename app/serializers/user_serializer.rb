@@ -1,7 +1,7 @@
 class UserSerializer < ActiveModel::Serializer
   cached
   attributes :email, :description, :first_name, :last_name, :location, 
-  :auth_token, :sign_in_count, :id_user, :image_url, :share_token
+  :auth_token, :sign_in_count, :id_user, :image_url, :share_token, :referral_count
   has_many :books
  
   def location
@@ -23,6 +23,10 @@ class UserSerializer < ActiveModel::Serializer
     url = @options[:url_options]
     port = url[:port].present? ?  ":"+url[:port].to_s: ""
     object.absolute_profile_image("#{url[:host]}#{port}")
+  end
+
+  def referral_count
+    object.user_referrals.count
   end
     
   def cache_key
