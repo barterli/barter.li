@@ -22,7 +22,7 @@ class UserSerializer < ActiveModel::Serializer
     # return object.ext_image if object.ext_image.present?
     url = @options[:url_options]
     port = url[:port].present? ?  ":"+url[:port].to_s: ""
-    object.absolute_profile_image("#{url[:host]}#{port}")
+    object.absolute_profile_image("http://#{url[:host]}#{port}")
   end
 
   def referral_count

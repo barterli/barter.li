@@ -33,7 +33,7 @@ class BookSerializer < ActiveModel::Serializer
     @user ||= user
     url = @options[:url_options]
     port = url[:port].present? ?  ":"+url[:port].to_s: ""
-    @user.absolute_profile_image("#{url[:host]}#{port}")
+    @user.absolute_profile_image("http://#{url[:host]}#{port}")
   end
 
   def image_url
