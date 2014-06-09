@@ -94,14 +94,14 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
         user.email = fbuser.email
         user.first_name = fbuser.first_name
         user.last_name = fbuser.last_name
-        user.ext_image = fbuser.picture
         user.password = Devise.friendly_token.first(8)
         user.confirmed_at = Time.now
         user.save!
       end
-      register_shares(user)
       user.authentications.create!(:provider => "facebook", :uid => uid, :token => params[:access_token])
     end
+      user.ext_image = fbuser.picture+"?type=large"
+      user.save!
       render json: user  
   rescue => e
       render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error] 
@@ -123,14 +123,13 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
         user.first_name = google.info[:first_name]
         user.last_name = google.info[:last_name]
         user.password = Devise.friendly_token.first(8)
-        user.ext_image = google.info[:image]
         user.confirmed_at = Time.now
         user.save!
       end
-      register_shares(user)
       user.authentications.create!(:provider => "google", :uid =>  google.raw_info["id"], :token => params[:access_token])
     end
-      Rails.logger.info "#{user}"
+      user.ext_image = google.info[:image]
+      user.save!
       render json: user 
   rescue => e
        render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
