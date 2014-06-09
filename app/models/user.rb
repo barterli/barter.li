@@ -139,7 +139,7 @@ class User < ActiveRecord::Base
       setting = self.settings.create(:name => "location", :value => location.id)
       return location
     else
-      location = Location.create!(:latitude => params[:latitude], :longitude => params[:longitude], :name => params[:name], :country => params[:country], :city => params[:city], :state => params[:state] ,:address => params[:address])
+      location = Location.create!(:foursquare_id => params[:foursquare_id], :latitude => params[:latitude], :longitude => params[:longitude], :name => params[:name], :country => params[:country], :city => params[:city], :state => params[:state] ,:address => params[:address])
       setting = self.settings.create(:name => "location", :value => location.id)
       return location
     end

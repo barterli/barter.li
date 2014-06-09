@@ -25,7 +25,7 @@ class Location < ActiveRecord::Base
   def self.set_location(params)
     location = Location.find_by(:latitude => params[:latitude], :longitude => params[:longitude], :name => params[:name])
     if(location.blank?)
-      location = Location.create!(:latitude => params[:latitude], :longitude => params[:longitude], :country => params[:country], :city => params[:city], :address => params[:address], :name => params[:name])
+      location = Location.create!(:foursquare_id => params[:foursquare_id], :latitude => params[:latitude], :longitude => params[:longitude], :country => params[:country], :city => params[:city], :address => params[:address], :name => params[:name])
     end
     return location
   rescue

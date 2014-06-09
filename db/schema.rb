@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140604171359) do
+ActiveRecord::Schema.define(version: 20140609161302) do
 
   create_table "alerts", force: true do |t|
     t.integer  "user_id"
@@ -156,6 +156,7 @@ ActiveRecord::Schema.define(version: 20140604171359) do
     t.datetime "updated_at"
     t.string   "address"
     t.string   "id_location"
+    t.string   "foursquare_id"
   end
 
   add_index "locations", ["latitude", "longitude"], name: "index_locations_on_latitude_and_longitude", using: :btree
