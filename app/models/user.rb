@@ -65,8 +65,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def chat_block(user_id)
-    self.chat_filters.create!(block_id: user_id)
+  def chat_block(block_id)
+    self.chat_filters.create!(block_id: block_id)
   end
 
 

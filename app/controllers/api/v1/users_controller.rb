@@ -198,9 +198,10 @@ class Api::V1::UsersController < Api::V1::BaseController
   #    }
   #    ```
   def chat_block
-    is_blocked = current_user.chat_filters.where(user_id: params[:user_id]).first
+    id = User.find_by(id_user: params[:user_id]).id
+    is_blocked = current_user.chat_filters.where(block_id: id).first
     if(is_blocked.blank?)
-      current_user.chat_block(params[:user_id])
+      current_user.chat_block(id)
       render :json => {}
     end
   rescue => e
@@ -229,7 +230,8 @@ class Api::V1::UsersController < Api::V1::BaseController
   #    }
   #    ```
   def chat_unblock
-    is_blocked = current_user.chat_filters.where(user_id: params[:user_id]).first
+    id = User.find_by(id_user: params[:user_id]).id
+    is_blocked = current_user.chat_filters.where(block_id: id).first
     if(is_blocked.present?)
       is_blocked.delete
       render :json => {}
