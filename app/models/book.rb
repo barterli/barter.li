@@ -1,5 +1,5 @@
 class Book < ActiveRecord::Base
-  # include UniqueId
+  include UniqueId
   # include HabtmTouchId
 
   # for elasticsearch 
