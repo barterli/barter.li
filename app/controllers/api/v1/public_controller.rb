@@ -53,6 +53,18 @@ class Api::V1::PublicController < Api::V1::BaseController
     end 
   end
 
+
+  def version
+    version = Version.where(current: true, code_type: params[:code_type]).last
+    if(version.code > params[:code])
+      render json: {status: false}
+    else
+      render json: {status: true}
+    end
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  end
+
   # GET /default
   def default
     render json: {error: "no route matches"}
@@ -128,7 +140,7 @@ class Api::V1::PublicController < Api::V1::BaseController
   #    }
   #    ```
   def team
-    team_page = Static.where(page_name: "team")
+    team_page = Static.where(page_name: "team").order("row_order ASC")
     team = team_page.map{|t| t.image.present? ? t.body.merge(image_url: "http://"+request.host_with_port+ActionController::Base.helpers.asset_path(t.image.url)) : t.body}
     # if stale?(:etag => 'team page member', :last_modified => team_page.maximum(:updated_at) , :public => true)
       render json: {team: team}

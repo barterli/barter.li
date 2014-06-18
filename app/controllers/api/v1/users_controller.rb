@@ -540,6 +540,11 @@ class Api::V1::UsersController < Api::V1::BaseController
     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
+  def top_user_book_uploads
+    # pending
+
+  end
+
  private
     def user_profile_params
       params[:user_profile] = JSON.parse(params[:user])

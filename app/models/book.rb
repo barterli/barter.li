@@ -1,6 +1,5 @@
 class Book < ActiveRecord::Base
   include UniqueId
-  # include HabtmTouchId
 
   # for elasticsearch 
   include Searchable
@@ -13,10 +12,6 @@ class Book < ActiveRecord::Base
   has_many :user_book_visits
   validates :title, :presence => true
   validates :location_id, :presence => true
-  #validates :print, numericality: { only_integer: true }, allow_blank: true
-  #validates :publication_year, numericality: { only_integer: true }, allow_blank: true
-  #validates :edition, numericality: { only_integer: true }, allow_blank: true
-  #validates :value, numericality: { only_integer: true }, allow_blank: true
   mount_uploader :image, ImageUploader
 
   # kaminari pagination per page display
@@ -33,10 +28,6 @@ class Book < ActiveRecord::Base
     end
   end
    
-  # def as_json(options = {})
-  #   super(options.merge(:methods => [:location, :tags]))
-  # end
-   
   # increase book visit count
   def book_visit_count()
     # using update columns for cache reasons to disable updated_at change
@@ -52,12 +43,6 @@ class Book < ActiveRecord::Base
   def self.barter_categories
     Code[:barter_categories]
   end
-
-
-  def self.read_locations_by_city(city)
-    # pending
-  end
-
  
   def location_coor
     {:lat => self.location.latitude.to_s, :lon => self.location.longitude.to_s}
@@ -80,20 +65,5 @@ class Book < ActiveRecord::Base
     end
     return books
   end
-
-  private
-   # get cover image of book if book image is not uploaded 
-   # using open library
-    def save_book_cover_image
-      view = Openlibrary::View
-      return unless self.isbn_10.present?
-      book = view.find_by_isbn(self.isbn_10)
-      if(!self.image.present?)
-        if book.thumbnail_url.present?
-          self.remote_image_url = book.thumbnail_url 
-          self.save
-        end
-      end
-    end
 
 end

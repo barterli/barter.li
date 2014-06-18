@@ -90,7 +90,24 @@ class Api::V1::SearchController < Api::V1::BaseController
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
-  
+
+  def search_global
+    params[:radius] ||= 50
+    params[:per] ||= 18
+    params[:search_filter] = {:latitude => params[:latitude], :longitude => params[:longitude]}
+    params[:search_filter][:radius] = params[:radius]
+    params[:search_filter][:title] = params[:search]
+    # if(params[:search].to_s =~ /^[0-9]{10}$|^[0-9]{13}$/ )
+    #   params[:search_filter][:isbn] = params[:search]
+    # else
+    #   params[:search_filter][:book_or_author] = params[:search]
+    # end
+    @books = Book.search_global(params[:search_filter]).page(params[:page]).per(params[:per]).records
+    render json: @books
+  rescue => e
+     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  end
+
   def add_wishlist
     if(@books.blank? && current_user.present? && params[:search][:title].present?)
       current_user.wish_lists.create!(:title => params[:search][:title])

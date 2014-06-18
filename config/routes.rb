@@ -15,6 +15,7 @@ BarterLi::Application.routes.draw do
         get '/user_preferred_location', to: 'users#get_user_preferred_location'
         post '/user_preferred_location', to: 'users#set_user_preferred_location'
         get '/search', to: "search#search"
+        get '/search_global', to: "search#search_global"
         post '/barter_notification', to: "barters#send_barter_notification"
         get '/user_profiles', to: "users#user_profiles"
         get '/user_profile', to: "users#user_profile"
@@ -47,6 +48,7 @@ BarterLi::Application.routes.draw do
         put '/books', to: 'books#update'
         delete '/books', to: 'books#destroy'
         post '/referral', to: 'users#register_referral'
+        get '/version', to: 'public#version'
         resources :books
     end
   end

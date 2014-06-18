@@ -77,35 +77,28 @@ module Searchable
         __elasticsearch__.search(@search_definition)
      end
 
-    # def location_obj
-    #   self.location.as_json(except: [:created_at, :updated_at])
-    # end
 
-    # def tag_array
-    #   self.tags.map(&:name)
-    # end
-
-    # def id_user_number
-    #   user_obj.id_user
-    # end
-
-    # def owner_name
-    #   user_obj.first_name.to_s + " " + user_obj.last_name.to_s
-    # end
-
-    # def owner_image_url
-    #   user_obj.absolute_profile_image(Code.host_url)
-    # end
-
-    # def image_url
-    #   return self.ext_image_url if self.image.url.index("default") && self.ext_image_url.present? &&  !self.ext_image_url.index("nocover")
-    #   image_path = ActionController::Base.helpers.asset_path(self.image.url)
-    #   "#{Code.host_url}#{image_path}"
-    # end
-
-    # def user_obj
-    #  @user ||= self.user
-    # end
+    def self.search_global(query)
+      @search_definition = {
+          query: {},
+          filter: {
+            bool: {
+              must_not: {
+                  geo_distance: {
+                      distance: query[:radius].to_s+"km",
+                      loc: {
+                        lon: query[:longitude].to_f,
+                        lat: query[:latitude].to_f
+                          }
+                        }
+                      }
+                  }  
+              }
+            }
+        
+          @search_definition[:query] = { match_all: {} }
+        __elasticsearch__.search(@search_definition)
+     end
   end
 end
 

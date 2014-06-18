@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140609161302) do
+ActiveRecord::Schema.define(version: 20140618130129) do
 
   create_table "alerts", force: true do |t|
     t.integer  "user_id"
@@ -227,6 +227,7 @@ ActiveRecord::Schema.define(version: 20140609161302) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "image"
+    t.integer  "row_order"
   end
 
   create_table "tags", force: true do |t|
@@ -340,6 +341,14 @@ ActiveRecord::Schema.define(version: 20140609161302) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "versions", force: true do |t|
+    t.string   "code"
+    t.string   "code_type"
+    t.boolean  "current",    default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "wish_lists", force: true do |t|
     t.integer  "user_id"
