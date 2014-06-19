@@ -198,6 +198,13 @@ class User < ActiveRecord::Base
     UserReferral.where(user_id: user.id, device_id: device_id).first_or_create!
   end 
 
+  def referrals
+    device_ids_by_user = self.user_referrals.select(:device_id)
+    return nil if device_ids_by_user.blank?
+    device_ids = device_ids_by_user.map{|d| d.device_id}
+    User.where(device_id: device_ids)
+  end
+
   # for elastic search book re-indexing
   def book_update_time
    self.books.update_all(updated_at: Time.now)

@@ -49,6 +49,7 @@ BarterLi::Application.routes.draw do
         delete '/books', to: 'books#destroy'
         post '/referral', to: 'users#register_referral'
         get '/version', to: 'public#version'
+        get '/current_user_referral_books', to: 'users#current_user_referral_books'
         resources :books
     end
   end

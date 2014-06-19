@@ -4,7 +4,8 @@
 #
 class Api::V1::UsersController < Api::V1::BaseController
   before_action :authenticate_user!, only: [:update, :show, :get_share_token, :generate_share_token,
-    :set_user_preferred_location, :user_preferred_location, :chat_block, :chat_unblock, :set_user_review]
+    :set_user_preferred_location, :user_preferred_location, :chat_block, :chat_unblock, 
+    :set_user_review, :current_user_referral_books]
   
   
 
@@ -541,8 +542,20 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def top_user_book_uploads
+    user_book_array = Book.group(:user_id).count.sort_by{|key, values| values}.reverse
     # pending
+  end
 
+  # GET /current_user_referral_books
+  def current_user_referral_books
+    users_by_referral = current_user.referrals
+    if users_by_referral.present?
+      user_ids = users_by_referral.map{|u| u.id}
+      book_count = Book.where(user_id: user_ids).count
+      render json: {book_count: book_count}
+    else
+       render json: {book_count: ""}
+    end
   end
 
  private

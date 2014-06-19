@@ -100,6 +100,7 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
       end
       user.authentications.create!(:provider => "facebook", :uid => uid, :token => params[:access_token])
     end
+      user.device_id = params[:device_id]
       user.ext_image = fbuser.picture+"?type=large"
       user.save!
       render json: user  
@@ -128,6 +129,7 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
       end
       user.authentications.create!(:provider => "google", :uid =>  google.raw_info["id"], :token => params[:access_token])
     end
+      user.device_id = params[:device_id]
       user.ext_image = google.info[:image]
       user.save!
       render json: user 
@@ -143,8 +145,9 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
   
   def manual
     user = User.create_or_find_by_email_and_password(params[:email], params[:password])
+    user.device_id = params[:device_id]
+    user.save
     if(user)
-      register_shares(user)
       render json: user
     else
       render json: {error_code: Code[:error_email_taken], error_message: "incorrect credentials"}, status: Code[:status_error]
