@@ -1,7 +1,8 @@
 class UserSerializer < ActiveModel::Serializer
   cached
   attributes :email, :description, :first_name, :last_name, :location, 
-  :auth_token, :sign_in_count, :id_user, :image_url, :share_token, :referral_count
+  :auth_token, :sign_in_count, :id_user, :image_url, :share_token, 
+  :referral_count, :book_referral_count
   has_many :books
  
   def location
@@ -31,6 +32,17 @@ class UserSerializer < ActiveModel::Serializer
     
   def cache_key
     [object, scope]
+  end
+
+  def book_referral_count
+    users_by_referral = object.referrals
+    if users_by_referral.present?
+      user_ids = users_by_referral.map{|u| u.id}
+      book_count = Book.where(user_id: user_ids).count
+      return book_count
+    else
+      return 0
+    end
   end
 
 end

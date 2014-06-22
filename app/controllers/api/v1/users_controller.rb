@@ -554,7 +554,7 @@ class Api::V1::UsersController < Api::V1::BaseController
       book_count = Book.where(user_id: user_ids).count
       render json: {book_count: book_count}
     else
-       render json: {book_count: ""}
+       render json: {book_count: 0}
     end
   end
 

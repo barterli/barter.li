@@ -103,6 +103,7 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
       user.device_id = params[:device_id]
       user.ext_image = fbuser.picture+"?type=large"
       user.save!
+      welcome_message(user)
       render json: user  
   rescue => e
       render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error] 
@@ -132,6 +133,7 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
       user.device_id = params[:device_id]
       user.ext_image = google.info[:image]
       user.save!
+      welcome_message(user)
       render json: user 
   rescue => e
        render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
@@ -145,15 +147,44 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
   
   def manual
     user = User.create_or_find_by_email_and_password(params[:email], params[:password])
-    user.device_id = params[:device_id]
-    user.save
     if(user)
+      user.device_id = params[:device_id]
+      user.save
+      welcome_message(user)
       render json: user
     else
       render json: {error_code: Code[:error_email_taken], error_message: "incorrect credentials"}, status: Code[:status_error]
     end
   rescue => e
     render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
+  end
+
+  def welcome_message(user)
+    if(user.sign_in_count == 0)
+      user.sign_in_count  = 1
+      user.save
+      send_welcome_chat(user)
+    end
+  end
+
+  def send_welcome_chat(user)
+    EM.next_tick {
+      receiver = user
+      sender = User.find_by(email: "joinus@barter.li")
+      return if sender.blank?
+      connection = AMQP.connect(:host => '127.0.0.1', :user=>ENV["RABBITMQ_USERNAME"], :pass => ENV["RABBITMQ_PASSWORD"], :vhost => "/")
+      AMQP.channel ||= AMQP::Channel.new(connection)
+      channel  = AMQP.channel
+      message = "Weclome to barter.li. Find books in your locality and chat to barter books."
+      sender_hash = {"id_user" => sender.id_user, "first_name" => sender.first_name, 
+                  "last_name" => sender.last_name, "profile_image" => sender.absolute_profile_image(request.host_with_port)}
+      receiver_hash = {"id_user" => receiver.id_user, "first_name" => receiver.first_name, 
+                    "last_name" => receiver.last_name, "profile_image" => receiver.absolute_profile_image(request.host_with_port) }
+      chat_hash = {"sender" => sender_hash, "receiver" => receiver_hash,
+      "message" => message, "sent_at" => params[:sent_at], :time => Time.now}
+      receiver_exchange = channel.fanout(receiver.id_user+"exchange")
+      receiver_exchange.publish(chat_hash.to_json)
+    }
   end
 
 end
