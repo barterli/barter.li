@@ -67,6 +67,7 @@ class Api::V1::BooksController < Api::V1::BaseController
     if(current_user.present?)
       @book.book_visit_user(current_user.id)
     end
+     expires_in 15.minutes, :public => true
     # if stale?(:etag => @book.id, :last_modified => @book.updated_at, :public => true)
       render json: @book 
     # end
