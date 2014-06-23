@@ -15,8 +15,52 @@ class Api::V1::BooksController < Api::V1::BaseController
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
-  # GET /books/1
-  # GET /books/1.json
+  # @url /books
+  # @action GET
+  #
+  # get a book. 
+  #
+  # @required [String] id id of the book
+  #
+  # @response [Book] The book object
+  #
+  # @example_request_description Let's try to get a book
+  # @example_request
+  #    ```json
+  #      {
+  #       "id": 1
+  #     }
+  #     ```
+  # @example_response_description The book object
+  # @example_response
+  #    ```json
+  #      {
+  #        "book": {
+  #        "id": 14,
+  #        "title": "test",
+  #        "author": null,
+  #        "publication_year": null,
+  #        "publication_month": null,
+  #        "image_url": "http://162.243.198.171:/fallback/1_default.png",
+  #        "barter_type": null,
+  #        "location": {
+  #           "id": 17,
+  #            "country": null,
+  #           "state": null,
+  #            "city": null,
+  #            "address": null,
+  #            "postal_code": null,
+  #            "locality": null,
+  #            "name": null,
+  #            "latitude": "12.7777",
+  #            "longitude": "12.34546",
+  #            "id_location": "804f2bbb36fd58ee"
+  #        },
+  #        "tags": [],
+  #        "id_book": "4bcbfd3bc31545ac"
+  #      }
+  #    }
+  #    ```
   def show
     @book = Book.find(params[:id])
     @book.book_visit_count

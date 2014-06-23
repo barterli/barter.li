@@ -14,13 +14,13 @@ class Api::V1::UsersController < Api::V1::BaseController
   # 
   # get profile of a user
   #
-  # @required [Integer] id id array of the user
-  # @example_request_description Let's send a id of a user
+  # @required [Integer] id guid  of the user
+  # @example_request_description Let's send a guid of a user
   # 
   # @example_request
   #    ```json
   #    {  
-  #     id: 5
+  #     id: 45rf3f334
   #     }
   #    }
   #    ```
@@ -30,7 +30,6 @@ class Api::V1::UsersController < Api::V1::BaseController
   #        {
   #            "users": [
   #                {
-  #                    "id": 25,
   #                    "first_name": "test",
   #                    "last_name": "M",
   #                    "id_user": 988jkbkjgjgjhg,
@@ -98,13 +97,13 @@ class Api::V1::UsersController < Api::V1::BaseController
   # 
   # get profiles of a users
   #
-  # @required [Integer] ids id array of the user
-  # @example_request_description Let's send a id of a user
+  # @required [Integer] ids guid array of the user
+  # @example_request_description Let's send a guid of a user
   # 
   # @example_request
   #    ```json
   #    {  
-  #     ids: [5]
+  #     ids: [5dsf993434]
   #     }
   #    }
   #    ```
@@ -114,7 +113,6 @@ class Api::V1::UsersController < Api::V1::BaseController
   #        {
   #            "users": [
   #                {
-  #                    "id": 25,
   #                    "first_name": "test",
   #                    "last_name": "M",
   #                    "id_user": 988jkbkjgjgjhg,
@@ -251,6 +249,45 @@ class Api::V1::UsersController < Api::V1::BaseController
      render json: {error_code: Code[:error_rescue], error_message: e.message}, status: Code[:status_error]
   end
 
+
+
+  # @url /user_update
+  # @action put
+  # 
+  # update the current user. needs authentication headers
+  #
+  #
+  # @example_request_description Let's update current. needs string 
+  # representation of json as profile image is also sent as octet stream
+  # 
+  # @example_request
+  #    ```json
+  #    \'{  
+  #     \user[frist_name]\: \"test"\
+  #       \ profile\: \image file\
+  #     }\'
+  #    ```
+  # @example_response_description user object
+  # @example_response
+  #    ```json
+  #            {
+  #                "user": {
+  #                   "email": "test@gmail.com",
+  #                    "description": null,
+  #                    "first_name": "changed",
+  #                    "last_name": null,
+  #                    "location": null,
+  #                    "auth_token": "ZSPE_6Mjwk5hazR_zD2y",
+  #                    "sign_in_count": 11,
+  #                    "id_user": "7386ba3ea5f168a9",
+  #                    "image_url": "http://localhost:3000/assets/fallback/1_default.png",
+  #                    "share_token": "b2ac62b00aa8dbc1e69653dfed975667",
+  #                    "referral_count": 0,
+  #                    "book_referral_count": 0,
+  #                    "books": []
+  #                }
+  #            }
+  #    ```
   def update
     user  = current_user
     if(user.update_attributes(user_profile_params))

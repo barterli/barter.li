@@ -26,6 +26,7 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
   # @required [String] password used if provider is manual (minimum 8 characters)
   # @required [String] access_token used if provider is outh(facebook or google)
   # @required [String] provider can be manual, facebook, google
+  # @optional [String] device_id device id for referrence count and needed welcome chat
   #
   # @response [User] The created user or existing user
   # 
@@ -47,25 +48,20 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
   # @example_response
   #    ```json
   #    {
-  #     "user": {
-  #         "id": 25,
-  #         "email": "example@gmail.com",
-  #         "description": test,
-  #         "first_name": test,
-  #         "last_name": test,
-  #         "location": {
-  #             "id": 6,
-  #             "country": "34535",
-  #             "state": bihar,
-  #             "city": patna,
-  #             "name": coffee day,
-  #             "latitude": "12.334",
-  #             "longitude": "12.445",
-  #             "address": 201, cross street
-  #         },
-  #         "auth_token": "TRU2uUh1DxfyTdi3tnEs",
-  #         "sign_in_count": 33,
-  #         "books": []
+  #      "user": {
+  #          "email": "test@gmail.com",
+  #          "description": null,
+  #          "first_name": null,
+  #          "last_name": null,
+  #          "location": null,
+  #           "auth_token": "iuuATKZdbnnGDBGG-_ms",
+  #          "sign_in_count": 7,
+  #          "id_user": "2311c0c74e33b004",
+  #          "image_url": "http://162.243.198.171:3000/assets/fallback/1_default-1613a70d06a262fc7635652906de7eb9.png",
+  #          "share_token": "ad7f517159350ae1997713b686130c98",
+  #          "referral_count": 0,
+  #          "book_referral_count": 0,
+  #          "books": []
   #      }
   #    }
   #    ```

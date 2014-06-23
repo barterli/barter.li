@@ -18,6 +18,36 @@ class Api::V1::MessagesController < Api::V1::BaseController
       "message" => params[:message], "sent_at" => params[:sent_at], :time => Time.now}
   end
 
+
+
+
+  # @url /ampq
+  # @action post
+  # 
+  # sent a chat message
+  #
+  # @required [String] sender_id  guid of sender
+  # @required [String] sender_id  guid of receiver
+  # @required [String] message chat message
+  # @example_request_description Let's send a chat request
+  # 
+  # @example_request
+  #    ```json
+  #    {  
+  #     sender_id: dksjf945094fn,
+  #     receiver_id: fkj324dff,
+  #     message: "Test",
+  #     sent_at: "11:12"
+  #     }
+  #    ```
+  # @example_response_description a sucess 200 ok code
+  # @example_response
+  #    ```json
+  #        {
+  #            {
+  #          }   
+  #    }
+  #    ```
   def ampq
     EM.next_tick {
       begin
