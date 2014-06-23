@@ -183,6 +183,8 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
       chat_hash = {"sender" => sender_hash, "receiver" => receiver_hash,
       "message" => message, "sent_at" => params[:sent_at], :time => Time.now}
       receiver_exchange = channel.fanout(receiver.id_user+"exchange")
+      q_name = user.email[0, user.email.index("@")]
+      queue    = channel.queue(q_name, :auto_delete => false, :durable => true).bind(receiver_exchange)
       receiver_exchange.publish(chat_hash.to_json)
     }
   end
