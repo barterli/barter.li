@@ -134,15 +134,26 @@ class User < ActiveRecord::Base
   def set_preferred_location(params)
     location = Location.find_by(:latitude => params[:latitude], :longitude => params[:longitude], :name => params[:name])
     setting = self.settings.find_by(name: "location")
-    setting.destroy if setting.present?
+    is_location_lat_lon_zero = false
+    if setting.present?
+       prev_location = Location.find(setting.value)
+       if(prev_location.latitude.to_i == 0)
+         is_location_lat_lon_zero = true
+       end 
+       setting.destroy 
+    end
     if(location.present?)
       setting = self.settings.create(:name => "location", :value => location.id)
-      return location
     else
       location = Location.create!(:foursquare_id => params[:foursquare_id], :latitude => params[:latitude], :longitude => params[:longitude], :name => params[:name], :country => params[:country], :city => params[:city], :state => params[:state] ,:address => params[:address])
       setting = self.settings.create(:name => "location", :value => location.id)
-      return location
     end
+    update_book_locations(location.id) if is_location_lat_lon_zero
+    return location
+  end
+
+  def update_book_locations(location_id)
+    self.books.update_all(location_id: location_id)
   end
 
   def preferred_location
