@@ -396,9 +396,11 @@ class Api::V1::UsersController < Api::V1::BaseController
   #      ```
   def reset_password
     user = User.find_by(reset_password_token: params[:token], email: params[:email])
+    raise "no user present" if user.blank?
     if(user.reset_password_sent_at > Time.now - 20.minutes)
       user.password = params[:password]
-      user.reset_password_token = ""
+      user.reset_password_token = nil
+      user.reset_password_sent_at = nil
       user.save!
       render json: user
     else
