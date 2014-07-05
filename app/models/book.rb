@@ -49,7 +49,7 @@ class Book < ActiveRecord::Base
   end
 
   # normal sql search
-  def self.db_search(params)
+  def self.db1_search(params)
     if params.present?
       books = Book.where(nil)
       locations = Location.near([params[:latitude], params[:longitude]], params[:radius], :units => :km) if params[:latitude].present? && params[:longitude].present? && params[:radius].present?
