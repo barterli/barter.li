@@ -63,10 +63,27 @@ module Searchable
                     lon: query[:longitude].to_f,
                     lat: query[:latitude].to_f
                       }
+                
                   }
-            }
+            },
+
+          sort: [
+                    {
+                        _geo_distance: {
+                            loc: {
+                                lon: query[:longitude].to_f,
+                                lat: query[:latitude].to_f
+                                  },
+                            order: "asc",
+                            unit: "km"
+                        }
+                    }
+                ]
         }
 
+
+  
+    
          if(query[:title].present?)
             @search_definition[:query] = {
               prefix:  { title: query[:title].downcase } 

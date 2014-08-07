@@ -1,5 +1,4 @@
 class BookSerializer < ActiveModel::Serializer
-  cached 
   attributes :id, :title, :author, :publication_year, :publication_month, :value,
              :image_url, :barter_type, :location, :tags, :id_book, :description, :isbn_10, :isbn_13, :id_user,
              :owner_name, :owner_image_url, :image_present
