@@ -164,12 +164,9 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
   end
 
   def send_welcome_chat(user)
-    EM.next_tick {
       receiver = user
       sender = User.find_by(email: "joinus@barter.li")
       return if sender.blank?
-      connection = AMQP.connect(:host => '127.0.0.1', :user=>ENV["RABBITMQ_USERNAME"], :pass => ENV["RABBITMQ_PASSWORD"], :vhost => "/")
-      AMQP.channel ||= AMQP::Channel.new(connection)
       channel  = AMQP.channel
       message = "Weclome to barter.li. Find books in your locality and chat to barter books."
       sender_hash = {"id_user" => sender.id_user, "first_name" => sender.first_name, 
@@ -182,7 +179,6 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
       q_name = user.device_id+user.email[0, user.email.index("@")]
       queue    = channel.queue(q_name, :auto_delete => false, :durable => true).bind(receiver_exchange)
       receiver_exchange.publish(chat_hash.to_json)
-    }
   end
 
 end

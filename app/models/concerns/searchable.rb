@@ -15,16 +15,16 @@ module Searchable
     settings index: { number_of_shards: 1, number_of_replicas: 0 } do
       mapping do
         # indexes :title, type: 'multi_field' do
-          indexes :title, analyzer: 'standard'
+          # indexes :title, analyzer: 'standard'
         #   indexes :tokenized, analyzer: 'simple'
         # end
            indexes :loc, type: 'geo_point'
 
         # # for multifield title
-        #   indexes :title, type: 'multi_field' do
-        #     indexes :title,     analyzer: 'standard'
-        #     indexes :original,   index: 'not_analyzed'
-        # end
+          indexes :title, type: 'multi_field' do
+            indexes :title,     analyzer: 'standard'
+            indexes :original,   index: 'not_analyzed'
+        end
       end
     end
 
@@ -77,7 +77,8 @@ module Searchable
                             order: "asc",
                             unit: "km"
                         }
-                    }
+                    },
+                    { created_at: "desc"}
                 ]
         }
 
@@ -86,7 +87,11 @@ module Searchable
     
          if(query[:title].present?)
             @search_definition[:query] = {
-              prefix:  { title: query[:title].downcase } 
+              # prefix:  { title: query[:title].downcase } 
+              multi_match: {
+                query: query[:title].downcase, 
+                fields: [ "title", "original" ] 
+               }
             }
         else
           @search_definition[:query] = { match_all: {} }
@@ -94,6 +99,8 @@ module Searchable
         __elasticsearch__.search(@search_definition)
      end
 
+
+ 
 
     def self.search_global(query)
       @search_definition = {
